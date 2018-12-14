@@ -1,0 +1,30 @@
+{
+  "name": "piano-roll",
+  "version": "0.0.1",
+  "description": "A live in-browser piano roll with synthesisers to get musical ideas down quickly",
+  "main": "index.html",
+  "dependencies": {
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cjpdee/piano-roll.git"
+  },
+  "keywords": [
+    "piano",
+    "roll",
+    "js",
+    "amaze"
+  ],
+  "author": "Charlie",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/cjpdee/piano-roll/issues"
+  },
+  "homepage": "https://github.com/cjpdee/piano-roll#readme"
+}
