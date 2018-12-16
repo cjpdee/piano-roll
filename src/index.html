@@ -1,11 +1,83 @@
 <!doctype html>
 <html>
     <head>
+        <link rel="stylesheet" href="app.css">
+        <!-- 
 
+            app notes
+
+            include the main shell of the app in a style tag once it's finished
+            preload the css files alongside this and use it when the user
+            starts to interact with the page
+            this should reduce rendering time a bit
+
+         -->
     </head>
     <body>
-        <div class="sidebar"></div>
-        <div class="main"></div>
+        <div class="sidebar">
+            <div class="project-setup">
+                <input type="number" name="bpm" step="1" id="bpm">
+            </div>
+            <div class="oscillators">
+                <h1>Oscillators</h1>
+
+                <!-- jsx template -->
+                <div>
+                    <h2>Oscillator {this.id}</h2>
+                    <select>
+                        <option value="sine/sqr">sine/sqr</option>
+                        <option value="sine/saw">sine/saw</option>
+                    </select>
+                    <input type="range" id="wt-pos" />
+                    <input type="range" id="volume" />
+                    <input type="range" id="lowpass" />
+                    <input type="range" id="resonance" />
+                </div>
+
+            </div>
+        </div>
+        <div class="piano">
+            <button class="piano__key--white" data-note="B5"></button>
+        </div>
+        <div class="piano-roll">
+            <!-- 
+                absolute positioned grid system
+                    height of each row: ( 100vh / 24 )
+                    top: 0;
+                        then: ( ( 100vh / 24 ) * number of items - 1 )
+                        calc(100vh / 24 * x)
+                    for smaller viewport heights: divide everything by 12 instead
+
+                    using absolute positioning to prevent heavy reflows when
+                    the user is interacting with the piano roll
+
+                each bar length: fixed or responsive depending on viewport width
+             -->
+            <div class="row" data-note="G5"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+            <div class="row" data-note="X1"></div>
+        </div>
         <script src="index.js"></script>
     </body>
 </html>

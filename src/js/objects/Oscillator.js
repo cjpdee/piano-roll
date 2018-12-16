@@ -34,12 +34,12 @@ class Oscillator extends React.Component {
 
     getPitch(note) {
         var notes = [
-            A4,B4,C4...
+            A4,B4,C4
         ];
-        switch(note) {
-            case 'A4':
-                // do thingy
-        }
+        notes.forEach(function() {
+            // dividing / multiply highest frequency by
+            // each notes index in the array
+        });
     }
 }
 
