@@ -1,0 +1,49 @@
+<html>
+<head>
+	<style>
+		body {
+			position: relative;
+			width: 100%;
+			height: 100vh;
+		}
+		#box {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 280px;
+			height: 180px;
+			background-color: red;
+		}
+	</style>
+</head>
+<body>
+	<div id="box"></div>
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+	var $box = $('#box');
+
+	var isDragging = false;
+
+
+	$box.on('mousedown',function() {
+		isDragging = true;
+	})
+	$box.on('mouseup',function(e) {
+		isDragging = false;
+	})
+
+	$(document).on('mousemove',function(e) {
+		let posX;
+		let posY;
+		console.log(isDragging);
+		if(isDragging===true) {
+			$box.css("top",(e.clientY - 20));
+			$box.css("left",(e.clientX - 20));
+			posX = e.clientX;
+			posY = e.clientY;
+		}
+	})
+</script>
+
+</html>
