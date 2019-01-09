@@ -4,7 +4,6 @@
   "description": "A live in-browser piano roll with synthesisers to get musical ideas down quickly",
   "main": "index.html",
   "dependencies": {
-    "cross-env": "^5.2.0",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2"
   },
