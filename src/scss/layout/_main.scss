@@ -6,7 +6,7 @@
 }
 
 .piano {
-    width: em(40);
+    width: em(60);
     height: 100%;
 
     &__key--white {
@@ -20,7 +20,26 @@
 }
 
 .piano-roll {
+    position: relative;
     width: 100%;
     height: 100%;
     background-color: #999999;
+}
+
+.row {
+    position: absolute;
+    height: calc(100vh / 24);
+    width: 100%;
+    &:nth-child(odd) {
+        background-color: rgb(90, 145, 161);
+    }
+    &:nth-child(even) {
+        background-color: rgb(100, 159, 177);
+    }
+}
+
+@for $i from 0 to 24 {
+    .row-#{$i} {
+        top: ((100% / 24) * $i);
+    }
 }

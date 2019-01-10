@@ -15,7 +15,8 @@
     "laravel-mix": "^4.0.6",
     "resolve-url-loader": "2.3.1",
     "sass": "^1.15.2",
-    "sass-loader": "7.*"
+    "sass-loader": "7.*",
+    "vue-template-compiler": "^2.5.21"
   },
   "scripts": {
     "dev": "npm run development",

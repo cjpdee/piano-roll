@@ -11,114 +11,126 @@
             starts to interact with the page
             this should reduce rendering time a bit
 
+            keep shallow dom tree to mitigate impact of reflows
+
+            use absolute positioning in the piano roll to prevent reflows
+
+
+            use 1-8 keys to choose note lengths
+
+            OK G
+
+            make sure all the note data (location,pitch etc), oscillator data etc.
+            can be accessed and make a function that transpiles that data into
+            a JSON file
+            then make a function that uses that data to recreate the save?
+
             -->
     </head>
     <body>
-        <main class="page">
-            <div class="sidebar">
-                <!-- this should be a reactive component probably? -->
-                <div class="project-setup"> 
-                    <label for="bpm">BPM</label>
-                    <input type="number" name="bpm" step="1" id="bpm">
-                </div>
-                <div class="oscillators">
-                    <h1>Oscillators</h1>
-    
-                    <!-- jsx template -->
-                    <div class="oscillator">
-                        <h2>Osc 1</h2>
-                        <select class="oscillator__select">
-                            <option value="sine/sqr">sine</option>
-                            <option value="sine/saw">square</option>
-                            <option value="sine/saw">saw</option>
-                        </select>
-                        <select name="octave" id="octave">
-                            <option value="A3">A3</option>
-                            <option value="A4">A4</option>
-                        </select>
-                        <span class="oscillator__property-wrap">
-                            <label class="oscillator__property-label" for="volume">Vol</label>
-                            <input class="oscillator__property" type="range" id="volume" />
-                        </span>
-                        <span class="oscillator__property-wrap">
-                            <label class="oscillator__property-label" for="lowpass">LP</label>
-                            <input class="oscillator__property" type="range" id="lowpass" />
-                        </span>
-                        <span class="oscillator__property-wrap">
-                            <label class="oscillator__property-label" for="resonance">Res</label>
-                            <input class="oscillator__property" type="range" id="resonance" />
-                        </span>
-                    </div>
+        <div class="sidebar">
+            <!-- this should be a reactive component probably? -->
+            <div class="project-setup"> 
+                <label for="bpm">BPM</label>
+                <input type="number" name="bpm" step="1" id="bpm">
+            </div>
+            <div class="oscillators">
+                <h1>Oscillators</h1>
 
+                <!-- jsx template -->
+                <div class="oscillator">
+                    <h2>Osc 1</h2>
+                    <select class="oscillator__select">
+                        <option value="sine/sqr">sine</option>
+                        <option value="sine/saw">square</option>
+                        <option value="sine/saw">saw</option>
+                    </select>
+                    <select name="octave" id="octave">
+                        <option value="A3">A3</option>
+                        <option value="A4">A4</option>
+                    </select>
+                    <span class="oscillator__property-wrap">
+                        <label class="oscillator__property-label" for="volume">Vol</label>
+                        <input class="oscillator__property" type="range" id="volume" />
+                    </span>
+                    <span class="oscillator__property-wrap">
+                        <label class="oscillator__property-label" for="lowpass">LP</label>
+                        <input class="oscillator__property" type="range" id="lowpass" />
+                    </span>
+                    <span class="oscillator__property-wrap">
+                        <label class="oscillator__property-label" for="resonance">Res</label>
+                        <input class="oscillator__property" type="range" id="resonance" />
+                    </span>
                 </div>
+
             </div>
-            <div class="piano">
-                <button class="piano__key--white" data-note="B5"></button>
-                <button class="piano__key--black" data-note="A#5"></button>
-                <button class="piano__key--white" data-note="A5"></button>
-                <button class="piano__key--black" data-note="G#5"></button>
-                <button class="piano__key--white" data-note="G5"></button>
-                <button class="piano__key--black" data-note="F#5"></button>
-                <button class="piano__key--white" data-note="F5"></button>
-                <button class="piano__key--white" data-note="E5"></button>
-                <button class="piano__key--black" data-note="D#5"></button>
-                <button class="piano__key--white" data-note="D5"></button>
-                <button class="piano__key--black" data-note="C#5"></button>
-                <button class="piano__key--white" data-note="C5"></button>
-                <!-- octave 4 -->
-                <button class="piano__key--white" data-note="B4"></button>
-                <button class="piano__key--black" data-note="A#4"></button>
-                <button class="piano__key--white" data-note="A4"></button>
-                <button class="piano__key--black" data-note="G#4"></button>
-                <button class="piano__key--white" data-note="G4"></button>
-                <button class="piano__key--black" data-note="F#4"></button>
-                <button class="piano__key--white" data-note="F4"></button>
-                <button class="piano__key--white" data-note="E4"></button>
-                <button class="piano__key--black" data-note="D#4"></button>
-                <button class="piano__key--white" data-note="D4"></button>
-                <button class="piano__key--black" data-note="C#4"></button>
-                <button class="piano__key--white" data-note="C4"></button>
-            </div>
-            <div class="piano-roll">
-                <!-- 
-                    absolute positioned grid system
-                        height of each row: ( 100vh / 24 )
-                        top: 0;
-                            then: ( ( 100vh / 24 ) * number of items - 1 )
-                            calc(100vh / 24 * x)
-                        for smaller viewport heights: divide everything by 12 instead
-    
-                        using absolute positioning to prevent heavy reflows when
-                        the user is interacting with the piano roll
-    
-                    each bar length: fixed or responsive depending on viewport width
-                    -->
-                <div class="row" data-note="G5"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-                <div class="row" data-note="X1"></div>
-            </div>
-        </main>
+        </div>
+        <div class="piano">
+            <button class="piano__key--white" data-note="B5"></button>
+            <button class="piano__key--black" data-note="A#5"></button>
+            <button class="piano__key--white" data-note="A5"></button>
+            <button class="piano__key--black" data-note="G#5"></button>
+            <button class="piano__key--white" data-note="G5"></button>
+            <button class="piano__key--black" data-note="F#5"></button>
+            <button class="piano__key--white" data-note="F5"></button>
+            <button class="piano__key--white" data-note="E5"></button>
+            <button class="piano__key--black" data-note="D#5"></button>
+            <button class="piano__key--white" data-note="D5"></button>
+            <button class="piano__key--black" data-note="C#5"></button>
+            <button class="piano__key--white" data-note="C5"></button>
+            <!-- octave 4 -->
+            <button class="piano__key--white" data-note="B4"></button>
+            <button class="piano__key--black" data-note="A#4"></button>
+            <button class="piano__key--white" data-note="A4"></button>
+            <button class="piano__key--black" data-note="G#4"></button>
+            <button class="piano__key--white" data-note="G4"></button>
+            <button class="piano__key--black" data-note="F#4"></button>
+            <button class="piano__key--white" data-note="F4"></button>
+            <button class="piano__key--white" data-note="E4"></button>
+            <button class="piano__key--black" data-note="D#4"></button>
+            <button class="piano__key--white" data-note="D4"></button>
+            <button class="piano__key--black" data-note="C#4"></button>
+            <button class="piano__key--white" data-note="C4"></button>
+        </div>
+        <div class="piano-roll">
+            <!-- 
+                absolute positioned grid system
+                    height of each row: ( 100vh / 24 )
+                    top: 0;
+                        then: ( ( 100vh / 24 ) * number of items - 1 )
+                        calc(100vh / 24 * x)
+                    for smaller viewport heights: divide everything by 12 instead
+
+                    using absolute positioning to prevent heavy reflows when
+                    the user is interacting with the piano roll
+
+                each bar length: fixed or responsive depending on viewport width
+                -->
+            <div  class="row row-1" data-note="B5"></div>
+            <div  class="row row-2" data-note="A#5"></div>
+            <div  class="row row-3" data-note="A5"></div>
+            <div  class="row row-4" data-note="G#5"></div>
+            <div  class="row row-5" data-note="G5"></div>
+            <div  class="row row-6" data-note="F#5"></div>
+            <div  class="row row-7" data-note="F5"></div>
+            <div  class="row row-8" data-note="E5"></div>
+            <div  class="row row-9" data-note="D#5"></div>
+            <div class="row row-10" data-note="D5"></div>
+            <div class="row row-11" data-note="C#5"></div>
+            <div class="row row-12" data-note="C5"></div>
+            <div class="row row-13" data-note="B5"></div>
+            <div class="row row-14" data-note="A#5"></div>
+            <div class="row row-15" data-note="A5"></div>
+            <div class="row row-16" data-note="G#5"></div>
+            <div class="row row-17" data-note="G5"></div>
+            <div class="row row-18" data-note="F#5"></div>
+            <div class="row row-19" data-note="F5"></div>
+            <div class="row row-20" data-note="E5"></div>
+            <div class="row row-21" data-note="D#5"></div>
+            <div class="row row-22" data-note="D5"></div>
+            <div class="row row-23" data-note="C#5"></div>
+            <div class="row row-24" data-note="C5"></div>
+        </div>
         <script src="app.js"></script>
     </body>
 </html>
