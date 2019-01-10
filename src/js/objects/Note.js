@@ -1,6 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-
 /*
     pitches :
         A4,B4,C4,D4,E4,F4,G4
@@ -15,18 +12,18 @@ import ReactDOM from 'react-dom';
     
 */
 
-class Note extends React.Component {
-    constructor() {
-        this.pitch = pitch;
-        this.length = store.getNotesLength();
-        this.velocity = store.getNotesVelocity();
-    }
+// class Note extends React.Component {
+//     constructor() {
+//         this.pitch = pitch;
+//         this.length = store.getNotesLength();
+//         this.velocity = store.getNotesVelocity();
+//     }
 
-    render() {
-        return (
-            <div class="note"></div>
-        );
-    }
-}
+//     render() {
+//         return (
+//             <div class="note"></div>
+//         );
+//     }
+// }
 
-export default Note;
+// export default Note;

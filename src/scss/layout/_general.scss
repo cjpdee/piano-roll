@@ -1,0 +1,24 @@
+$fzBase : 18;
+@function em($pxval, $base: $fzBase) {
+	@return ($pxval / $base) * 1em;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
+}
+
+*,
+button:after,
+button:before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.page {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}

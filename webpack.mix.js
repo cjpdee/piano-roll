@@ -10,7 +10,7 @@ const glob = require('glob');
 	| for your Laravel application. By default, we are compiling the Sass
 	| file for the application as well as bundling up all the JS files.
 	|
- */
+*/
 
 const js = glob.sync(`src/js/[^_]*.js`);
 const scss = glob.sync(`src/scss/[^_]*.scss`);

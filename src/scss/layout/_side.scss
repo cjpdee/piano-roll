@@ -1,0 +1,73 @@
+$sidebarBgColor: grey;
+$sidebarAccentColor: darkgrey;
+
+$sidebarPadding : 10;
+
+.sidebar {
+    flex: 0 0 em(280);
+    padding: em(10);
+
+    background-color: $sidebarBgColor;
+
+    & * {
+        margin-bottom: em(10);
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.project-setup {
+    padding: em($sidebarPadding);
+    border: em(2) solid $sidebarAccentColor;
+}
+
+.oscillators {
+    background-color: skyblue;
+
+    & h1 {
+        display: block;
+        text-align: center;
+        margin: 0;
+        padding: em(10);
+
+        font-size: em(22);
+    }
+
+    & * {
+        margin-bottom: em(10);
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.oscillator {
+    border-top: em(2) solid grey;
+    padding: em(10);
+
+    & h2 {
+        display: inline-block;
+        font-size: em(18);
+    }
+
+    &__select {
+        display: inline-block;
+        margin-left: auto;
+    }
+
+    &__property-wrap {
+        display: flex;
+        flex-direction: row;
+    }
+
+    &__property {
+        display: block;
+        flex: 0 0 80%;
+    }
+
+    &__property-label {
+        display: block;
+        flex: 0 0 20%;
+    }
+}

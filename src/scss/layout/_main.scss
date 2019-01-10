@@ -1,0 +1,26 @@
+%piano-key {
+    display: block;
+    width: 100%;
+    height: calc(100vh / 24);
+    border: none;
+}
+
+.piano {
+    width: em(40);
+    height: 100%;
+
+    &__key--white {
+        @extend %piano-key;
+        background-color: white;
+    }
+    &__key--black {
+        @extend %piano-key;
+        background-color: black;
+    }
+}
+
+.piano-roll {
+    width: 100%;
+    height: 100%;
+    background-color: #999999;
+}

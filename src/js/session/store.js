@@ -1,4 +1,13 @@
+import './init';
+
 var store = {
+    data : {
+        audioContext : window.AudioContext || window.webkitAudioContext,
+        audioCtx : new AudioContext
+    },
+    getAudioContext : function() {
+        return store.data.audioCtx;
+    },
     values : {
         bpm : 90,
         noteLength : '1/4',
