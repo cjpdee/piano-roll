@@ -9,12 +9,12 @@
     width: em(60);
     height: 100%;
 
-    &__key--white {
+    &__key {
         @extend %piano-key;
         background-color: white;
     }
-    &__key--black {
-        @extend %piano-key;
+
+    &__key[data-key*="#"] {
         background-color: black;
     }
 }
@@ -30,16 +30,16 @@
     position: absolute;
     height: calc(100vh / 24);
     width: 100%;
-    &:nth-child(odd) {
+    background-color: rgb(100, 159, 177);
+    
+    &[data-note*="#"] {
         background-color: rgb(90, 145, 161);
-    }
-    &:nth-child(even) {
-        background-color: rgb(100, 159, 177);
     }
 }
 
 @for $i from 0 to 24 {
     .row-#{$i} {
-        top: ((100% / 24) * $i);
+        // because 100% caused gaps
+        top: ((99.9999% / 24) * $i);
     }
 }

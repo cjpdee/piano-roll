@@ -5,15 +5,6 @@ import Vue from 'Vue';
 
 console.log(Vue);
 
-class Oscillator extends Vue {
-    
-    constructor() {
-        let id = 0;
-        console.log(this);
-        this.id = id;
-        // also set up the actual oscillator
-    }
-}
 
 Vue.component('Oscillator',{
     props: {
@@ -22,20 +13,47 @@ Vue.component('Oscillator',{
     data() {
         return {
             volume : 80,
-            waveform : sine
+            waveform : sine,
+            lowpass : false,
+            lpA : 0,
+            lpD : 0,
+            resonance : 0
         }
     },
     template: `
-        <div>
-            <h2>Oscillator {{ this.id }}</h2>
-            <select>
+        <div class="oscillator">
+            <h2>Osc 1</h2>
+            <select class="oscillator__select">
                 <option value="sine/sqr">sine</option>
                 <option value="sine/saw">square</option>
                 <option value="sine/saw">saw</option>
             </select>
-            <input type="range" id="volume" />
-            <input type="range" id="lowpass" />
-            <input type="range" id="resonance" />
+            <select name="octave" id="octave">
+                <option value="A3">A3</option>
+                <option value="A4">A4</option>
+            </select>
+            <span class="oscillator__property-wrap">
+                <label class="oscillator__property-label" for="volume">Vol</label>
+                <input class="oscillator__property" type="range" id="volume" />
+            </span>
+            <span class="oscillator__property-wrap">
+                <label class="oscillator__property-label" for="lowpass">LP</label>
+                <input class="oscillator__property" type="range" id="lowpass" />
+            </span>
+            <ul>
+                <li class="oscillator__property-wrap">
+                    <label class="oscillator__property-label" for="lowpass-attack">Att</label>
+                    <input class="oscillator__property" type="range" id="lowpass-attack" />
+                </li>
+                <li class="oscillator__property-wrap">
+                    <label class="oscillator__property-label" for="lowpass-decay">Dec</label>
+                    <input class="oscillator__property" type="range" id="lowpass-decay" />
+                </li>
+            </ul>
+            <span class="oscillator__property-wrap">
+                <label class="oscillator__property-label" for="resonance">Res</label>
+                <input class="oscillator__property" type="range" id="resonance" />
+            </span>
         </div>
     `,
     created() {

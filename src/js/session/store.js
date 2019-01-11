@@ -3,10 +3,16 @@ import './init';
 var store = {
     data : {
         audioContext : window.AudioContext || window.webkitAudioContext,
-        audioCtx : new AudioContext
+        audioCtx : new AudioContext,
+        oscillators : [
+
+        ]
     },
     getAudioContext : function() {
         return store.data.audioCtx;
+    },
+    addOscillator(oscillator) {
+        store.data.oscillators.push(oscillator);
     },
     values : {
         bpm : 90,
