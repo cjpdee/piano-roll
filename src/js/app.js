@@ -1,17 +1,30 @@
-import Oscillator from './objects/Oscillator';
+window.Vue = require('Vue');
 
-var l = new Oscillator;
+// Sidebar components
+Vue.component('Sidebar',require('./Components/Sidebar/Sidebar.vue'));
+Vue.component('Controls',require('./Components/Sidebar/Controls.vue'));
+Vue.component('Rack',require('./Components/Sidebar/Rack.vue'));
+Vue.component('Oscillator',require('./Components/Sidebar/Oscillator.vue'));
 
-console.log('test');
-console.log(l);
+Vue.component('PianoKeys',require('./Components/PianoKeys.vue'));
 
-/*
-    APP NOTES & PLANNING
-
-    init file sets the things up
-
+// Piano roll components
+Vue.component('Roll',require('./Components/Main/Roll.vue'));
+Vue.component('PitchRow',require('./Components/Main/PitchRow.vue'));
+Vue.component('Note',require('./Components/Main/Note.vue'));
 
 
-    mouse wheel to change note length?
+const app = new Vue({
+    el: '#app',
 
-*/
+    template: `
+        <div id="app">
+            <Sidebar></Sidebar>
+            <PianoKeys></PianoKeys>
+            <Roll></Roll>
+        </div>
+    `,
+    data() {},
+
+    mounted() {}
+});
