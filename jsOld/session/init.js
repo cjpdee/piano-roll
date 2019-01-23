@@ -2,30 +2,30 @@ import store from './store';
 import Oscillator from '../objects/Oscillator';
 
 
-var audioContext;
 var audioCtx;
+var audioContext;
 function initAudioContext() {
-    audioContext = window.AudioContext || window.webkitAudioContext;
-    audioCtx = new AudioContext;
+	audioCtx = window.AudioContext || window.webkitAudioContext;
+	audioContext = new audioCtx;
 }
 
 
 function initEventListeners() {
 
-    document.addEventListener('click',function() {
-        if (!audioContext) {
-            initAudioContext();
-        }
-    })
+	document.addEventListener('click',function() {
+		if (!audioContext) {
+			initAudioContext();
+		}
+	})
 
-    const $newOscillatorBtn = document.querySelector("[data-js-project=new-oscillator]");
+	const $newOscillatorBtn = document.querySelector("[data-js-project=new-oscillator]");
 
-    $newOscillatorBtn.addEventListener('click',function() {
-        let newOsc = new Oscillator;
-        console.log(newOsc);
+	$newOscillatorBtn.addEventListener('click',function() {
+		let newOsc = new Oscillator;
+		console.log(newOsc);
 
-        store.addOscillator(newOsc)
-    })
+		store.addOscillator(newOsc)
+	})
 }
 
 

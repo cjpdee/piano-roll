@@ -24,22 +24,28 @@ $sidebarPadding : 10;
 
 .rack {
     background-color: skyblue;
+    padding: em(10);
 
-    & h1 {
+    &__heading {
         display: block;
         text-align: center;
         margin: 0;
-        padding: em(10);
+        padding: 0;
 
         font-size: em(22);
     }
 
-    & * {
-        margin-bottom: em(10);
-        &:last-child {
-            margin-bottom: 0;
-        }
+    &__button {
+        @extend %button;
+        padding: em(5);
     }
+
+    // & * {
+    //     margin-bottom: em(10);
+    //     &:last-child {
+    //         margin-bottom: 0;
+    //     }
+    // }
 }
 
 .oscillator {

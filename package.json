@@ -5,18 +5,21 @@
   "main": "index.html",
   "dependencies": {
     "vue": "^2.5.21",
-    "webpack": "^4.27.1",
-    "webpack-cli": "^3.1.2"
+    "vuex": "^3.1.0"
   },
   "devDependencies": {
     "browser-sync": "^2.24.5",
     "browser-sync-webpack-plugin": "^2.2.2",
     "cross-env": "^5.2.0",
+    "eslint": "^5.12.1",
+    "eslint-config-google": "^0.11.0",
     "laravel-mix": "^4.0.6",
     "resolve-url-loader": "2.3.1",
     "sass": "^1.15.2",
     "sass-loader": "7.*",
-    "vue-template-compiler": "^2.5.21"
+    "vue-template-compiler": "^2.5.21",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2"
   },
   "scripts": {
     "dev": "npm run development",
@@ -31,12 +34,6 @@
     "type": "git",
     "url": "git+https://github.com/cjpdee/piano-roll.git"
   },
-  "keywords": [
-    "piano",
-    "roll",
-    "js",
-    "amaze"
-  ],
   "author": "cjpdee",
   "license": "UNLICENSED",
   "bugs": {

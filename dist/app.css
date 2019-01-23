@@ -1,1 +1,223 @@
-*{margin:0;padding:0;font-family:monospace}*,button:after,button:before{box-sizing:border-box}body{display:flex;width:100%;height:100vh}.piano__key{display:block;width:100%;height:4.16667vh;border:none}.piano{width:3.3333333333em;height:100%}.piano__key{background-color:#fff}.piano__key[data-key*="#"]{background-color:#000}.piano-roll{position:relative;width:100%;height:100%;background-color:#999}.row{position:absolute;height:4.16667vh;width:100%;background-color:#649fb1}.row[data-note*="#"]{background-color:#5a91a1}.row-0{top:0}.row-1{top:4.1666625%}.row-2{top:8.333325%}.row-3{top:12.4999875%}.row-4{top:16.66665%}.row-5{top:20.8333125%}.row-6{top:24.999975%}.row-7{top:29.1666375%}.row-8{top:33.3333%}.row-9{top:37.4999625%}.row-10{top:41.666625%}.row-11{top:45.8332875%}.row-12{top:49.99995%}.row-13{top:54.1666125%}.row-14{top:58.333275%}.row-15{top:62.4999375%}.row-16{top:66.6666%}.row-17{top:70.8332625%}.row-18{top:74.999925%}.row-19{top:79.1665875%}.row-20{top:83.33325%}.row-21{top:87.4999125%}.row-22{top:91.666575%}.row-23{top:95.8332375%}.sidebar{flex:0 0 15.5555555556em;padding:.5555555556em;background-color:grey}.sidebar *{margin-bottom:.5555555556em}.sidebar :last-child{margin-bottom:0}.project-setup{padding:.5555555556em;border:.1111111111em solid #a9a9a9}.rack{background-color:#87ceeb}.rack h1{display:block;text-align:center;margin:0;padding:.5555555556em;font-size:1.2222222222em}.rack *{margin-bottom:.5555555556em}.rack :last-child{margin-bottom:0}.oscillator{border-top:.1111111111em solid grey;padding:.5555555556em}.oscillator h2{display:inline-block;font-size:1em}.oscillator__select{display:inline-block;margin-left:auto}.oscillator__property-wrap{display:flex;flex-direction:row}.oscillator__property{display:block;flex:0 0 80%}.oscillator__property-label{display:block;flex:0 0 20%}
+* {
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+}
+
+*,
+button:after,
+button:before {
+  box-sizing: border-box;
+}
+
+#app {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+.rack__button {
+  display: inline-block;
+  margin: 0;
+}
+
+.piano__key {
+  display: block;
+  width: 100%;
+  height: calc(100vh / 24);
+  border: none;
+}
+
+.piano {
+  width: 3.3333333333em;
+  height: 100%;
+}
+
+.piano__key {
+  background-color: white;
+}
+
+.piano__key[data-key*="#"] {
+  background-color: black;
+}
+
+.piano-roll {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #999999;
+}
+
+.row {
+  position: absolute;
+  height: calc(100vh / 24);
+  width: 100%;
+  background-color: #649fb1;
+}
+
+.row[data-note*="#"] {
+  background-color: #5a91a1;
+}
+
+.row-0 {
+  top: 0%;
+}
+
+.row-1 {
+  top: 4.1666625%;
+}
+
+.row-2 {
+  top: 8.333325%;
+}
+
+.row-3 {
+  top: 12.4999875%;
+}
+
+.row-4 {
+  top: 16.66665%;
+}
+
+.row-5 {
+  top: 20.8333125%;
+}
+
+.row-6 {
+  top: 24.999975%;
+}
+
+.row-7 {
+  top: 29.1666375%;
+}
+
+.row-8 {
+  top: 33.3333%;
+}
+
+.row-9 {
+  top: 37.4999625%;
+}
+
+.row-10 {
+  top: 41.666625%;
+}
+
+.row-11 {
+  top: 45.8332875%;
+}
+
+.row-12 {
+  top: 49.99995%;
+}
+
+.row-13 {
+  top: 54.1666125%;
+}
+
+.row-14 {
+  top: 58.333275%;
+}
+
+.row-15 {
+  top: 62.4999375%;
+}
+
+.row-16 {
+  top: 66.6666%;
+}
+
+.row-17 {
+  top: 70.8332625%;
+}
+
+.row-18 {
+  top: 74.999925%;
+}
+
+.row-19 {
+  top: 79.1665875%;
+}
+
+.row-20 {
+  top: 83.33325%;
+}
+
+.row-21 {
+  top: 87.4999125%;
+}
+
+.row-22 {
+  top: 91.666575%;
+}
+
+.row-23 {
+  top: 95.8332375%;
+}
+
+.sidebar {
+  flex: 0 0 15.5555555556em;
+  padding: 0.5555555556em;
+  background-color: grey;
+}
+
+.sidebar * {
+  margin-bottom: 0.5555555556em;
+}
+
+.sidebar *:last-child {
+  margin-bottom: 0;
+}
+
+.project-setup {
+  padding: 0.5555555556em;
+  border: 0.1111111111em solid darkgrey;
+}
+
+.rack {
+  background-color: skyblue;
+  padding: 0.5555555556em;
+}
+
+.rack__heading {
+  display: block;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  font-size: 1.2222222222em;
+}
+
+.rack__button {
+  padding: 0.2777777778em;
+}
+
+.oscillator {
+  border-top: 0.1111111111em solid grey;
+  padding: 0.5555555556em;
+}
+
+.oscillator h2 {
+  display: inline-block;
+  font-size: 1em;
+}
+
+.oscillator__select {
+  display: inline-block;
+  margin-left: auto;
+}
+
+.oscillator__property-wrap {
+  display: flex;
+  flex-direction: row;
+}
+
+.oscillator__property {
+  display: block;
+  flex: 0 0 80%;
+}
+
+.oscillator__property-label {
+  display: block;
+  flex: 0 0 20%;
+}
+

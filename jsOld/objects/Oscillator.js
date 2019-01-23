@@ -7,61 +7,61 @@ console.log(Vue);
 
 
 Vue.component('Oscillator',{
-    props: {
-        isPlaying : false,
-    },
-    data() {
-        return {
-            volume : 80,
-            waveform : sine,
-            lowpass : false,
-            lpA : 0,
-            lpD : 0,
-            resonance : 0
-        }
-    },
-    template: `
-        <div class="oscillator">
-            <h2>Osc 1</h2>
-            <select class="oscillator__select">
-                <option value="sine/sqr">sine</option>
-                <option value="sine/saw">square</option>
-                <option value="sine/saw">saw</option>
-            </select>
-            <select name="octave" id="octave">
-                <option value="A3">A3</option>
-                <option value="A4">A4</option>
-            </select>
-            <span class="oscillator__property-wrap">
-                <label class="oscillator__property-label" for="volume">Vol</label>
-                <input class="oscillator__property" type="range" id="volume" />
-            </span>
-            <span class="oscillator__property-wrap">
-                <label class="oscillator__property-label" for="lowpass">LP</label>
-                <input class="oscillator__property" type="range" id="lowpass" />
-            </span>
-            <ul>
-                <li class="oscillator__property-wrap">
-                    <label class="oscillator__property-label" for="lowpass-attack">Att</label>
-                    <input class="oscillator__property" type="range" id="lowpass-attack" />
-                </li>
-                <li class="oscillator__property-wrap">
-                    <label class="oscillator__property-label" for="lowpass-decay">Dec</label>
-                    <input class="oscillator__property" type="range" id="lowpass-decay" />
-                </li>
-            </ul>
-            <span class="oscillator__property-wrap">
-                <label class="oscillator__property-label" for="resonance">Res</label>
-                <input class="oscillator__property" type="range" id="resonance" />
-            </span>
-        </div>
-    `,
-    created() {
-        // initialise the oscillator
-    },
-    methods: {
+	props: {
+		isPlaying : false,
+	},
+	data() {
+		return {
+			volume : 80,
+			waveform : "sine",
+			lowpass : false,
+			lpA : 0,
+			lpD : 0,
+			resonance : 0
+		};
+	},
+	template: `
+		<div class="oscillator">
+			<h2>Osc 1</h2>
+			<select class="oscillator__select">
+				<option value="sine/sqr">sine</option>
+				<option value="sine/saw">square</option>
+				<option value="sine/saw">saw</option>
+			</select>
+			<select name="octave" id="octave">
+				<option value="A3">A3</option>
+				<option value="A4">A4</option>
+			</select>
+			<span class="oscillator__property-wrap">
+				<label class="oscillator__property-label" for="volume">Vol</label>
+				<input class="oscillator__property" type="range" id="volume" />
+			</span>
+			<span class="oscillator__property-wrap">
+				<label class="oscillator__property-label" for="lowpass">LP</label>
+				<input class="oscillator__property" type="range" id="lowpass" />
+			</span>
+			<ul>
+				<li class="oscillator__property-wrap">
+					<label class="oscillator__property-label" for="lowpass-attack">Att</label>
+					<input class="oscillator__property" type="range" id="lowpass-attack" />
+				</li>
+				<li class="oscillator__property-wrap">
+					<label class="oscillator__property-label" for="lowpass-decay">Dec</label>
+					<input class="oscillator__property" type="range" id="lowpass-decay" />
+				</li>
+			</ul>
+			<span class="oscillator__property-wrap">
+				<label class="oscillator__property-label" for="resonance">Res</label>
+				<input class="oscillator__property" type="range" id="resonance" />
+			</span>
+		</div>
+	`,
+	created() {
+		// initialise the oscillator
+	},
+	methods: {
 
-    }
+	}
 })
 
 // class Oscillator extends React.Component {

@@ -1,5 +1,23 @@
+<template>
 
+	<div  class="row row-2" data-note="A5"></div>
 
-props {
-    note: 'G420'
+</template>
+
+<script>
+
+export default {
+	props: [],
+
+	methods : {
+		addNote(oscillator,pitch) {
+
+		},
+
+		removeNote(oscillator,pitch) {
+
+		}
+	}
 }
+
+</script>

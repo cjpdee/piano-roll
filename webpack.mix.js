@@ -15,7 +15,7 @@ const glob = require('glob');
 const js = glob.sync(`src/js/[^_]*.js`);
 const scss = glob.sync(`src/scss/[^_]*.scss`);
 
-mix.js(`src/js/app.js`, `dist/app.js`).sass(`src/scss/app.scss`, `dist/app.css`);
+mix.js(`src/js/main.js`, `dist/app.js`).sass(`src/scss/app.scss`, `dist/app.css`);
 
 mix.copy(`src/index.html`, `dist/index.html`);
 
