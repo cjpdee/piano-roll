@@ -13,6 +13,21 @@ class Oscillator {
 		}
 	}
 
+	static noteFrequency(note) {
+		let key    = note.slice(0,note.length-1);
+		let octave = note.slice(-1);
+		console.log(key,octave);
+
+		// The algorithm to get the frequency of a note
+		// from its key number (A0 - C8)
+		// can adjust the tuning - 440 is A4 tuning
+		// 2 to n-49 powers - for 49 keys
+		// divided by 12 notes per octave
+		let n = 1;
+		let freq = 440*Math.pow(2,(n-49 / 12));
+		console.log('frequency',freq);
+	}
+
 	constructor(){
 		this.id = Oscillator.generateId();
 		this.volume = {
@@ -33,11 +48,11 @@ class Oscillator {
 			decay:     0,
 			resonance: 0
 		};
-		this.oscillatorNode = store.state.audioContext.createOscillator();
-		this.oscillatorNode.type = this.waveform;
-		this.oscillatorNode.frequency.setValueAtTime(261.63, store.state.audioContext.currentTime); // value in hertz
-		this.oscillatorNode.connect(store.state.audioContext.destination);
-		this.oscillatorNode.start();
+		// this.oscillatorNode = store.state.audioContext.createOscillator();
+		// this.oscillatorNode.type = this.waveform;
+		// this.oscillatorNode.connect(store.state.audioContext.destination);
+
+		Oscillator.noteFrequency("C#2");
 	}
 }
 
@@ -50,11 +65,12 @@ const store = new Vuex.Store({
 		oscillators: [
 			
 		],
+		activeOscillator: null,
 
 		data : {
 			notes:   ["C" ,"C#","D" ,"E" ,"E#","F" ,"F#","G" ,"G#","A" ,"A#","B"],
 			pitches: [],
-			waveforms: ["sine","square","saw"]
+			waveforms: ["sine","square","sawtooth","triangle"]
 		},
 		audioContext: null
 	},
@@ -98,6 +114,12 @@ const store = new Vuex.Store({
 			Oscillator Mutations
 		*/
 
+		waveform(state,payload) {
+			let oscIndex = this.state.oscillators.findIndex(oscillator => oscillator.id == payload.oscillator_id);
+			let osc = this.state.oscillators[oscIndex];
+			osc.waveform = payload.waveform;
+		},
+
 		volume(state,payload) {
 			let oscIndex = this.state.oscillators.findIndex(oscillator => oscillator.id == payload.oscillator_id);
 			let property = this.state.oscillators[oscIndex].volume;
@@ -139,31 +161,6 @@ const store = new Vuex.Store({
 				break;
 			}
 		},
-
-		// lowpass(state,payload) {
-		// 	let oscIndex = this.state.oscillators.findIndex(oscillator => oscillator.id == payload.oscillator_id);
-		// 	let property = this.state.oscillators[oscIndex].lowpass;
-			
-		// },
-
-		// highpass(state,payload) {
-		// 	let oscIndex = this.state.oscillators.findIndex(oscillator => oscillator.id == payload.oscillator_id);
-		// 	let property = this.state.oscillators[oscIndex].lowpass;
-		// 	switch (payload.property) {
-		// 	case "cutoff":
-		// 		property.cutoff = payload.value;
-		// 		break;
-		// 	case "attack":
-		// 		property.attack = payload.value;
-		// 		break;
-		// 	case "decay":
-		// 		property.decay = payload.value;
-		// 		break;
-		// 	case "resonance":
-		// 		property.resonance = payload.value;
-		// 		break;
-		// 	}
-		// },
 	},
 });
 
@@ -174,11 +171,12 @@ export default store;
 
 Todo:
 
-- create an id-generating helper function using Math.random, possibly some numbers=letters thing
-- give store loads of mutations, that are flexible (can specify which properties for which filter etc
-
-
 - on oscillator - if user clicks osc name + id, allow to give the osc a name
+- allow user to select active oscillator
+- link up PianoKeys to the oscillators
 
+In piano roll:
+- 'onion skin' effect for scales
+- the scale + key will be controlled from the Controls component
 
 */
