@@ -1,8 +1,0 @@
-/node_modules/*
-.gitignore
-.eslintrc.json
-package-lock.json
-mix-mainifest.json
-yarn.lock
-/dist/*
-/jsOld/*
