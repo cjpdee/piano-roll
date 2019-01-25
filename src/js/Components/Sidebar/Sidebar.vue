@@ -1,8 +1,8 @@
 <template>
-<div class="sidebar">
-	<Controls></Controls>
-	<Rack></Rack>
-</div>
+	<div class="sidebar">
+		<Controls></Controls>
+		<Rack></Rack>
+	</div>
 </template>
 
 <script>
@@ -24,7 +24,3 @@ export default {
 }
 
 </script>
-
-<style>
-
-</style>

@@ -161,11 +161,11 @@ button:before {
   background-color: grey;
 }
 
-.sidebar * {
+.sidebar > * {
   margin-bottom: 0.5555555556em;
 }
 
-.sidebar *:last-child {
+.sidebar > *:last-child {
   margin-bottom: 0;
 }
 
@@ -189,6 +189,7 @@ button:before {
 
 .rack__button {
   padding: 0.2777777778em;
+  margin-bottom: 0.5555555556em;
 }
 
 .oscillator {
@@ -199,6 +200,12 @@ button:before {
 .oscillator h2 {
   display: inline-block;
   font-size: 1em;
+  margin-bottom: 0.5555555556em;
+}
+
+.oscillator__setup-wrap {
+  margin-left: -0.2777777778em;
+  margin-bottom: 0.5555555556em;
 }
 
 .oscillator__select {
@@ -207,17 +214,40 @@ button:before {
 }
 
 .oscillator__property-wrap {
-  display: flex;
-  flex-direction: row;
+  position: relative;
+  display: block;
 }
 
 .oscillator__property {
-  display: block;
-  flex: 0 0 80%;
+  display: inline-block;
+  width: 75%;
+  vertical-align: middle;
 }
 
 .oscillator__property-label {
+  display: inline-block;
+  width: 20%;
+  vertical-align: center;
+  vertical-align: middle;
+}
+
+.oscillator__property__dropdown-toggle {
+  position: absolute;
+  top: 0;
+  left: 0;
   display: block;
-  flex: 0 0 20%;
+  width: 20%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.oscillator__property__dropdown {
+  display: none;
+  background-color: #77bcd8;
+}
+
+.oscillator__property__dropdown-toggle:checked + .oscillator__property__dropdown {
+  display: block;
 }
 

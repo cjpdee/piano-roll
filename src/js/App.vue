@@ -1,11 +1,9 @@
 <template>
-
-<div id="app">
-	<Sidebar></Sidebar>
-	<PianoKeys></PianoKeys>
-	<Roll></Roll>
-</div>
-
+	<div id="app">
+		<Sidebar></Sidebar>
+		<PianoKeys></PianoKeys>
+		<Roll></Roll>
+	</div>
 </template>
 
 <script>
@@ -37,7 +35,7 @@ export default {
 		PianoKeys,
 		Roll
 	},
-
+	store,
 	data() {
 		return store.state
 	},

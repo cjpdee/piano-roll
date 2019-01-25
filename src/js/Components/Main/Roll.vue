@@ -1,5 +1,4 @@
 <template>
-
 	<div class="piano-roll">
 		<!-- 
 			absolute positioned grid system

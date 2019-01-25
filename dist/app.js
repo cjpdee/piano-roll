@@ -115,8 +115,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
  // Sidebar components
@@ -137,6 +135,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     PianoKeys: _Components_PianoKeys_vue__WEBPACK_IMPORTED_MODULE_7__["default"],
     Roll: _Components_Main_Roll_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
   },
+  store: _store_store__WEBPACK_IMPORTED_MODULE_2__["default"],
   data: function data() {
     return _store_store__WEBPACK_IMPORTED_MODULE_2__["default"].state;
   },
@@ -247,7 +246,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Roll",
@@ -298,8 +296,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /***/ }),
 
@@ -312,7 +308,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../store/store */ "./src/js/store/store.js");
 //
 //
 //
@@ -325,15 +320,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Controls',
   computed: {
     bpm: function bpm() {
       console.log(this);
-      return _store_store__WEBPACK_IMPORTED_MODULE_0__["default"].state.project.bpm;
+      return this.$store.state.project.bpm;
+    }
+  },
+  methods: {
+    startAudioContext: function startAudioContext() {
+      this.$store.state.audioContext.resume();
     }
   }
 });
@@ -386,45 +383,250 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Oscillator",
   props: {
-    oscillator: {
-      type: Object,
-      id: {
-        type: Number
-      },
-      amplitude: {
-        amount: {
-          type: Number
-        },
-        attack: {
-          type: Number
-        },
-        decay: {
-          type: Number
-        }
-      },
-      waveform: {
-        type: String
-      },
-      lowpass: {
-        amount: {
-          type: Number
-        },
-        attack: {
-          type: Number
-        },
-        decay: {
-          type: Number
-        },
-        resonance: {
-          type: Number
-        }
-      }
+    id: {
+      type: String,
+      required: true
     }
   },
-  methods: {}
+  computed: {
+    /*
+    	Volume
+    */
+    volume_amplitude: {
+      get: function get() {
+        var _this = this;
+
+        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
+          return oscillator.id == _this.id;
+        });
+        return this.$store.state.oscillators[index].volume.amplitude;
+      },
+      set: function set(value) {
+        this.$store.commit('volume', {
+          property: 'amplitude',
+          value: parseInt(value),
+          oscillator_id: this.id
+        });
+      }
+    },
+    volume_attack: {
+      get: function get() {
+        var _this2 = this;
+
+        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
+          return oscillator.id == _this2.id;
+        });
+        return this.$store.state.oscillators[index].volume.attack;
+      },
+      set: function set(value) {
+        this.$store.commit('volume', {
+          property: 'attack',
+          value: parseInt(value),
+          oscillator_id: this.id
+        });
+      }
+    },
+    volume_decay: {
+      get: function get() {
+        var _this3 = this;
+
+        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
+          return oscillator.id == _this3.id;
+        });
+        return this.$store.state.oscillators[index].volume.decay;
+      },
+      set: function set(value) {
+        this.$store.commit('volume', {
+          property: 'decay',
+          value: parseInt(value),
+          oscillator_id: this.id
+        });
+      }
+    },
+
+    /*
+    	Lowpass
+    */
+    lowpass_cutoff: {
+      get: function get() {
+        var _this4 = this;
+
+        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
+          return oscillator.id == _this4.id;
+        });
+        return this.$store.state.oscillators[index].lowpass.cutoff;
+      },
+      set: function set(value) {
+        this.$store.commit('lpHpFilter', {
+          filter: "lowpass",
+          property: 'cutoff',
+          value: parseInt(value),
+          oscillator_id: this.id
+        });
+      }
+    },
+    lowpass_attack: {
+      get: function get() {
+        var _this5 = this;
+
+        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
+          return oscillator.id == _this5.id;
+        });
+        return this.$store.state.oscillators[index].lowpass.attack;
+      },
+      set: function set(value) {
+        this.$store.commit('lpHpFilter', {
+          filter: "lowpass",
+          property: 'attack',
+          value: parseInt(value),
+          oscillator_id: this.id
+        });
+      }
+    },
+    lowpass_decay: {
+      get: function get() {
+        var _this6 = this;
+
+        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
+          return oscillator.id == _this6.id;
+        });
+        return this.$store.state.oscillators[index].lowpass.decay;
+      },
+      set: function set(value) {
+        this.$store.commit('lpHpFilter', {
+          filter: "lowpass",
+          property: 'decay',
+          value: parseInt(value),
+          oscillator_id: this.id
+        });
+      }
+    },
+    lowpass_resonance: {
+      get: function get() {
+        var _this7 = this;
+
+        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
+          return oscillator.id == _this7.id;
+        });
+        return this.$store.state.oscillators[index].lowpass.resonance;
+      },
+      set: function set(value) {
+        this.$store.commit('lpHpFilter', {
+          filter: "lowpass",
+          property: 'resonance',
+          value: parseInt(value),
+          oscillator_id: this.id
+        });
+      }
+    },
+
+    /*
+    	Highpass - passing 'null' as the filter
+    */
+    highpass_cutoff: {
+      get: function get() {
+        var _this8 = this;
+
+        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
+          return oscillator.id == _this8.id;
+        });
+        return this.$store.state.oscillators[index].highpass.cutoff;
+      },
+      set: function set(value) {
+        this.$store.commit('lpHpFilter', {
+          filter: null,
+          property: 'cutoff',
+          value: parseInt(value),
+          oscillator_id: this.id
+        });
+      }
+    },
+    highpass_attack: {
+      get: function get() {
+        var _this9 = this;
+
+        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
+          return oscillator.id == _this9.id;
+        });
+        return this.$store.state.oscillators[index].highpass.attack;
+      },
+      set: function set(value) {
+        this.$store.commit('lpHpFilter', {
+          filter: null,
+          property: 'attack',
+          value: parseInt(value),
+          oscillator_id: this.id
+        });
+      }
+    },
+    highpass_decay: {
+      get: function get() {
+        var _this10 = this;
+
+        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
+          return oscillator.id == _this10.id;
+        });
+        return this.$store.state.oscillators[index].highpass.decay;
+      },
+      set: function set(value) {
+        this.$store.commit('lpHpFilter', {
+          filter: null,
+          property: 'decay',
+          value: parseInt(value),
+          oscillator_id: this.id
+        });
+      }
+    },
+    highpass_resonance: {
+      get: function get() {
+        var _this11 = this;
+
+        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
+          return oscillator.id == _this11.id;
+        });
+        return this.$store.state.oscillators[index].highpass.resonance;
+      },
+      set: function set(value) {
+        this.$store.commit('lpHpFilter', {
+          filter: null,
+          property: 'resonance',
+          value: parseInt(value),
+          oscillator_id: this.id
+        });
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -438,8 +640,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _store_store_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../store/store.js */ "./src/js/store/store.js");
-/* harmony import */ var _Oscillator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Oscillator */ "./src/js/Components/Sidebar/Oscillator.vue");
+/* harmony import */ var _Oscillator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Oscillator */ "./src/js/Components/Sidebar/Oscillator.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 //
 //
 //
@@ -453,13 +655,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Rack",
   components: {
-    Oscillator: _Oscillator__WEBPACK_IMPORTED_MODULE_1__["default"]
+    Oscillator: _Oscillator__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   props: {},
-  computed: {
-    oscillators: function oscillators() {
-      return _store_store_js__WEBPACK_IMPORTED_MODULE_0__["default"].state.oscillators;
-      console.log(_store_store_js__WEBPACK_IMPORTED_MODULE_0__["default"].state.oscillators);
+  computed: Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])(['oscillators']),
+  methods: {
+    createOscillator: function createOscillator() {
+      this.$store.commit('addOscillator');
     }
   }
 });
@@ -495,112 +697,6 @@ __webpack_require__.r(__webpack_exports__);
   props: [],
   methods: {}
 });
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/Sidebar.vue?vue&type=style&index=0&lang=css&":
-/*!***************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./src/js/Components/Sidebar/Sidebar.vue?vue&type=style&index=0&lang=css& ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/lib/css-base.js":
-/*!*************************************************!*\
-  !*** ./node_modules/css-loader/lib/css-base.js ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
 
 /***/ }),
 
@@ -997,545 +1093,6 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/Sidebar.vue?vue&type=style&index=0&lang=css&":
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./src/js/Components/Sidebar/Sidebar.vue?vue&type=style&index=0&lang=css& ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Sidebar.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/Sidebar.vue?vue&type=style&index=0&lang=css&");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
-/***/ "./node_modules/style-loader/lib/addStyles.js":
-/*!****************************************************!*\
-  !*** ./node_modules/style-loader/lib/addStyles.js ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-
-var stylesInDom = {};
-
-var	memoize = function (fn) {
-	var memo;
-
-	return function () {
-		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-		return memo;
-	};
-};
-
-var isOldIE = memoize(function () {
-	// Test for IE <= 9 as proposed by Browserhacks
-	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-	// Tests for existence of standard globals is to allow style-loader
-	// to operate correctly into non-standard environments
-	// @see https://github.com/webpack-contrib/style-loader/issues/177
-	return window && document && document.all && !window.atob;
-});
-
-var getTarget = function (target, parent) {
-  if (parent){
-    return parent.querySelector(target);
-  }
-  return document.querySelector(target);
-};
-
-var getElement = (function (fn) {
-	var memo = {};
-
-	return function(target, parent) {
-                // If passing function in options, then use it for resolve "head" element.
-                // Useful for Shadow Root style i.e
-                // {
-                //   insertInto: function () { return document.querySelector("#foo").shadowRoot }
-                // }
-                if (typeof target === 'function') {
-                        return target();
-                }
-                if (typeof memo[target] === "undefined") {
-			var styleTarget = getTarget.call(this, target, parent);
-			// Special case to return head of iframe instead of iframe itself
-			if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
-				try {
-					// This will throw an exception if access to iframe is blocked
-					// due to cross-origin restrictions
-					styleTarget = styleTarget.contentDocument.head;
-				} catch(e) {
-					styleTarget = null;
-				}
-			}
-			memo[target] = styleTarget;
-		}
-		return memo[target]
-	};
-})();
-
-var singleton = null;
-var	singletonCounter = 0;
-var	stylesInsertedAtTop = [];
-
-var	fixUrls = __webpack_require__(/*! ./urls */ "./node_modules/style-loader/lib/urls.js");
-
-module.exports = function(list, options) {
-	if (typeof DEBUG !== "undefined" && DEBUG) {
-		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-
-	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
-
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
-
-	// By default, add <style> tags to the <head> element
-        if (!options.insertInto) options.insertInto = "head";
-
-	// By default, add <style> tags to the bottom of the target
-	if (!options.insertAt) options.insertAt = "bottom";
-
-	var styles = listToStyles(list, options);
-
-	addStylesToDom(styles, options);
-
-	return function update (newList) {
-		var mayRemove = [];
-
-		for (var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-
-		if(newList) {
-			var newStyles = listToStyles(newList, options);
-			addStylesToDom(newStyles, options);
-		}
-
-		for (var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-
-			if(domStyle.refs === 0) {
-				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
-
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-};
-
-function addStylesToDom (styles, options) {
-	for (var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-
-		if(domStyle) {
-			domStyle.refs++;
-
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles (list, options) {
-	var styles = [];
-	var newStyles = {};
-
-	for (var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = options.base ? item[0] + options.base : item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-
-		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
-		else newStyles[id].parts.push(part);
-	}
-
-	return styles;
-}
-
-function insertStyleElement (options, style) {
-	var target = getElement(options.insertInto)
-
-	if (!target) {
-		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-	}
-
-	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
-
-	if (options.insertAt === "top") {
-		if (!lastStyleElementInsertedAtTop) {
-			target.insertBefore(style, target.firstChild);
-		} else if (lastStyleElementInsertedAtTop.nextSibling) {
-			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			target.appendChild(style);
-		}
-		stylesInsertedAtTop.push(style);
-	} else if (options.insertAt === "bottom") {
-		target.appendChild(style);
-	} else if (typeof options.insertAt === "object" && options.insertAt.before) {
-		var nextSibling = getElement(options.insertAt.before, target);
-		target.insertBefore(style, nextSibling);
-	} else {
-		throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
-	}
-}
-
-function removeStyleElement (style) {
-	if (style.parentNode === null) return false;
-	style.parentNode.removeChild(style);
-
-	var idx = stylesInsertedAtTop.indexOf(style);
-	if(idx >= 0) {
-		stylesInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement (options) {
-	var style = document.createElement("style");
-
-	if(options.attrs.type === undefined) {
-		options.attrs.type = "text/css";
-	}
-
-	if(options.attrs.nonce === undefined) {
-		var nonce = getNonce();
-		if (nonce) {
-			options.attrs.nonce = nonce;
-		}
-	}
-
-	addAttrs(style, options.attrs);
-	insertStyleElement(options, style);
-
-	return style;
-}
-
-function createLinkElement (options) {
-	var link = document.createElement("link");
-
-	if(options.attrs.type === undefined) {
-		options.attrs.type = "text/css";
-	}
-	options.attrs.rel = "stylesheet";
-
-	addAttrs(link, options.attrs);
-	insertStyleElement(options, link);
-
-	return link;
-}
-
-function addAttrs (el, attrs) {
-	Object.keys(attrs).forEach(function (key) {
-		el.setAttribute(key, attrs[key]);
-	});
-}
-
-function getNonce() {
-	if (false) {}
-
-	return __webpack_require__.nc;
-}
-
-function addStyle (obj, options) {
-	var style, update, remove, result;
-
-	// If a transform function was defined, run it on the css
-	if (options.transform && obj.css) {
-	    result = typeof options.transform === 'function'
-		 ? options.transform(obj.css) 
-		 : options.transform.default(obj.css);
-
-	    if (result) {
-	    	// If transform returns a value, use that instead of the original css.
-	    	// This allows running runtime transformations on the css.
-	    	obj.css = result;
-	    } else {
-	    	// If the transform function returns a falsy value, don't add this css.
-	    	// This allows conditional loading of css
-	    	return function() {
-	    		// noop
-	    	};
-	    }
-	}
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-
-		style = singleton || (singleton = createStyleElement(options));
-
-		update = applyToSingletonTag.bind(null, style, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-
-	} else if (
-		obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function"
-	) {
-		style = createLinkElement(options);
-		update = updateLink.bind(null, style, options);
-		remove = function () {
-			removeStyleElement(style);
-
-			if(style.href) URL.revokeObjectURL(style.href);
-		};
-	} else {
-		style = createStyleElement(options);
-		update = applyToTag.bind(null, style);
-		remove = function () {
-			removeStyleElement(style);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle (newObj) {
-		if (newObj) {
-			if (
-				newObj.css === obj.css &&
-				newObj.media === obj.media &&
-				newObj.sourceMap === obj.sourceMap
-			) {
-				return;
-			}
-
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag (style, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (style.styleSheet) {
-		style.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = style.childNodes;
-
-		if (childNodes[index]) style.removeChild(childNodes[index]);
-
-		if (childNodes.length) {
-			style.insertBefore(cssNode, childNodes[index]);
-		} else {
-			style.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag (style, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		style.setAttribute("media", media)
-	}
-
-	if(style.styleSheet) {
-		style.styleSheet.cssText = css;
-	} else {
-		while(style.firstChild) {
-			style.removeChild(style.firstChild);
-		}
-
-		style.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink (link, options, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	/*
-		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
-		and there is no publicPath defined then lets turn convertToAbsoluteUrls
-		on by default.  Otherwise default to the convertToAbsoluteUrls option
-		directly
-	*/
-	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
-
-	if (options.convertToAbsoluteUrls || autoFixUrls) {
-		css = fixUrls(css);
-	}
-
-	if (sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = link.href;
-
-	link.href = URL.createObjectURL(blob);
-
-	if(oldSrc) URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/style-loader/lib/urls.js":
-/*!***********************************************!*\
-  !*** ./node_modules/style-loader/lib/urls.js ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
-/**
- * When source maps are enabled, `style-loader` uses a link element with a data-uri to
- * embed the css on the page. This breaks all relative urls because now they are relative to a
- * bundle instead of the current page.
- *
- * One solution is to only use full urls, but that may be impossible.
- *
- * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
- *
- * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
- *
- */
-
-module.exports = function (css) {
-  // get current location
-  var location = typeof window !== "undefined" && window.location;
-
-  if (!location) {
-    throw new Error("fixUrls requires window.location");
-  }
-
-	// blank or null?
-	if (!css || typeof css !== "string") {
-	  return css;
-  }
-
-  var baseUrl = location.protocol + "//" + location.host;
-  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
-
-	// convert each url(...)
-	/*
-	This regular expression is just a way to recursively match brackets within
-	a string.
-
-	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
-	   (  = Start a capturing group
-	     (?:  = Start a non-capturing group
-	         [^)(]  = Match anything that isn't a parentheses
-	         |  = OR
-	         \(  = Match a start parentheses
-	             (?:  = Start another non-capturing groups
-	                 [^)(]+  = Match anything that isn't a parentheses
-	                 |  = OR
-	                 \(  = Match a start parentheses
-	                     [^)(]*  = Match anything that isn't a parentheses
-	                 \)  = Match a end parentheses
-	             )  = End Group
-              *\) = Match anything and then a close parens
-          )  = Close non-capturing group
-          *  = Match anything
-       )  = Close capturing group
-	 \)  = Match a close parens
-
-	 /gi  = Get all matches, not the first.  Be case insensitive.
-	 */
-	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
-		// strip quotes (if they exist)
-		var unquotedOrigUrl = origUrl
-			.trim()
-			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
-			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
-
-		// already a full url? no change
-		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/|\s*$)/i.test(unquotedOrigUrl)) {
-		  return fullMatch;
-		}
-
-		// convert the url to a full url
-		var newUrl;
-
-		if (unquotedOrigUrl.indexOf("//") === 0) {
-		  	//TODO: should we add protocol?
-			newUrl = unquotedOrigUrl;
-		} else if (unquotedOrigUrl.indexOf("/") === 0) {
-			// path should be relative to the base url
-			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
-		} else {
-			// path should be relative to current directory
-			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
-		}
-
-		// send back the fixed url(...)
-		return "url(" + JSON.stringify(newUrl) + ")";
-	});
-
-	// send back the fixed css
-	return fixedCss;
-};
-
-
-/***/ }),
-
 /***/ "./node_modules/timers-browserify/main.js":
 /*!************************************************!*\
   !*** ./node_modules/timers-browserify/main.js ***!
@@ -1843,25 +1400,23 @@ var render = function() {
       [_vm._v("+")]
     ),
     _vm._v(" "),
-    _vm._m(0)
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "project-setup__controls" }, [
-      _c("button", { staticClass: "project-setup__control green" }, [
-        _vm._v("Play")
-      ]),
+    _c("span", { staticClass: "project-setup__controls" }, [
+      _c(
+        "button",
+        {
+          staticClass: "project-setup__control green",
+          on: { click: _vm.startAudioContext }
+        },
+        [_vm._v("Play")]
+      ),
       _vm._v(" "),
       _c("button", { staticClass: "project-setup__control red" }, [
         _vm._v("Stop")
       ])
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -1883,16 +1438,365 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "oscillator" }, [
+    _c("h2", [_vm._v("Osc " + _vm._s(_vm.id))]),
+    _vm._v(" "),
+    _vm._m(0),
+    _vm._v(" "),
+    _c("span", { staticClass: "oscillator__property-wrap" }, [
+      _c(
+        "label",
+        {
+          staticClass: "oscillator__property-label",
+          attrs: { for: "volume_amplitude" }
+        },
+        [_vm._v("Vol")]
+      ),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.volume_amplitude,
+            expression: "volume_amplitude"
+          }
+        ],
+        staticClass: "oscillator__property",
+        attrs: { type: "range", id: "volume_amplitude" },
+        domProps: { value: _vm.volume_amplitude },
+        on: {
+          __r: function($event) {
+            _vm.volume_amplitude = $event.target.value
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "oscillator__property__dropdown-toggle",
+        attrs: {
+          type: "checkbox",
+          name: "volume_properties",
+          id: "volume_properties_toggle"
+        }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "oscillator__property__dropdown" }, [
+        _c(
+          "label",
+          {
+            staticClass: "oscillator__property-label",
+            attrs: { for: "volume_attack" }
+          },
+          [_vm._v("Att")]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.volume_attack,
+              expression: "volume_attack"
+            }
+          ],
+          staticClass: "oscillator__property",
+          attrs: { type: "range", id: "volume_attack" },
+          domProps: { value: _vm.volume_attack },
+          on: {
+            __r: function($event) {
+              _vm.volume_attack = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "label",
+          {
+            staticClass: "oscillator__property-label",
+            attrs: { for: "volume_decay" }
+          },
+          [_vm._v("Dec")]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.volume_decay,
+              expression: "volume_decay"
+            }
+          ],
+          staticClass: "oscillator__property",
+          attrs: { type: "range", id: "volume_decay" },
+          domProps: { value: _vm.volume_decay },
+          on: {
+            __r: function($event) {
+              _vm.volume_decay = $event.target.value
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("span", { staticClass: "oscillator__property-wrap" }, [
+      _c(
+        "label",
+        {
+          staticClass: "oscillator__property-label",
+          attrs: { for: "lowpass_cutoff" }
+        },
+        [_vm._v("LP")]
+      ),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.lowpass_cutoff,
+            expression: "lowpass_cutoff"
+          }
+        ],
+        staticClass: "oscillator__property",
+        attrs: { type: "range", id: "lowpass_cutoff" },
+        domProps: { value: _vm.lowpass_cutoff },
+        on: {
+          __r: function($event) {
+            _vm.lowpass_cutoff = $event.target.value
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "oscillator__property__dropdown-toggle",
+        attrs: {
+          type: "checkbox",
+          name: "volume_properties",
+          id: "volume_properties_toggle"
+        }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "oscillator__property__dropdown" }, [
+        _c(
+          "label",
+          {
+            staticClass: "oscillator__property-label",
+            attrs: { for: "volume_attack" }
+          },
+          [_vm._v("Att")]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.lowpass_attack,
+              expression: "lowpass_attack"
+            }
+          ],
+          staticClass: "oscillator__property",
+          attrs: { type: "range", id: "lowpass_attack" },
+          domProps: { value: _vm.lowpass_attack },
+          on: {
+            __r: function($event) {
+              _vm.lowpass_attack = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "label",
+          {
+            staticClass: "oscillator__property-label",
+            attrs: { for: "volume_decay" }
+          },
+          [_vm._v("Dec")]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.lowpass_decay,
+              expression: "lowpass_decay"
+            }
+          ],
+          staticClass: "oscillator__property",
+          attrs: { type: "range", id: "lowpass_decay" },
+          domProps: { value: _vm.lowpass_decay },
+          on: {
+            __r: function($event) {
+              _vm.lowpass_decay = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "label",
+          {
+            staticClass: "oscillator__property-label",
+            attrs: { for: "lowpass_resonance" }
+          },
+          [_vm._v("Res")]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.lowpass_resonance,
+              expression: "lowpass_resonance"
+            }
+          ],
+          staticClass: "oscillator__property",
+          attrs: { type: "range", id: "lowpass_resonance" },
+          domProps: { value: _vm.lowpass_resonance },
+          on: {
+            __r: function($event) {
+              _vm.lowpass_resonance = $event.target.value
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("span", { staticClass: "oscillator__property-wrap" }, [
+      _c(
+        "label",
+        {
+          staticClass: "oscillator__property-label",
+          attrs: { for: "highpass" }
+        },
+        [_vm._v("HP")]
+      ),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.highpass_cutoff,
+            expression: "highpass_cutoff"
+          }
+        ],
+        staticClass: "oscillator__property",
+        attrs: { type: "range", id: "highpass" },
+        domProps: { value: _vm.highpass_cutoff },
+        on: {
+          __r: function($event) {
+            _vm.highpass_cutoff = $event.target.value
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "oscillator__property__dropdown-toggle",
+        attrs: {
+          type: "checkbox",
+          name: "highpass_properties",
+          id: "highpass_properties_toggle"
+        }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "oscillator__property__dropdown" }, [
+        _c(
+          "label",
+          {
+            staticClass: "oscillator__property-label",
+            attrs: { for: "highpass_attack" }
+          },
+          [_vm._v("Att")]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.highpass_attack,
+              expression: "highpass_attack"
+            }
+          ],
+          staticClass: "oscillator__property",
+          attrs: { type: "range", id: "highpass_attack" },
+          domProps: { value: _vm.highpass_attack },
+          on: {
+            __r: function($event) {
+              _vm.highpass_attack = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "label",
+          {
+            staticClass: "oscillator__property-label",
+            attrs: { for: "volume_decay" }
+          },
+          [_vm._v("Dec")]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.highpass_decay,
+              expression: "highpass_decay"
+            }
+          ],
+          staticClass: "oscillator__property",
+          attrs: { type: "range", id: "highpass_decay" },
+          domProps: { value: _vm.highpass_decay },
+          on: {
+            __r: function($event) {
+              _vm.highpass_decay = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "label",
+          {
+            staticClass: "oscillator__property-label",
+            attrs: { for: "highpass_resonance" }
+          },
+          [_vm._v("Res")]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.highpass_resonance,
+              expression: "highpass_resonance"
+            }
+          ],
+          staticClass: "oscillator__property",
+          attrs: { type: "range", id: "highpass_resonance" },
+          domProps: { value: _vm.highpass_resonance },
+          on: {
+            __r: function($event) {
+              _vm.highpass_resonance = $event.target.value
+            }
+          }
+        })
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "oscillator" }, [
-      _c("h2", [_vm._v("Osc 1")]),
-      _vm._v(" "),
+    return _c("div", { staticClass: "oscillator__setup-wrap" }, [
       _c("select", { staticClass: "oscillator__select" }, [
         _c("option", { attrs: { value: "sine/sqr" } }, [_vm._v("sine")]),
         _vm._v(" "),
@@ -1905,88 +1809,6 @@ var staticRenderFns = [
         _c("option", { attrs: { value: "A3" } }, [_vm._v("A3")]),
         _vm._v(" "),
         _c("option", { attrs: { value: "A4" } }, [_vm._v("A4")])
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "oscillator__property-wrap" }, [
-        _c(
-          "label",
-          {
-            staticClass: "oscillator__property-label",
-            attrs: { for: "volume" }
-          },
-          [_vm._v("Vol")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "oscillator__property",
-          attrs: { type: "range", id: "volume" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "oscillator__property-wrap" }, [
-        _c(
-          "label",
-          {
-            staticClass: "oscillator__property-label",
-            attrs: { for: "lowpass" }
-          },
-          [_vm._v("LP")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "oscillator__property",
-          attrs: { type: "range", id: "lowpass" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("ul", [
-        _c("li", { staticClass: "oscillator__property-wrap" }, [
-          _c(
-            "label",
-            {
-              staticClass: "oscillator__property-label",
-              attrs: { for: "lowpass-attack" }
-            },
-            [_vm._v("Att")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "oscillator__property",
-            attrs: { type: "range", id: "lowpass-attack" }
-          })
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "oscillator__property-wrap" }, [
-          _c(
-            "label",
-            {
-              staticClass: "oscillator__property-label",
-              attrs: { for: "lowpass-decay" }
-            },
-            [_vm._v("Dec")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "oscillator__property",
-            attrs: { type: "range", id: "lowpass-decay" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("span", { staticClass: "oscillator__property-wrap" }, [
-        _c(
-          "label",
-          {
-            staticClass: "oscillator__property-label",
-            attrs: { for: "resonance" }
-          },
-          [_vm._v("Res")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "oscillator__property",
-          attrs: { type: "range", id: "resonance" }
-        })
       ])
     ])
   }
@@ -2018,11 +1840,20 @@ var render = function() {
     [
       _c("h2", { staticClass: "rack__heading" }, [_vm._v("Rack")]),
       _vm._v(" "),
-      _c("button", { staticClass: "rack__button" }, [_vm._v("New Osc")]),
+      _c(
+        "button",
+        { staticClass: "rack__button", on: { click: _vm.createOscillator } },
+        [_vm._v("New Osc")]
+      ),
       _vm._v(" "),
-      _c("Oscillator")
+      _vm._l(_vm.oscillators, function(oscillator) {
+        return _c("Oscillator", {
+          key: oscillator.id,
+          attrs: { id: oscillator.id }
+        })
+      })
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []
@@ -14875,9 +14706,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Sidebar_vue_vue_type_template_id_3f87cb0d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Sidebar.vue?vue&type=template&id=3f87cb0d& */ "./src/js/Components/Sidebar/Sidebar.vue?vue&type=template&id=3f87cb0d&");
 /* harmony import */ var _Sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Sidebar.vue?vue&type=script&lang=js& */ "./src/js/Components/Sidebar/Sidebar.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _Sidebar_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Sidebar.vue?vue&type=style&index=0&lang=css& */ "./src/js/Components/Sidebar/Sidebar.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -14885,7 +14714,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _Sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _Sidebar_vue_vue_type_template_id_3f87cb0d___WEBPACK_IMPORTED_MODULE_0__["render"],
   _Sidebar_vue_vue_type_template_id_3f87cb0d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -14914,22 +14743,6 @@ component.options.__file = "src/js/Components/Sidebar/Sidebar.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Sidebar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/Sidebar.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./src/js/Components/Sidebar/Sidebar.vue?vue&type=style&index=0&lang=css&":
-/*!********************************************************************************!*\
-  !*** ./src/js/Components/Sidebar/Sidebar.vue?vue&type=style&index=0&lang=css& ***!
-  \********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Sidebar.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/Sidebar.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Sidebar_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -14990,9 +14803,67 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+
+var Oscillator =
+/*#__PURE__*/
+function () {
+  _createClass(Oscillator, null, [{
+    key: "generateId",
+    value: function generateId() {
+      var id = Math.floor(Math.random() * 10000000).toString(16);
+
+      if (store.state.oscillators.filter(function (oscillator) {
+        return oscillator.id == id;
+      })) {
+        return Math.floor(Math.random() * 10000000).toString(16);
+      } else {
+        return id;
+      }
+    }
+  }]);
+
+  function Oscillator() {
+    _classCallCheck(this, Oscillator);
+
+    this.id = Oscillator.generateId();
+    this.volume = {
+      amplitude: 50,
+      attack: 0,
+      decay: 0
+    };
+    this.waveform = "sine";
+    this.lowpass = {
+      cutoff: 0,
+      attack: 0,
+      decay: 0,
+      resonance: 0
+    };
+    this.highpass = {
+      cutoff: 0,
+      attack: 0,
+      decay: 0,
+      resonance: 0
+    };
+    this.oscillatorNode = store.state.audioContext.createOscillator();
+    this.oscillatorNode.type = this.waveform;
+    this.oscillatorNode.frequency.setValueAtTime(261.63, store.state.audioContext.currentTime); // value in hertz
+
+    this.oscillatorNode.connect(store.state.audioContext.destination);
+    this.oscillatorNode.start();
+  }
+
+  return Oscillator;
+}();
+
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
     project: {
@@ -15002,7 +14873,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     oscillators: [],
     data: {
       notes: ["C", "C#", "D", "E", "E#", "F", "F#", "G", "G#", "A", "A#", "B"],
-      pitches: []
+      pitches: [],
+      waveforms: ["sine", "square", "saw"]
     },
     audioContext: null
   },
@@ -15012,25 +14884,98 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       audioCtx = window.AudioContext || window.webkitAudioContext;
       state.audioContext = new audioCtx();
       state.audioContext.resume();
+      console.log(state.audioContext);
     },
-    // project setup
+
+    /*
+    	Project / Global Mutations
+    */
     setName: function setName(name) {
       this.state.project.name = name;
     },
     setBPM: function setBPM(bpm) {
       this.state.project.bpm = bpm;
     },
-    // oscillators
-    addOscillator: function addOscillator(oscillator) {
-      this.state.oscillators.push(oscillator);
+
+    /*
+    	Adding / removing oscillators
+    */
+    addOscillator: function addOscillator() {
+      this.state.oscillators.push(new Oscillator());
     },
     removeOscillator: function removeOscillator(oscillator_id) {
       var index = this.state.oscillators.indexOf(oscillator_id);
       index > -1 && this.state.oscillators.splice(index, 1);
+    },
+
+    /*
+    	Oscillator Mutations
+    */
+    volume: function volume(state, payload) {
+      var oscIndex = this.state.oscillators.findIndex(function (oscillator) {
+        return oscillator.id == payload.oscillator_id;
+      });
+      var property = this.state.oscillators[oscIndex].volume;
+
+      switch (payload.property) {
+        case "amplitude":
+          property.amplitude = payload.value;
+          break;
+
+        case "attack":
+          property.attack = payload.value;
+          break;
+
+        case "decay":
+          property.decay = payload.value;
+          break;
+      }
+    },
+    lpHpFilter: function lpHpFilter(state, payload) {
+      var oscIndex = this.state.oscillators.findIndex(function (oscillator) {
+        return oscillator.id == payload.oscillator_id;
+      });
+      var property;
+
+      if (payload.filter) {
+        property = this.state.oscillators[oscIndex].lowpass;
+      } else {
+        property = this.state.oscillators[oscIndex].highpass;
+      }
+
+      switch (payload.property) {
+        case "cutoff":
+          property.cutoff = payload.value;
+          break;
+
+        case "attack":
+          property.attack = payload.value;
+          break;
+
+        case "decay":
+          property.decay = payload.value;
+          break;
+
+        case "resonance":
+          property.resonance = payload.value;
+          break;
+      }
     }
   }
 });
 /* harmony default export */ __webpack_exports__["default"] = (store);
+/*
+
+Todo:
+
+- create an id-generating helper function using Math.random, possibly some numbers=letters thing
+- give store loads of mutations, that are flexible (can specify which properties for which filter etc
+
+
+- on oscillator - if user clicks osc name + id, allow to give the osc a name
+
+
+*/
 
 /***/ }),
 
