@@ -2,7 +2,6 @@ import Vue from "vue";
 import Vuex from "vuex";
 Vue.use(Vuex);
 
-
 class Oscillator {
 	static generateId() {
 		let id = Math.floor((Math.random() * 10000000)).toString(16);
@@ -53,11 +52,14 @@ class Oscillator {
 	}
 }
 
+
 const store = new Vuex.Store({
 	state: {
 		project : {
 			name: "myProject",
-			bpm : 130
+			bpm : 130,
+			baseOctave: 4,
+			numOctaves: 2
 		},
 		oscillators: [
 			
@@ -65,7 +67,7 @@ const store = new Vuex.Store({
 		activeOscillator: null,
 
 		data : {
-			notes:   ["A" ,"A#","B" ,"C" ,"C#","D" ,"E" ,"E#","F" ,"F#","G" ,"G#"],
+			notes:   ["A" ,"A#","B" ,"C" ,"C#","D" ,"D#" ,"E","F" ,"F#","G" ,"G#"],
 			pitches: [],
 			waveforms: ["sine","square","sawtooth","triangle"]
 		},
@@ -74,20 +76,12 @@ const store = new Vuex.Store({
 
 	mutations: {
 
-		setCurrentOscillator(state,payload) {
-			let oscIndex = this.state.oscillators.findIndex(oscillator => oscillator.id == payload.oscillator_id);
-			let osc = this.state.oscillators[oscIndex];
-			this.state.activeOscillator = osc;
-		},
-
 		createAudioContext(state) {
 			let audioCtx;
 			audioCtx = window.AudioContext || window.webkitAudioContext;
 			state.audioContext = new audioCtx;
 			state.audioContext.resume();
-			console.log(state.audioContext);
 		},
-
 
 		/*
 			Project / Global Mutations
@@ -98,6 +92,16 @@ const store = new Vuex.Store({
 		},
 		setBPM(state,payload) {
 			this.state.project.bpm = payload.bpm;
+		},
+		setBaseOctave(state,payload) {
+			console.log(state);
+			console.log(payload);
+			this.state.project.baseOctave = payload.baseOctave;
+		},
+		setNumOctaves(state,payload) {
+			console.log(state);
+			console.log(payload);
+			this.state.project.numOctaves = payload.numOctaves;
 		},
 
 		/*
@@ -111,6 +115,12 @@ const store = new Vuex.Store({
 		removeOscillator(oscillator_id) {
 			let index = this.state.oscillators.indexOf(oscillator_id);
 			index > -1 && this.state.oscillators.splice(index,1);
+		},
+
+		setCurrentOscillator(state,payload) {
+			let oscIndex = this.state.oscillators.findIndex(oscillator => oscillator.id == payload.oscillator_id);
+			let osc = this.state.oscillators[oscIndex];
+			this.state.activeOscillator = osc;
 		},
 
 		/*
@@ -167,8 +177,7 @@ const store = new Vuex.Store({
 	},
 });
 
-export default store;
-
+export {Oscillator, store};
 
 /*
 

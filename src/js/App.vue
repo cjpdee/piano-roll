@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<Sidebar></Sidebar>
-		<PianoKeys></PianoKeys>
+		<PianoKeys :notes="pianoKeys"></PianoKeys>
 		<Roll></Roll>
 	</div>
 </template>
@@ -12,7 +12,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 
-import store from './store/store';
+import {store} from './store/store';
 
 // Sidebar components
 import Sidebar from './Components/Sidebar/Sidebar.vue';
@@ -42,6 +42,26 @@ export default {
 
 	mounted() {
 		store.commit("createAudioContext");
+	},
+
+	computed: {
+		pianoKeys() {
+			let baseOctave = this.$store.state.project.baseOctave;
+			let numOctaves = this.$store.state.project.numOctaves;
+			let notes = this.$store.state.data.notes;
+
+			console.log(notes);
+			let notesInRoll = []; // rename this is terrible
+
+			for (let i = baseOctave; i < baseOctave + numOctaves; i++) {
+				this.$store.state.data.notes.forEach(note => {
+					notesInRoll.push(note + i);
+				})
+			}
+
+			console.log(notesInRoll);
+			return notesInRoll.reverse()
+		}
 	}
 
 };

@@ -1,6 +1,11 @@
 <template>
-	<div class="piano">
-		<button class="piano__key" data-key="B5"></button>
+	<div class="piano" >
+		<button v-for="note in notes" :key="note"
+			:data-key="note"
+			@mousedown="playOsc" @mouseup="stopOsc"
+			class="piano__key"></button>
+
+		<!-- <button class="piano__key" data-key="B5"></button>
 		<button class="piano__key" data-key="A#5"></button>
 		<button class="piano__key" data-key="A5"></button>
 		<button class="piano__key" data-key="G#5"></button>
@@ -12,7 +17,7 @@
 		<button class="piano__key" data-key="D5"></button>
 		<button class="piano__key" data-key="C#5"></button>
 		<button class="piano__key" data-key="C5"></button>
-		<!-- octave 4 -->
+		octave 4
 		<button class="piano__key" data-key="B4"></button>
 		<button class="piano__key" data-key="A#4"></button>
 		<button class="piano__key" data-key="A4"></button>
@@ -24,13 +29,61 @@
 		<button class="piano__key" data-key="D#4"></button>
 		<button class="piano__key" data-key="D4"></button>
 		<button class="piano__key" data-key="C#4"></button>
-		<button class="piano__key" data-key="C4"></button>
+		<button class="piano__key" data-key="C4"></button> -->
 	</div>
 </template>
 
 <script>
+import {Oscillator} from '../store/store';
 
-export default {}
+export default {
+	props : {
+		notes: {
+			type: Array
+		},
+	},
+	state: {
+		isClicked: false
+	},
+	methods: {
+		pianoMousedown(e) {
+			console.log(e.target.getAttribute("data-key"));
+			// stop all oscillators
+		},
+		pianoMouseout() {
+			// needs to emulate click + drag behaviour to play different notes
+		},
+		keyMousein() {
+			// create oscillator
+			// activate oscillator
+
+			this.playOsc();
+
+		},
+		keyMouseout() {
+			// stop oscillator
+		},
+		
+		playOsc(e) {
+			console.log('starting');
+			let osc = this.$store.state.activeOscillator;
+			let note = e.target.getAttribute("data-key");
+			Oscillator.noteFrequency(note);
+
+			osc.oscillatorNode = this.$store.state.audioContext.createOscillator();
+			osc.oscillatorNode.type = osc.waveform;
+			osc.oscillatorNode.connect(this.$store.state.audioContext.destination);
+
+			osc.oscillatorNode.frequency.setValueAtTime(261.63, this.$store.state.audioContext.currentTime);
+			osc.oscillatorNode.start();
+		},
+		stopOsc() {
+			console.log('stopping');
+			let osc = this.$store.state.activeOscillator;
+			osc.oscillatorNode.stop(this.$store.state.audioContext.currentTime);
+		}
+	}
+}
 
 /*
 

@@ -6,11 +6,6 @@
 			<select v-model="waveform" class="oscillator__select">
 				<option v-for="wave in this.$store.state.data.waveforms" :key="wave" :value=wave>{{ wave }}</option>
 			</select>
-			<select name="octave" id="octave">
-				<option value="A3">A3</option>
-				<option value="A4">A4</option>
-			</select>
-			<button @mousedown="playOsc" @mouseup="stopOsc">DO THING</button>
 		</div>
 		<span class="oscillator__property-wrap">
 			<label class="oscillator__property-label" for="volume_amplitude">Vol</label>
@@ -259,24 +254,6 @@ export default {
 			this.$store.commit("setCurrentOscillator",{
 				oscillator_id: this.id,
 			})
-		},
-		playOsc() {
-			console.log('starting');
-			let index = this.$store.state.oscillators.findIndex(oscillator => oscillator.id == this.id);
-			let osc = this.$store.state.oscillators[index];
-
-			osc.oscillatorNode = this.$store.state.audioContext.createOscillator();
-			osc.oscillatorNode.type = osc.waveform;
-			osc.oscillatorNode.connect(this.$store.state.audioContext.destination);
-
-			osc.oscillatorNode.frequency.setValueAtTime(261.63, this.$store.state.audioContext.currentTime);
-			osc.oscillatorNode.start();
-		},
-		stopOsc() {
-			console.log('stopping');
-			let index = this.$store.state.oscillators.findIndex(oscillator => oscillator.id == this.id);
-			let osc = this.$store.state.oscillators[index];
-			osc.oscillatorNode.stop(this.$store.state.audioContext.currentTime);
 		}
 	}
 }
