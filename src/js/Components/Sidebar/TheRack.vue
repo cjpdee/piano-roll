@@ -12,7 +12,7 @@ import Oscillator from './Oscillator';
 import {mapState} from 'vuex';
 
 export default {
-	name: "Rack",
+	name: "TheRack",
 	components: { Oscillator },
 	props: {
 

@@ -26,7 +26,7 @@
 <script>
 
 export default {
-	name: 'Controls',
+	name: 'TheControls',
 	computed : {
 		bpm: {
 			get() {

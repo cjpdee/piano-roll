@@ -5,6 +5,7 @@
 			:key="note"
 			:data-key="note"
 			@mousedown="playOsc" @mouseup="stopOsc"
+			@mouseenter="keyMousein" @mouseout="keyMouseout"
 			class="piano__key"
 		></button>
 	</div>
@@ -19,29 +20,26 @@ export default {
 			type: Array
 		}
 	},
-	data() {
-		return {
-			isClicked : false
-		}
-	},
 	methods: {
 		pianoMousedown(e) {
-			console.log(e.target);
-			this.$data.isClicked = true;
+			console.log("moused down on keyboard");
 			// stop all oscillators
-		},
-		pianoMouseout() {
-			this.$data.isClicked = false;
-			// needs to emulate click + drag behaviour to play different notes
-		},
-		keyMousein() {
-			// create oscillator
-			// activate oscillator
 
-			this.playOsc();
+			this.$store.commit("setMouseActiveState",true);
 		},
-		keyMouseout() {
+		pianoMouseout(e) {
+			this.$store.commit("setMouseActiveState",false);
+		},
+		keyMousein(e) {
+			// start oscillator
+			if(this.$store.state.mouseActive == true) {
+				console.log('mousein true');
+				this.playOsc(e);
+			}
+		},
+		keyMouseout(e) {
 			// stop oscillator
+			this.stopOsc();
 		},
 		
 		playOsc(e) {
@@ -58,7 +56,6 @@ export default {
 			osc.oscillatorNode.start();
 		},
 		stopOsc() {
-			console.log('stopping');
 			let osc = this.$store.state.activeOscillator;
 			osc.oscillatorNode.stop(this.$store.state.audioContext.currentTime);
 		}
@@ -66,23 +63,12 @@ export default {
 }
 
 /*
+For the future:
 
-- set starting octave i guess?
-so A4 goes to C5 for 24 notes
-
-
-
-Octave Select gives starting octave:
-
-for (i = startingOctave; i > startingOctave + 1; i++) {
-	data.notes.forEach(note => {
-		notesInRoll.push(note + i);
-	})
-}
-
-then for each notes in roll on the piano keys
-use the same array for the 
+Create a keypress handler that maps 2 octaves to the keyboard
 
 */
+
+
 
 </script>

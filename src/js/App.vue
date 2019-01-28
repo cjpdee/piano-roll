@@ -1,8 +1,8 @@
 <template>
 	<div id="app">
-		<Sidebar></Sidebar>
-		<PianoKeys :notes="pianoKeys"></PianoKeys>
-		<Roll></Roll>
+		<TheSidebar></TheSidebar>
+		<ThePianoKeys :notes="pianoKeys"></ThePianoKeys>
+		<TheRoll></TheRoll>
 	</div>
 </template>
 
@@ -15,15 +15,15 @@ import Vuex from 'vuex';
 import {store} from './store/store';
 
 // Sidebar components
-import Sidebar from './Components/Sidebar/Sidebar.vue';
-import Controls from './Components/Sidebar/Controls.vue';
-import Rack from './Components/Sidebar/Rack.vue';
+import TheSidebar from './Components/Sidebar/TheSidebar.vue';
+import TheControls from './Components/Sidebar/TheControls.vue';
+import TheRack from './Components/Sidebar/TheRack.vue';
 import Oscillator from './Components/Sidebar/Oscillator.vue';
 
-import PianoKeys from './Components/PianoKeys.vue';
+import ThePianoKeys from './Components/ThePianoKeys.vue';
 
 // Piano roll components
-import Roll from './Components/Main/Roll.vue';
+import TheRoll from './Components/Main/TheRoll.vue';
 import PitchRow from './Components/Main/PitchRow.vue';
 import Note from './Components/Main/Note.vue';
 
@@ -31,9 +31,9 @@ Vue.use(Vuex);
 
 export default {
 	components: {
-		Sidebar,
-		PianoKeys,
-		Roll
+		TheSidebar,
+		ThePianoKeys,
+		TheRoll
 	},
 	store,
 	data() {

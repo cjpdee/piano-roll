@@ -12,10 +12,18 @@
     &__key {
         @extend %piano-key;
         background-color: white;
+        &:hover {
+            background-color: rgb(159, 217, 219);
+        }
+        &:focus { outline: none; }
     }
 
     &__key[data-key*="#"] {
         background-color: black;
+        &:hover {
+            background-color: rgb(54, 117, 119);
+        }
+        &:focus { outline: none; }
     }
 }
 

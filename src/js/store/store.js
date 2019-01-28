@@ -60,23 +60,27 @@ const store = new Vuex.Store({
 		project : {
 			name: "myProject",
 			bpm : 130,
-			baseOctave: 4,
+			baseOctave: 2,
 			numOctaves: 2
 		},
 		oscillators: [
 			
 		],
 		activeOscillator: null,
+		mouseActive: false,
 
 		data : {
 			notes:   ["A" ,"A#","B" ,"C" ,"C#","D" ,"D#" ,"E","F" ,"F#","G" ,"G#"],
-			pitches: [],
 			waveforms: ["sine","square","sawtooth","triangle"]
 		},
 		audioContext: null
 	},
 
 	mutations: {
+
+		/*
+			General / Misc
+		*/
 
 		createAudioContext(state) {
 			let audioCtx;
@@ -85,8 +89,13 @@ const store = new Vuex.Store({
 			state.audioContext.resume();
 		},
 
+		setMouseActiveState(state,payload) {
+			console.log(payload);
+			this.state.mouseActive = payload;
+		},
+
 		/*
-			Project / Global Mutations
+			Project Mutations
 		*/
 
 		setName(name) {

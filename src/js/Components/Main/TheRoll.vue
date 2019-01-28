@@ -46,7 +46,6 @@
 import PitchRow from './PitchRow';
 
 export default {
-	name: "Roll",
 	components: {
 		PitchRow
 	},
