@@ -4,14 +4,16 @@
 		<input data-js-project="bpm" type="number" v-model="bpm" name="bpm" step="5" id="bpm">
 
 		<select v-model="baseOctave" name="octave" id="octave">
-			<option value="3">A3</option>
 			<option value="4">A4</option>
+			<option value="3">A3</option>
+			<option value="2">A2</option>
+			<option value="1">A1</option>
+			<option value="0">A0</option>
 		</select>
 
 		<select v-model="numOctaves" name="octave" id="octave">
 			<option value="1">1</option>
 			<option value="2">2</option>
-			<option value="3">3</option>
 		</select>
 		<button data-js-project="new-oscillator" class="project-setup__new-oscillator">+</button>
 		<span class="project-setup__controls">

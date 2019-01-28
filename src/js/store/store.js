@@ -17,14 +17,16 @@ class Oscillator {
 		let octave = note.slice(-1);
 		console.log(key,octave);
 
+		// (octave (4 is concert octave) * keys in octave) + index of note in the notes array
+		let keyNumber = ((octave * 12) + (store.state.data.notes.indexOf(key) + 1)); // key is a pretty bad name
+		
 		// The algorithm to get the frequency of a note
 		// from its key number (A0 - C8)
 		// can adjust the tuning - 440 is A4 tuning
-		// 2 to n-49 powers - for 49 keys
-		// divided by 12 notes per octave
-		let n = 1;
-		let freq = 440*Math.pow(2,(n-49 / 12));
+		let freq = 440*Math.pow(2,( (keyNumber / 12) - 49 / 12));
+
 		console.log("frequency",freq);
+		return freq;
 	}
 
 	constructor(){
