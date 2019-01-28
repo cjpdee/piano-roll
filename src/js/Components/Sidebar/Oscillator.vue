@@ -1,7 +1,7 @@
 <template>
 	<div class="oscillator">
 		<h2>Osc {{ id }}</h2>
-		<input type="radio" name="current_oscillator" />
+		<input type="radio" name="current_oscillator" @click="setCurrentOscillator" />
 		<div class="oscillator__setup-wrap">
 			<select v-model="waveform" class="oscillator__select">
 				<option v-for="wave in this.$store.state.data.waveforms" :key="wave" :value=wave>{{ wave }}</option>
@@ -255,6 +255,11 @@ export default {
 		},
 	},
 	methods: {
+		setCurrentOscillator() {
+			this.$store.commit("setCurrentOscillator",{
+				oscillator_id: this.id,
+			})
+		},
 		playOsc() {
 			console.log('starting');
 			let index = this.$store.state.oscillators.findIndex(oscillator => oscillator.id == this.id);

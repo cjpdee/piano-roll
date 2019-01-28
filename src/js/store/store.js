@@ -25,7 +25,7 @@ class Oscillator {
 		// divided by 12 notes per octave
 		let n = 1;
 		let freq = 440*Math.pow(2,(n-49 / 12));
-		console.log('frequency',freq);
+		console.log("frequency",freq);
 	}
 
 	constructor(){
@@ -48,9 +48,6 @@ class Oscillator {
 			decay:     0,
 			resonance: 0
 		};
-		// this.oscillatorNode = store.state.audioContext.createOscillator();
-		// this.oscillatorNode.type = this.waveform;
-		// this.oscillatorNode.connect(store.state.audioContext.destination);
 
 		Oscillator.noteFrequency("C#2");
 	}
@@ -68,7 +65,7 @@ const store = new Vuex.Store({
 		activeOscillator: null,
 
 		data : {
-			notes:   ["C" ,"C#","D" ,"E" ,"E#","F" ,"F#","G" ,"G#","A" ,"A#","B"],
+			notes:   ["A" ,"A#","B" ,"C" ,"C#","D" ,"E" ,"E#","F" ,"F#","G" ,"G#"],
 			pitches: [],
 			waveforms: ["sine","square","sawtooth","triangle"]
 		},
@@ -76,6 +73,12 @@ const store = new Vuex.Store({
 	},
 
 	mutations: {
+
+		setCurrentOscillator(state,payload) {
+			let oscIndex = this.state.oscillators.findIndex(oscillator => oscillator.id == payload.oscillator_id);
+			let osc = this.state.oscillators[oscIndex];
+			this.state.activeOscillator = osc;
+		},
 
 		createAudioContext(state) {
 			let audioCtx;
@@ -93,8 +96,8 @@ const store = new Vuex.Store({
 		setName(name) {
 			this.state.project.name = name;
 		},
-		setBPM(bpm) {
-			this.state.project.bpm = bpm;
+		setBPM(state,payload) {
+			this.state.project.bpm = payload.bpm;
 		},
 
 		/*

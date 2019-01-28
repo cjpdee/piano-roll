@@ -30,6 +30,26 @@
 
 <script>
 
+export default {}
 
+/*
+
+- set starting octave i guess?
+so A4 goes to C5 for 24 notes
+
+
+
+Octave Select gives starting octave:
+
+for (i = startingOctave; i > startingOctave + 1; i++) {
+	data.notes.forEach(note => {
+		notesInRoll.push(note + i);
+	})
+}
+
+then for each notes in roll on the piano keys
+use the same array for the 
+
+*/
 
 </script>
