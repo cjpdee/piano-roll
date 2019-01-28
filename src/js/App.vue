@@ -2,7 +2,7 @@
 	<div id="app">
 		<TheSidebar></TheSidebar>
 		<ThePianoKeys :notes="pianoKeys"></ThePianoKeys>
-		<TheRoll></TheRoll>
+		<TheRoll :notes="pianoKeys"></TheRoll>
 	</div>
 </template>
 

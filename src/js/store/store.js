@@ -49,8 +49,6 @@ class Oscillator {
 			decay:     0,
 			resonance: 0
 		};
-
-		Oscillator.noteFrequency("C#2");
 	}
 }
 
@@ -73,7 +71,8 @@ const store = new Vuex.Store({
 			notes:   ["A" ,"A#","B" ,"C" ,"C#","D" ,"D#" ,"E","F" ,"F#","G" ,"G#"],
 			waveforms: ["sine","square","sawtooth","triangle"]
 		},
-		audioContext: null
+		audioContext: null,
+		filter: null
 	},
 
 	mutations: {
@@ -86,7 +85,9 @@ const store = new Vuex.Store({
 			let audioCtx;
 			audioCtx = window.AudioContext || window.webkitAudioContext;
 			state.audioContext = new audioCtx;
-			state.audioContext.resume();
+			let x = this.state.audioContext.createBiquadFilter();
+			x.type="lowpass";
+			state.filter = x;
 		},
 
 		setMouseActiveState(state,payload) {
@@ -105,13 +106,9 @@ const store = new Vuex.Store({
 			this.state.project.bpm = payload.bpm;
 		},
 		setBaseOctave(state,payload) {
-			console.log(state);
-			console.log(payload);
 			this.state.project.baseOctave = payload.baseOctave;
 		},
 		setNumOctaves(state,payload) {
-			console.log(state);
-			console.log(payload);
 			this.state.project.numOctaves = payload.numOctaves;
 		},
 
@@ -120,7 +117,9 @@ const store = new Vuex.Store({
 		*/
 
 		addOscillator() {
-			this.state.oscillators.push(new Oscillator());
+			let osc = new Oscillator();
+			this.state.oscillators.push(osc);
+			this.state.activeOscillator = osc;
 		},
 
 		removeOscillator(oscillator_id) {

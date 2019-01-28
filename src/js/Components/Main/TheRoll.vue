@@ -13,8 +13,12 @@
 
 			each bar length: fixed or responsive depending on viewport width
 			-->
-		<PitchRow></PitchRow>
-		<PitchRow></PitchRow>
+		<PitchRow
+			v-for="(note,index) in notes"
+			:key=note
+			:note=note
+			:index="index"
+		></PitchRow>
 		<!-- <div  class="row row-1" data-note="A#5"></div>
 		<div  class="row row-2" data-note="A5"></div>
 		<div  class="row row-3" data-note="G#5"></div>
@@ -50,7 +54,9 @@ export default {
 		PitchRow
 	},
 	props: {
-		pitches: []
+		notes: {
+			type: Array
+		}
 	},
 }
 

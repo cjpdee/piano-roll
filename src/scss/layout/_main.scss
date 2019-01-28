@@ -36,6 +36,7 @@
 
 .row {
     position: absolute;
+    top: 0;
     height: calc(100vh / 24);
     width: 100%;
     background-color: rgb(100, 159, 177);
@@ -45,9 +46,9 @@
     }
 }
 
-@for $i from 0 to 24 {
-    .row-#{$i} {
+@for $i from 0 to 25 {
+    .row:nth-child(#{$i}) {
         // because 100% caused gaps
-        top: ((99.9999% / 24) * $i);
+        top: ((99.9999% / 24) * ($i - 1));
     }
 }

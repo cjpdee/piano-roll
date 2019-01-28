@@ -1,13 +1,20 @@
 <template>
 
-	<div  class="row row-2" data-note="A5"></div>
+	<div class="row" :data-note=note></div>
 
 </template>
 
 <script>
 
 export default {
-	props: [],
+	props: {
+		note: {
+			type: String
+		},
+		index: {
+			type: Number
+		}
+	},
 
 	methods : {
 		addNote(oscillator,pitch) {

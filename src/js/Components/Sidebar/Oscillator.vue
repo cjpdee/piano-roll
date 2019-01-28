@@ -23,7 +23,7 @@
 		</span>
 		<span class="oscillator__property-wrap">
 			<label class="oscillator__property-label" for="lowpass_cutoff">LP</label>
-			<input v-model="lowpass_cutoff" class="oscillator__property" type="range" id="lowpass_cutoff" />
+			<input v-model="lowpass_cutoff" class="oscillator__property" type="range" id="lowpass_cutoff" min=0 max=4000 />
 
 			<input type="checkbox" class="oscillator__property__dropdown-toggle" name="volume_properties" id="volume_properties_toggle" />
 			<div class="oscillator__property__dropdown">
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+// Custom wavetables : OscillatorNode.setPeriodicWave()
 
 export default {
 	name: "Oscillator",
