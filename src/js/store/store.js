@@ -13,13 +13,12 @@ class Oscillator {
 	}
 
 	static noteFrequency(note) {
-		let key    = note.slice(0,note.length-1);
+		let tone    = note.slice(0,note.length-1);
 		let octave = note.slice(-1);
-		console.log(key,octave);
+		console.log(tone,octave);
 
-		// (octave (4 is concert octave) * keys in octave) + index of note in the notes array
-		let keyNumber = ((octave * 12) + (store.state.data.notes.indexOf(key) + 1)); // key is a pretty bad name
-		
+		// (octave num * keys in octave) + index of note in the notes array
+		let keyNumber = ((octave * 12) + (store.state.data.notes.indexOf(tone) + 1)); // key is a pretty bad name
 		// The algorithm to get the frequency of a note
 		// from its key number (A0 - C8)
 		// can adjust the tuning - 440 is A4 tuning
@@ -27,6 +26,32 @@ class Oscillator {
 
 		console.log("frequency",freq);
 		return freq;
+	}
+
+	static playNote(oscillator,note) { // new 1
+		oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
+
+		let frequency = Oscillator.noteFrequency(note);
+
+		// create & setup oscillatorNode to play the note
+		oscillator.oscillatorNode = store.state.audioContext.createOscillator();
+		oscillator.oscillatorNode.type = oscillator.waveform;
+		
+		// Setup filter
+		oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
+		oscillator.oscillatorNode.connect(oscillator.filter.filterNode);
+
+		// Connect filter to audio output
+		oscillator.filter.filterNode.connect(store.state.audioContext.destination);
+
+		// Start the oscillator
+		oscillator.oscillatorNode.frequency.setValueAtTime(frequency, store.state.audioContext.currentTime);
+		oscillator.oscillatorNode.start();
+	}
+
+
+	static stopNote(oscillator) {
+		oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
 	}
 
 	constructor(){
@@ -37,18 +62,15 @@ class Oscillator {
 			decay:     0
 		};
 		this.waveform = "sine";
-		this.lowpass = {
-			cutoff:    0,
+		this.filter = {
+			type:	   "lowpass",
+			cutoff:    2000,
 			attack:    0,
 			decay:     0,
-			resonance: 0
+			resonance: 0,
+			filterNode:store.state.audioContext.createBiquadFilter()
 		};
-		this.highpass = {
-			cutoff:    0,
-			attack:    0,
-			decay:     0,
-			resonance: 0
-		};
+		this.filter.filterNode.type=this.filter.type;
 	}
 }
 
@@ -59,20 +81,36 @@ const store = new Vuex.Store({
 			name: "myProject",
 			bpm : 130,
 			baseOctave: 2,
-			numOctaves: 2
+			numOctaves: 2,
+			rootNote: "A"
 		},
 		oscillators: [
 			
 		],
 		activeOscillator: null,
 		mouseActive: false,
+		keypressActive: false,
 
 		data : {
-			notes:   ["A" ,"A#","B" ,"C" ,"C#","D" ,"D#" ,"E","F" ,"F#","G" ,"G#"],
-			waveforms: ["sine","square","sawtooth","triangle"]
+			notes:        ["A" ,"A#","B" ,"C" ,"C#","D" ,"D#" ,"E","F" ,"F#","G" ,"G#"],
+			keys : {
+				C   : 81,
+				Csh : 50,
+				D   : 87,
+				Dsh : 51,
+				E   : 69,
+				F   : 82,
+				Fsh : 53,
+				G   : 84,
+				Gsh : 54,
+				A   : 89,
+				Ash : 55,
+				B   : 85
+			},
+			waveforms: ["sine","square","sawtooth","triangle"],
+			filters: ["lowpass","highpass","bandpass"]
 		},
 		audioContext: null,
-		filter: null
 	},
 
 	mutations: {
@@ -85,13 +123,9 @@ const store = new Vuex.Store({
 			let audioCtx;
 			audioCtx = window.AudioContext || window.webkitAudioContext;
 			state.audioContext = new audioCtx;
-			let x = this.state.audioContext.createBiquadFilter();
-			x.type="lowpass";
-			state.filter = x;
 		},
 
 		setMouseActiveState(state,payload) {
-			console.log(payload);
 			this.state.mouseActive = payload;
 		},
 
@@ -110,6 +144,9 @@ const store = new Vuex.Store({
 		},
 		setNumOctaves(state,payload) {
 			this.state.project.numOctaves = payload.numOctaves;
+		},
+		setRootNote(state,payload) {
+			this.state.project.rootNote = payload.rootNote;
 		},
 
 		/*
@@ -149,6 +186,25 @@ const store = new Vuex.Store({
 			switch (payload.property) {
 			case "amplitude":
 				property.amplitude = payload.value;
+				break;
+			case "attack":
+				property.attack = payload.value;
+				break;
+			case "decay":
+				property.decay = payload.value;
+				break;
+			}
+		},
+
+		biquadFilter(state,payload) {
+			let oscIndex = this.state.oscillators.findIndex(oscillator => oscillator.id == payload.oscillator_id);
+			let property = this.state.oscillators[oscIndex].filter;
+			switch (payload.property) {
+			case "type":
+				property.type = payload.value;
+				break;
+			case "cutoff":
+				property.cutoff = payload.value;
 				break;
 			case "attack":
 				property.attack = payload.value;
@@ -200,5 +256,8 @@ Todo:
 In piano roll:
 - 'onion skin' effect for scales
 - the scale + key will be controlled from the Controls component
+
+- Ability to select root note which the piano roll starts on
+
 
 */

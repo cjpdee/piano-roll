@@ -15,6 +15,21 @@
 			<option value="1">1</option>
 			<option value="2">2</option>
 		</select>
+
+		<select v-model="rootNote" name="rootNote" id="rootNote">
+			<option value="B">B</option>
+			<option value="A#">A#</option>
+			<option value="A">A</option>
+			<option value="G#">G#</option>
+			<option value="G">G</option>
+			<option value="F#">F#</option>
+			<option value="F">F</option>
+			<option value="E">E</option>
+			<option value="D#">D#</option>
+			<option value="D">D</option>
+			<option value="C#">C#</option>
+			<option value="C">C</option>
+		</select>
 		<button data-js-project="new-oscillator" class="project-setup__new-oscillator">+</button>
 		<span class="project-setup__controls">
 			<button @click="startAudioContext" class="project-setup__control green">Play</button>
@@ -55,6 +70,16 @@ export default {
 			set(value) {
 				this.$store.commit("setNumOctaves",{
 					numOctaves: parseInt(value)
+				})
+			}
+		},
+		rootNote: {
+			get() {
+				return this.$store.state.project.rootNote
+			},
+			set(value) {
+				this.$store.commit("setRootNote",{
+					rootNote: value
 				})
 			}
 		}

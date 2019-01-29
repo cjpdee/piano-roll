@@ -2,18 +2,18 @@
 	<div class="rack">
 		<h2 class="rack__heading">Rack</h2>
 		<button class="rack__button" @click="createOscillator">New Osc</button>
-		<Oscillator v-for="oscillator in oscillators" :key="oscillator.id" :id="oscillator.id"></Oscillator>
+		<OscillatorInterface v-for="oscillator in oscillators" :key="oscillator.id" :id="oscillator.id"></OscillatorInterface>
 	</div>
 </template>
 
 <script>
 
-import Oscillator from './Oscillator';
+import OscillatorInterface from './OscillatorInterface';
 import {mapState} from 'vuex';
 
 export default {
 	name: "TheRack",
-	components: { Oscillator },
+	components: { OscillatorInterface },
 	props: {
 
 	},

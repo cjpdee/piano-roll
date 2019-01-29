@@ -13,12 +13,13 @@ import Vuex from 'vuex';
 
 
 import {store} from './store/store';
+import {Oscillator} from './store/store';
 
 // Sidebar components
 import TheSidebar from './Components/Sidebar/TheSidebar.vue';
 import TheControls from './Components/Sidebar/TheControls.vue';
 import TheRack from './Components/Sidebar/TheRack.vue';
-import Oscillator from './Components/Sidebar/Oscillator.vue';
+import OscillatorInterface from './Components/Sidebar/OscillatorInterface.vue';
 
 import ThePianoKeys from './Components/ThePianoKeys.vue';
 
@@ -42,25 +43,102 @@ export default {
 
 	mounted() {
 		store.commit("createAudioContext");
+		window.addEventListener("keydown", this.keydownHandler);
+		window.addEventListener("keyup", this.keyupHandler);
 	},
 
 	computed: {
 		pianoKeys() {
 			let baseOctave = this.$store.state.project.baseOctave;
 			let numOctaves = this.$store.state.project.numOctaves;
+			let rootNote   = this.$store.state.project.rootNote;
 			let notes = this.$store.state.data.notes;
 
-			console.log(notes);
+
+			/*
+			this property needs to be sorted out
+			the aim is to increase the octave number
+			in line with the actual note
+			at the moment it's not increasing the octave at the right point
+			so it might play C#3, A4 then suddenly A#5
+			works with A as the rootnote for now though
+			*/
+
+			let offset = notes.indexOf(rootNote);
+
+			let orderedNotes = [];
+			for(let j=0; j < notes.length; j++) {
+				var pointer = (j + offset) % notes.length;
+				orderedNotes.push(notes[pointer]);
+			}
+
+
 			let notesInRoll = []; // rename this is terrible
 
 			for (let i = baseOctave; i < baseOctave + numOctaves; i++) {
-				this.$store.state.data.notes.forEach(note => {
+				orderedNotes.forEach(note => {
 					notesInRoll.push(note + i);
 				})
 			}
 
 			console.log(notesInRoll);
 			return notesInRoll.reverse()
+		}
+	},
+
+	methods: {
+		keydownHandler(e) {
+			if((store.state.activeOscillator) && (this.$store.state.keypressActive === false)) {
+				this.$store.state.keypressActive = true;
+				if(this.$store.state.activeOscillator.oscillatorNode) {
+					Oscillator.stopNote(this.$store.state.activeOscillator);
+				}
+
+				switch (e.keyCode) {
+				case 81:
+					Oscillator.playNote(store.state.activeOscillator,"C" + this.$store.state.project.baseOctave);
+					break;
+				case 50:
+					Oscillator.playNote(store.state.activeOscillator,"C#" + this.$store.state.project.baseOctave);
+					break;
+				case 87:
+					Oscillator.playNote(store.state.activeOscillator,"D" + this.$store.state.project.baseOctave);
+					break;
+				case 51:
+					Oscillator.playNote(store.state.activeOscillator,"D#" + this.$store.state.project.baseOctave);
+					break;
+				case 69:
+					Oscillator.playNote(store.state.activeOscillator,"E" + this.$store.state.project.baseOctave);
+					break;
+				case 82:
+					Oscillator.playNote(store.state.activeOscillator,"F" + this.$store.state.project.baseOctave);
+					break;
+				case 53:
+					Oscillator.playNote(store.state.activeOscillator,"F#" + this.$store.state.project.baseOctave);
+					break;
+				case 84:
+					Oscillator.playNote(store.state.activeOscillator,"G" + this.$store.state.project.baseOctave);
+					break;
+				case 54:
+					Oscillator.playNote(store.state.activeOscillator,"G#" + this.$store.state.project.baseOctave);
+					break;
+				case 89:
+					Oscillator.playNote(store.state.activeOscillator,"A" + this.$store.state.project.baseOctave);
+					break;
+				case 55:
+					Oscillator.playNote(store.state.activeOscillator,"A#" + this.$store.state.project.baseOctave);
+					break;
+				case 85:
+					Oscillator.playNote(store.state.activeOscillator,"B" + this.$store.state.project.baseOctave);
+					break;
+				}
+			}
+		},
+		keyupHandler() {
+			if(this.$store.state.activeOscillator) {
+				Oscillator.stopNote(this.$store.state.activeOscillator);
+				this.$store.state.keypressActive = false;
+			}
 		}
 	}
 

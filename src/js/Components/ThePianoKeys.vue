@@ -1,10 +1,12 @@
 <template>
-	<div class="piano" @mousedown="pianoMousedown" @mouseup="pianoMouseout">
+	<div class="piano"
+		@mousedown="pianoMousedown"
+		@mouseup="pianoMouseout">
 		<button
 			v-for="note in notes"
 			:key="note"
 			:data-key="note"
-			@mousedown="playOsc" @mouseup="stopOsc"
+			@mousedown="playKey" @mouseup="stopKey"
 			@mouseenter="keyMousein" @mouseout="keyMouseout"
 			class="piano__key"
 		></button>
@@ -28,34 +30,29 @@ export default {
 			this.$store.commit("setMouseActiveState",false);
 		},
 		keyMousein(e) {
-			this.$store.state.mouseActive && this.playOsc(e);
+			this.$store.state.mouseActive && this.playKey(e);
 		},
 		keyMouseout(e) {
-			this.$store.state.mouseActive == true && this.stopOsc();
+			this.$store.state.mouseActive == true && this.stopKey(e);
 		},
-		
-		playOsc(e) { // might break this down later - playOsc will have to be re-used in different contexts
-			let osc = this.$store.state.activeOscillator;
-			let note = e.target.getAttribute("data-key");
-			let frequency = Oscillator.noteFrequency(note);
 
-			osc.oscillatorNode = this.$store.state.audioContext.createOscillator();
-			osc.oscillatorNode.type = osc.waveform;
-
-			this.$store.state.filter.frequency.value = osc.lowpass.cutoff;
-			osc.oscillatorNode.connect(this.$store.state.filter);
-			console.log(this.$store.state.filter);
-			
-			
-			this.$store.state.filter.connect(this.$store.state.audioContext.destination);
-
-			osc.oscillatorNode.frequency.setValueAtTime(frequency, this.$store.state.audioContext.currentTime);
-			osc.oscillatorNode.start();
+		playKey(e) {
+			if(this.$store.state.activeOscillator) {
+				let osc = this.$store.state.activeOscillator;
+				let note = e.target.getAttribute("data-key");
+				Oscillator.playNote(osc,note)
+			} else {
+				console.error("There is currently no active oscillator to play");
+			}
+			// this.playOscForInterval(oscillator,note,time)
 		},
-		stopOsc() {
-			let osc = this.$store.state.activeOscillator;
-			osc.oscillatorNode.stop(this.$store.state.audioContext.currentTime);
-		}
+
+		stopKey(e) {
+			if(this.$store.state.activeOscillator) {
+				let osc = this.$store.state.activeOscillator;
+				Oscillator.stopNote(osc);
+			}
+		},
 	}
 }
 
