@@ -244,20 +244,3 @@ const store = new Vuex.Store({
 });
 
 export {Oscillator, store};
-
-/*
-
-Todo:
-
-- on oscillator - if user clicks osc name + id, allow to give the osc a name
-- allow user to select active oscillator
-- link up PianoKeys to the oscillators
-
-In piano roll:
-- 'onion skin' effect for scales
-- the scale + key will be controlled from the Controls component
-
-- Ability to select root note which the piano roll starts on
-
-
-*/

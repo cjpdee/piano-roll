@@ -48,8 +48,16 @@ export default {
 	},
 
 	computed: {
-		pianoKeys() {
-			let baseOctave = this.$store.state.project.baseOctave;
+		pianoKeys() { // rename
+			/*
+				This function takes the note that the user
+				wants at the bottom of the piano roll and
+				creates a new notes array starting with the
+				chosen root note, and then sets this
+				as the new piano roll order for the whole app
+			*/
+
+			let chosenRootOctave = this.$store.state.project.baseOctave;
 			let numOctaves = this.$store.state.project.numOctaves;
 			let rootNote   = this.$store.state.project.rootNote;
 			let notes = this.$store.state.data.notes;
@@ -75,7 +83,7 @@ export default {
 
 			let notesInRoll = []; // rename this is terrible
 
-			for (let i = baseOctave; i < baseOctave + numOctaves; i++) {
+			for (let i = chosenRootOctave; i < chosenRootOctave + numOctaves; i++) {
 				orderedNotes.forEach(note => {
 					notesInRoll.push(note + i);
 				})
@@ -83,6 +91,13 @@ export default {
 
 			console.log(notesInRoll);
 			return notesInRoll.reverse()
+
+
+
+
+
+
+
 		}
 	},
 
