@@ -22,7 +22,14 @@ Piano keys / user input
 - Fix the keypress handler so it feels more natural
 
 In piano roll:
-- 'onion skin' effect for scales
+- 'onion skin' effect for scales - in notes
 - the scale + key will be controlled from the Controls component
 
 - Ability to select root note which the piano roll starts on
+
+
+Drum machine tab - switch using v-if
+
+
+
+- design something
