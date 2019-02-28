@@ -21,6 +21,13 @@ export default {
 		'oscillators'
 	]),
 
+	watched: {
+		'audioContext': function() {
+			console.log('audio context created');
+			this.createOscillator();
+		}
+	},
+
 	methods: {
 		createOscillator() {
 			this.$store.commit('addOscillator');

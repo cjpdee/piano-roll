@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" href="app.css">
+        <!-- 
+
+            app notes
+
+            include the main shell of the app in a style tag once it's finished
+            preload the css files alongside this and use it when the user
+            starts to interact with the page
+            this should reduce rendering time a bit
+
+            keep shallow dom tree to mitigate impact of reflows
+
+            use absolute positioning in the piano roll to prevent reflows
+
+
+            use 1-8 keys to choose note lengths
+
+            OK G
+
+            make sure all the note data (location,pitch etc), oscillator data etc.
+            can be accessed and make a function that transpiles that data into
+            a JSON file
+            then make a function that uses that data to recreate the save?
+
+            -->
+    </head>
+    <body>
+        <div id="app"></div>
+        
+        <script src="app.js"></script>
+    </body>
+</html>

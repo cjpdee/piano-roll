@@ -29,7 +29,7 @@ import PitchRow from './Components/Main/PitchRow.vue';
 import Note from './Components/Main/Note.vue';
 
 Vue.use(Vuex);
-
+var lastOscillator;
 export default {
 	components: {
 		TheSidebar,
@@ -38,7 +38,12 @@ export default {
 	},
 	store,
 	data() {
-		return store.state
+		return {
+			state: store.state,
+			lastOscillator: null,
+			currentNote: null,
+			previousKeyCode: null
+		}
 	},
 
 	mounted() {
@@ -103,41 +108,60 @@ export default {
 
 	methods: {
 		keydownHandler(e) {
-			if((store.state.activeOscillator) && (this.$store.state.keypressActive === false)) {
+			console.log('triggered');
+			if((store.state.activeOscillator) && (e.keyCode != this.previousKeyCode)) {
+				this.previousKeyCode = e.keyCode;
+				this.lastOscillator = store.state.activeOscillator;
 				this.$store.state.keypressActive = true;
-				if(this.$store.state.activeOscillator.oscillatorNode) {
-					Oscillator.stopNote(this.$store.state.activeOscillator);
-				}
+				this.$store.state.activeOscillator.oscillatorNode && Oscillator.stopNote(this.$store.state.activeOscillator);
+
+				// this.$store.state.oscillators.forEach(function(oscillator) {
+				// 	Oscillator.stopNote(oscillator);
+				// })
 
 				switch (e.keyCode) {
 				case 81:
+					console.log('registered');
 					Oscillator.playNote(store.state.activeOscillator,"C" + this.$store.state.project.baseOctave);
+					this.currentNote = "C" + this.$store.state.project.baseOctave;
 					break;
 				case 50:
+				console.log('registered');
 					Oscillator.playNote(store.state.activeOscillator,"C#" + this.$store.state.project.baseOctave);
+					this.currentNote = "C#" + this.$store.state.project.baseOctave;
 					break;
 				case 87:
+				console.log('registered');
 					Oscillator.playNote(store.state.activeOscillator,"D" + this.$store.state.project.baseOctave);
+					this.currentNote = "D" + this.$store.state.project.baseOctave;
 					break;
 				case 51:
+				console.log('registered');
 					Oscillator.playNote(store.state.activeOscillator,"D#" + this.$store.state.project.baseOctave);
+					this.currentNote = "D#" + this.$store.state.project.baseOctave;
 					break;
 				case 69:
+				console.log('registered');
 					Oscillator.playNote(store.state.activeOscillator,"E" + this.$store.state.project.baseOctave);
 					break;
 				case 82:
+				console.log('registered');
 					Oscillator.playNote(store.state.activeOscillator,"F" + this.$store.state.project.baseOctave);
 					break;
 				case 53:
+				console.log('registered');
 					Oscillator.playNote(store.state.activeOscillator,"F#" + this.$store.state.project.baseOctave);
 					break;
 				case 84:
+				console.log('registered');
 					Oscillator.playNote(store.state.activeOscillator,"G" + this.$store.state.project.baseOctave);
 					break;
 				case 54:
+				console.log('registered');
 					Oscillator.playNote(store.state.activeOscillator,"G#" + this.$store.state.project.baseOctave);
 					break;
 				case 89:
+				console.log('registered');
 					Oscillator.playNote(store.state.activeOscillator,"A" + this.$store.state.project.baseOctave);
 					break;
 				case 55:
@@ -149,8 +173,9 @@ export default {
 				}
 			}
 		},
-		keyupHandler() {
-			if(this.$store.state.activeOscillator) {
+		keyupHandler(e) {
+			if(this.$store.state.activeOscillator && (e.keyCode == this.previousKeyCode)) {
+				
 				Oscillator.stopNote(this.$store.state.activeOscillator);
 				this.$store.state.keypressActive = false;
 			}
