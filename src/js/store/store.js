@@ -29,6 +29,7 @@ class Oscillator {
 	}
 
 	static playNote(oscillator,note) { // new 1
+		
 		oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
 
 		let frequency = Oscillator.noteFrequency(note);
@@ -51,7 +52,7 @@ class Oscillator {
 
 
 	static stopNote(oscillator) {
-		oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
+		oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
 	}
 
 	constructor(){
@@ -68,7 +69,7 @@ class Oscillator {
 			attack:    0,
 			decay:     0,
 			resonance: 0,
-			filterNode:store.state.audioContext.createBiquadFilter()
+			filterNode: store.state.audioContext.createBiquadFilter()
 		};
 		this.filter.filterNode.type=this.filter.type;
 	}
