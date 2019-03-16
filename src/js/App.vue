@@ -54,6 +54,7 @@ export default {
 
 	computed: {
 		pianoKeys() { // rename
+			// TODO: actually remove - this can now be an import from helper.js
 			/*
 				This function takes the note that the user
 				wants at the bottom of the piano roll and
@@ -81,12 +82,15 @@ export default {
 
 			let orderedNotes = [];
 			for(let j=0; j < notes.length; j++) {
-				var pointer = (j + offset) % notes.length;
+				let pointer = (j + offset) % notes.length;
 				orderedNotes.push(notes[pointer]);
 			}
 
 
 			let notesInRoll = []; // rename this is terrible
+
+
+
 
 			for (let i = chosenRootOctave; i < chosenRootOctave + numOctaves; i++) {
 				orderedNotes.forEach(note => {

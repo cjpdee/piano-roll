@@ -70,10 +70,42 @@ button:before {
   height: calc(100vh / 24);
   width: 100%;
   background-color: #649fb1;
+  border-bottom: 0.0555555556em solid grey;
+}
+
+.row:last-child {
+  border-bottom: none;
 }
 
 .row[data-note*="#"] {
   background-color: #5a91a1;
+}
+
+.note {
+  position: relative;
+  z-index: 100;
+  display: block;
+  height: 100%;
+  width: 5.5555555556em;
+  border-radius: 0.2222222222em;
+  background-color: darkslateblue;
+}
+
+.note:hover {
+  background-color: rgba(72, 61, 139, 0.95);
+}
+
+.note__handle {
+  position: absolute;
+  right: 0;
+  width: 5%;
+  height: 100%;
+  border-radius: 0.2222222222em;
+  background-color: green;
+}
+
+.note__handle:hover {
+  background-color: rgba(0, 128, 0, 0.5);
 }
 
 .row:nth-child(0) {
