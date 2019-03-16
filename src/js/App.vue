@@ -19,7 +19,7 @@ import {Oscillator} from './store/store';
 import TheSidebar from './Components/Sidebar/TheSidebar.vue';
 import TheControls from './Components/Sidebar/TheControls.vue';
 import TheRack from './Components/Sidebar/TheRack.vue';
-import OscillatorInterface from './Components/Sidebar/OscillatorInterface.vue';
+import OscillatorUI from './Components/Sidebar/OscillatorUI.vue';
 
 import ThePianoKeys from './Components/ThePianoKeys.vue';
 
