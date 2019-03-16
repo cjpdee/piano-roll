@@ -10,6 +10,10 @@ button:before {
   box-sizing: border-box;
 }
 
+body {
+  background-color: grey;
+}
+
 #app {
   display: flex;
   width: 100%;
@@ -22,14 +26,17 @@ button:before {
 }
 
 .piano__key {
+  position: relative;
   display: block;
   width: 100%;
   height: calc(100vh / 24);
   border: none;
+  border-top-right-radius: 0.3333333333em;
+  border-bottom-right-radius: 0.3333333333em;
 }
 
 .piano {
-  width: 3.3333333333em;
+  width: 4.4444444444em;
   height: 100%;
 }
 
@@ -46,10 +53,25 @@ button:before {
 }
 
 .piano__key[data-key*="#"] {
-  background-color: black;
+  background-color: white;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
-.piano__key[data-key*="#"]:hover {
+.piano__key[data-key*="#"]:after {
+  content: "";
+  background-color: black;
+  width: 75%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-top-right-radius: 0.3333333333em;
+  border-bottom-right-radius: 0.3333333333em;
+}
+
+.piano__key[data-key*="#"]:hover:after {
   background-color: #367577;
 }
 
@@ -106,6 +128,23 @@ button:before {
 
 .note__handle:hover {
   background-color: rgba(0, 128, 0, 0.5);
+}
+
+.flex-wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  width: 100%;
+  pointer-events: none;
+}
+
+.bar-marker {
+  border: 0.0277777778em solid rgba(112, 128, 144, 0.5);
+  flex: 1 0 auto;
+  z-index: 99;
 }
 
 .row:nth-child(0) {

@@ -13,6 +13,10 @@
 
 			each bar length: fixed or responsive depending on viewport width
 			-->
+		<div class="flex-wrap">
+
+			<div class="bar-marker" v-for="divider in currentNoteLength" :key="divider" />
+		</div>
 		<PitchRow
 			v-for="(note,index) in notes"
 			:key=note
@@ -46,6 +50,9 @@ export default {
 			console.log('keys',getKeysArray());
 			return getKeysArray();
 		},
+		currentNoteLength() {
+			return this.$store.state.project.numBars / this.$store.state.project.currentNoteLengthInBars
+		}
 	},
 	methods: {
 	}

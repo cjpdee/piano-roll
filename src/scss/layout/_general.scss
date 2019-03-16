@@ -17,6 +17,10 @@ button:before {
     box-sizing: border-box;
 }
 
+body {
+    background-color: grey;
+}
+
 #app {
     display: flex;
     width: 100%;

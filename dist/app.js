@@ -154,6 +154,7 @@ var lastOscillator;
   computed: {
     pianoKeys: function pianoKeys() {
       // rename
+      // TODO: actually remove - this can now be an import from helper.js
 
       /*
       	This function takes the note that the user
@@ -339,6 +340,9 @@ __webpack_require__.r(__webpack_exports__);
       type: Number
     }
   },
+  // TODO: Send all this data to the store,
+  // organised by the oscillator the note
+  // belongs to, perhaps ordered by position
   data: function data() {
     return {
       notes: []
@@ -347,12 +351,12 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     rowClass: function rowClass() {
       return "row row-" + (this.index + 1);
-    },
-    notePosition: function notePosition() {}
+    }
   },
   methods: {
     generateId: function generateId() {
-      var id = Math.floor(Math.random() * 10000000).toString(16); // if ( store.state.oscillators.filter(oscillator => oscillator.id == id) ) {
+      var id = Math.floor(Math.random() * 10000000).toString(16); // TODO: Make a check for other existing note ids
+      // if ( store.state.oscillators.filter(oscillator => oscillator.id == id) ) {
       // 	return Math.floor((Math.random() * 10000000)).toString(16);
       // } else {
       // 	return id;
@@ -361,6 +365,11 @@ __webpack_require__.r(__webpack_exports__);
       return id;
     },
     addNote: function addNote(e) {
+      /*
+      	TODO: add the note in slightly left of the cursor,
+      	and make a check in case the length of the note
+      	overlaps the left or right side
+      */
       console.log(e.offsetX, e.offsetY);
       console.log(e.offsetX / e.target.parentElement.clientWidth * 100);
       var pos = e.offsetX / e.target.parentElement.clientWidth * 100;
@@ -368,16 +377,16 @@ __webpack_require__.r(__webpack_exports__);
       console.log(window);
       var note = {
         position: pos,
-        noteCSS: 'left: ' + pos + '%; width: ' + lengthPercentage + '%'
+        noteCSS: 'left: ' + pos + '%; width: ' + lengthPercentage + '%',
+        id: this.generateId()
       };
       console.log(note);
       this.notes.push(note);
 
       if (this.$store.state.activeOscillator) {}
     },
-    removeNote: function removeNote(e, pitch) {
-      console.log(e);
-      e.preventDefault();
+    removeNote: function removeNote(index) {
+      this.notes.pop(this.notes[index]);
     }
   }
 });
@@ -420,6 +429,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -437,6 +450,9 @@ __webpack_require__.r(__webpack_exports__);
     notes: function notes() {
       console.log('keys', Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["getKeysArray"])());
       return Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["getKeysArray"])();
+    },
+    currentNoteLength: function currentNoteLength() {
+      return this.$store.state.project.numBars / this.$store.state.project.currentNoteLengthInBars;
     }
   },
   methods: {}
@@ -785,6 +801,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _OscillatorUI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./OscillatorUI */ "./src/js/Components/Sidebar/OscillatorUI.vue");
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+//
 //
 //
 //
@@ -1478,12 +1495,26 @@ var render = function() {
     {
       class: _vm.rowClass,
       attrs: { "data-note": _vm.note },
-      on: { click: _vm.addNote, contextmenu: _vm.removeNote }
+      on: {
+        click: _vm.addNote,
+        contextmenu: function($event) {
+          $event.preventDefault()
+        }
+      }
     },
-    _vm._l(_vm.notes, function(note) {
+    _vm._l(_vm.notes, function(note, index) {
       return _c(
         "div",
-        { key: note.position, staticClass: "note", style: note.noteCSS },
+        {
+          key: note.position,
+          staticClass: "note",
+          style: note.noteCSS,
+          on: {
+            contextmenu: function($event) {
+              _vm.removeNote(index)
+            }
+          }
+        },
         [_c("div", { staticClass: "note__handle" })]
       )
     }),
@@ -1516,13 +1547,24 @@ var render = function() {
     ? _c(
         "div",
         { staticClass: "piano-roll" },
-        _vm._l(_vm.notes, function(note, index) {
-          return _c("PitchRow", {
-            key: note,
-            attrs: { index: index, note: note }
+        [
+          _c(
+            "div",
+            { staticClass: "flex-wrap" },
+            _vm._l(_vm.currentNoteLength, function(divider) {
+              return _c("div", { key: divider, staticClass: "bar-marker" })
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _vm._l(_vm.notes, function(note, index) {
+            return _c("PitchRow", {
+              key: note,
+              attrs: { index: index, note: note }
+            })
           })
-        }),
-        1
+        ],
+        2
       )
     : _vm._e()
 }
@@ -2060,6 +2102,12 @@ var render = function() {
         "button",
         { staticClass: "rack__button", on: { click: _vm.createOscillator } },
         [_vm._v("New Osc")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "rack__button", on: { click: _vm.createOscillator } },
+        [_vm._v("New Sample")]
       ),
       _vm._v(" "),
       _vm._l(_vm.oscillators, function(oscillator) {
@@ -15221,7 +15269,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       numOctaves: 2,
       rootNote: "A",
       numBars: 4,
-      currentNoteLengthInBars: 0.25
+      currentNoteLengthInBars: 0.5
     },
     oscillators: [],
     activeOscillator: null,

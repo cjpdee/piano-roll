@@ -1,12 +1,15 @@
 %piano-key {
+    position: relative;
     display: block;
     width: 100%;
     height: calc(100vh / 24);
     border: none;
+    border-top-right-radius: em(6);
+    border-bottom-right-radius: em(6);
 }
 
 .piano {
-    width: em(60);
+    width: em(80);
     height: 100%;
 
     &__key {
@@ -19,8 +22,22 @@
     }
 
     &__key[data-key*="#"] {
-        background-color: black;
-        &:hover {
+        background-color: white;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        &:after {
+            content:'';
+            background-color: black;
+            width: 75%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            border-top-right-radius: em(6);
+            border-bottom-right-radius: em(6);
+        }
+        &:hover:after {
             background-color: rgb(54, 117, 119);
         }
         &:focus { outline: none; }
@@ -74,6 +91,21 @@
             background-color: rgba(green,0.5);
         }
     }
+}
+
+.flex-wrap {
+    position: absolute;
+    top: 0; right: 0;
+    bottom: 0; left: 0;
+    display: flex;
+    width: 100%;
+    pointer-events: none;
+}
+
+.bar-marker {
+    border: em(0.5) solid rgba(slategrey,0.5);
+    flex: 1 0 auto;
+    z-index: 99;
 }
 
 @for $i from 0 to 25 {

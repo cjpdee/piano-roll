@@ -85,7 +85,7 @@ const store = new Vuex.Store({
 			numOctaves: 2,
 			rootNote: "A",
 			numBars: 4,
-			currentNoteLengthInBars: 0.25
+			currentNoteLengthInBars: 0.5
 		},
 		oscillators: [
 			

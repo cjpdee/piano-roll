@@ -1,9 +1,9 @@
 <template>
 
-	<div :class="rowClass" @click="addNote" @contextmenu="removeNote" :data-note=note>
-		<div class="note" v-for="note in notes" :key="note.position" :style="note.noteCSS">
+	<div :class="rowClass" @click="addNote" @contextmenu.prevent :data-note=note>
+		<div class="note" v-for="(note,index) in notes" @contextmenu="removeNote(index)" :key="note.position" :style="note.noteCSS">
 			<div class="note__handle">
-				
+
 			</div>
 		</div>
 	</div>
@@ -26,6 +26,9 @@ export default {
 
 	},
 
+	// TODO: Send all this data to the store,
+	// organised by the oscillator the note
+	// belongs to, perhaps ordered by position
 	data() {
 		return {
 			notes: []
@@ -36,14 +39,12 @@ export default {
 		rowClass() {
 			return "row row-" + (this.index+1)
 		},
-		notePosition() {
-
-		}
 	},
 
 	methods : {
 		generateId() {
 			let id = Math.floor((Math.random() * 10000000)).toString(16);
+			// TODO: Make a check for other existing note ids
 			// if ( store.state.oscillators.filter(oscillator => oscillator.id == id) ) {
 			// 	return Math.floor((Math.random() * 10000000)).toString(16);
 			// } else {
@@ -52,6 +53,12 @@ export default {
 			return id;
 		},
 		addNote(e) {
+			/*
+				TODO: add the note in slightly left of the cursor,
+				and make a check in case the length of the note
+				overlaps the left or right side
+			*/
+
 			console.log(e.offsetX,e.offsetY);
 			console.log( (e.offsetX / e.target.parentElement.clientWidth) * 100 );
 			let pos = (e.offsetX / e.target.parentElement.clientWidth) * 100;
@@ -59,7 +66,8 @@ export default {
 			console.log(window);
 			let note = {
 				position: pos,
-				noteCSS: 'left: ' + pos + '%; width: ' + lengthPercentage + '%'
+				noteCSS: 'left: ' + pos + '%; width: ' + lengthPercentage + '%',
+				id: this.generateId()
 			}
 			console.log(note);
 
@@ -70,9 +78,8 @@ export default {
 			}
 		},
 
-		removeNote(e,pitch) {
-			console.log(e);
-			e.preventDefault();
+		removeNote(index) {
+			this.notes.pop(this.notes[index]);
 		}
 	}
 }
