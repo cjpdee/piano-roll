@@ -83,7 +83,9 @@ const store = new Vuex.Store({
 			bpm : 130,
 			baseOctave: 2,
 			numOctaves: 2,
-			rootNote: "A"
+			rootNote: "A",
+			numBars: 4,
+			currentNoteLengthInBars: 0.25
 		},
 		oscillators: [
 			
@@ -93,7 +95,7 @@ const store = new Vuex.Store({
 		keypressActive: false,
 
 		data : {
-			notes:        ["A" ,"A#","B" ,"C" ,"C#","D" ,"D#" ,"E","F" ,"F#","G" ,"G#"],
+			notes:  ["A" ,"A#","B" ,"C" ,"C#","D" ,"D#" ,"E","F" ,"F#","G" ,"G#"],
 			keys : {
 				C   : 81,
 				Csh : 50,
@@ -140,6 +142,7 @@ const store = new Vuex.Store({
 		setBPM(state,payload) {
 			this.state.project.bpm = payload.bpm;
 		},
+		// Piano roll setup
 		setBaseOctave(state,payload) {
 			this.state.project.baseOctave = payload.baseOctave;
 		},

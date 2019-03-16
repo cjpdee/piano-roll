@@ -40,9 +40,39 @@
     height: calc(100vh / 24);
     width: 100%;
     background-color: rgb(100, 159, 177);
+    border-bottom: em(1) solid grey;
+    &:last-child {
+        border-bottom: none;
+    }
     
     &[data-note*="#"] {
         background-color: rgb(90, 145, 161);
+    }
+}
+
+.note {
+    position: relative;
+    z-index: 100;
+    display: block;
+    height: 100%;
+    width: em(100);
+
+    border-radius: em(4);
+    background-color: darkslateblue;
+    &:hover {
+        background-color: rgba(darkslateblue,0.95);
+    }
+
+    &__handle {
+        position: absolute;
+        right: 0;
+        width: 5%;
+        height: 100%;
+        border-radius: em(4);
+        background-color: green;
+        &:hover {
+            background-color: rgba(green,0.5);
+        }
     }
 }
 

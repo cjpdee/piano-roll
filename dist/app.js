@@ -321,18 +321,64 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     note: {
+      type: String
+    },
+    thisRowsKey: {
       type: String
     },
     index: {
       type: Number
     }
   },
+  data: function data() {
+    return {
+      notes: []
+    };
+  },
+  computed: {
+    rowClass: function rowClass() {
+      return "row row-" + (this.index + 1);
+    },
+    notePosition: function notePosition() {}
+  },
   methods: {
-    addNote: function addNote(oscillator, pitch) {},
-    removeNote: function removeNote(oscillator, pitch) {}
+    generateId: function generateId() {
+      var id = Math.floor(Math.random() * 10000000).toString(16); // if ( store.state.oscillators.filter(oscillator => oscillator.id == id) ) {
+      // 	return Math.floor((Math.random() * 10000000)).toString(16);
+      // } else {
+      // 	return id;
+      // }
+
+      return id;
+    },
+    addNote: function addNote(e) {
+      console.log(e.offsetX, e.offsetY);
+      console.log(e.offsetX / e.target.parentElement.clientWidth * 100);
+      var pos = e.offsetX / e.target.parentElement.clientWidth * 100;
+      var lengthPercentage = 100 / this.$store.state.project.numBars * this.$store.state.project.currentNoteLengthInBars;
+      console.log(window);
+      var note = {
+        position: pos,
+        noteCSS: 'left: ' + pos + '%; width: ' + lengthPercentage + '%'
+      };
+      console.log(note);
+      this.notes.push(note);
+
+      if (this.$store.state.activeOscillator) {}
+    },
+    removeNote: function removeNote(e, pitch) {
+      console.log(e);
+      e.preventDefault();
+    }
   }
 });
 
@@ -348,29 +394,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PitchRow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PitchRow */ "./src/js/Components/Main/PitchRow.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _store_helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../store/helper */ "./src/js/store/helper.js");
 //
 //
 //
@@ -397,15 +421,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     PitchRow: _PitchRow__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: {
-    notes: {
-      type: Array
+  props: {// notes: {
+    // 	type: Array
+    // }
+  },
+  data: function data() {
+    return {};
+  },
+  computed: {
+    notes: function notes() {
+      console.log('keys', Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["getKeysArray"])());
+      return Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["getKeysArray"])();
     }
-  }
+  },
+  methods: {}
 });
 
 /***/ }),
@@ -867,7 +901,7 @@ __webpack_require__.r(__webpack_exports__);
         _store_store__WEBPACK_IMPORTED_MODULE_0__["Oscillator"].playNote(osc, note);
       } else {
         console.error("There is currently no active oscillator to play");
-      } // this.playOscForInterval(oscillator,note,time)
+      } // this.playOscForInterval
 
     },
     stopKey: function stopKey(e) {
@@ -1439,7 +1473,22 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row", attrs: { "data-note": _vm.note } })
+  return _c(
+    "div",
+    {
+      class: _vm.rowClass,
+      attrs: { "data-note": _vm.note },
+      on: { click: _vm.addNote, contextmenu: _vm.removeNote }
+    },
+    _vm._l(_vm.notes, function(note) {
+      return _c(
+        "div",
+        { key: note.position, staticClass: "note", style: note.noteCSS },
+        [_c("div", { staticClass: "note__handle" })]
+      )
+    }),
+    0
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -1463,14 +1512,19 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "piano-roll" },
-    _vm._l(_vm.notes, function(note, index) {
-      return _c("PitchRow", { key: note, attrs: { note: note, index: index } })
-    }),
-    1
-  )
+  return _vm.notes.length
+    ? _c(
+        "div",
+        { staticClass: "piano-roll" },
+        _vm._l(_vm.notes, function(note, index) {
+          return _c("PitchRow", {
+            key: note,
+            attrs: { index: index, note: note }
+          })
+        }),
+        1
+      )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -14994,6 +15048,65 @@ new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
+/***/ "./src/js/store/helper.js":
+/*!********************************!*\
+  !*** ./src/js/store/helper.js ***!
+  \********************************/
+/*! exports provided: getKeysArray */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getKeysArray", function() { return getKeysArray; });
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./src/js/store/store.js");
+
+function getKeysArray() {
+  /*
+      This function takes the note that the user
+      wants at the bottom of the piano roll and
+      creates a new notes array starting with the
+      chosen root note, and then sets this
+      as the new piano roll order for the whole app
+  */
+  var chosenRootOctave = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.baseOctave;
+  var numOctaves = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.numOctaves;
+  var rootNote = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.rootNote;
+  var notes = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.data.notes;
+  /*
+  this property needs to be sorted out
+  the aim is to increase the octave number
+  in line with the actual note
+  at the moment it's not increasing the octave at the right point
+  so it might play C#3, A4 then suddenly A#5
+  works with A as the rootnote for now though
+  */
+
+  var offset = notes.indexOf(rootNote);
+  var orderedNotes = [];
+
+  for (var j = 0; j < notes.length; j++) {
+    var pointer = (j + offset) % notes.length;
+    orderedNotes.push(notes[pointer]);
+  }
+
+  var notesInRoll = []; // rename this is terrible
+
+  var _loop = function _loop(i) {
+    orderedNotes.forEach(function (note) {
+      notesInRoll.push(note + i);
+    });
+  };
+
+  for (var i = chosenRootOctave; i < chosenRootOctave + numOctaves; i++) {
+    _loop(i);
+  }
+
+  console.log(notesInRoll);
+  return notesInRoll.reverse();
+}
+
+/***/ }),
+
 /***/ "./src/js/store/store.js":
 /*!*******************************!*\
   !*** ./src/js/store/store.js ***!
@@ -15106,7 +15219,9 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       bpm: 130,
       baseOctave: 2,
       numOctaves: 2,
-      rootNote: "A"
+      rootNote: "A",
+      numBars: 4,
+      currentNoteLengthInBars: 0.25
     },
     oscillators: [],
     activeOscillator: null,
@@ -15155,6 +15270,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     setBPM: function setBPM(state, payload) {
       this.state.project.bpm = payload.bpm;
     },
+    // Piano roll setup
     setBaseOctave: function setBaseOctave(state, payload) {
       this.state.project.baseOctave = payload.baseOctave;
     },
@@ -15293,8 +15409,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/Charlie/Code/piano-roll/src/js/main.js */"./src/js/main.js");
-module.exports = __webpack_require__(/*! /Users/Charlie/Code/piano-roll/src/scss/app.scss */"./src/scss/app.scss");
+__webpack_require__(/*! /home/charlie/Code/piano-roll/src/js/main.js */"./src/js/main.js");
+module.exports = __webpack_require__(/*! /home/charlie/Code/piano-roll/src/scss/app.scss */"./src/scss/app.scss");
 
 
 /***/ })

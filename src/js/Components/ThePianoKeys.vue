@@ -44,7 +44,7 @@ export default {
 			} else {
 				console.error("There is currently no active oscillator to play");
 			}
-			// this.playOscForInterval(oscillator,note,time)
+			// this.playOscForInterval
 		},
 
 		stopKey(e) {

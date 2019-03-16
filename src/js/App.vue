@@ -81,12 +81,15 @@ export default {
 
 			let orderedNotes = [];
 			for(let j=0; j < notes.length; j++) {
-				var pointer = (j + offset) % notes.length;
+				let pointer = (j + offset) % notes.length;
 				orderedNotes.push(notes[pointer]);
 			}
 
 
 			let notesInRoll = []; // rename this is terrible
+
+
+
 
 			for (let i = chosenRootOctave; i < chosenRootOctave + numOctaves; i++) {
 				orderedNotes.forEach(note => {
