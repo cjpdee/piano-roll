@@ -75,7 +75,8 @@ class Oscillator {
 	}
 }
 
-
+// TODO: Think about storing this data in localhost in case
+// the user accidentally exits?
 const store = new Vuex.Store({
 	state: {
 		project : {

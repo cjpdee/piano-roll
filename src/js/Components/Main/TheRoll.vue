@@ -45,6 +45,9 @@ export default {
 
 		}
 	},
+	mounted() {
+		
+	},
 	computed: {
 		notes() {
 			console.log('keys',getKeysArray());
@@ -52,6 +55,11 @@ export default {
 		},
 		currentNoteLength() {
 			return this.$store.state.project.numBars / this.$store.state.project.currentNoteLengthInBars
+		},
+		theNotes() {
+			let notes = this.$store.state.data.notes;
+			let rootNote = this.$store.state.project.rootNote;
+			console.log('aav',notes.slice(notes.indexOf(rootNote)));
 		}
 	},
 	methods: {

@@ -81,8 +81,16 @@ export default {
 				this.$store.commit("setRootNote",{
 					rootNote: value
 				})
+				/*
+					TODO: this is the new source of truth for the project's key system.
+					Remember to implement this into the store properly and have it not
+					affect notes already in the project if you change the root note etc.
+				*/
+				let notes = this.$store.state.data.notes;
+				let rootNote = this.$store.state.project.rootNote;
+				console.log('aav',notes.slice(notes.indexOf(rootNote)),notes.slice(0,notes.indexOf(rootNote)));
 			}
-		}
+		},
 	},
 	methods: {
 		startAudioContext() {

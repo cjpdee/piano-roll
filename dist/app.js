@@ -446,6 +446,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {};
   },
+  mounted: function mounted() {},
   computed: {
     notes: function notes() {
       console.log('keys', Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["getKeysArray"])());
@@ -453,6 +454,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     currentNoteLength: function currentNoteLength() {
       return this.$store.state.project.numBars / this.$store.state.project.currentNoteLengthInBars;
+    },
+    theNotes: function theNotes() {
+      var notes = this.$store.state.data.notes;
+      var rootNote = this.$store.state.project.rootNote;
+      console.log('aav', notes.slice(notes.indexOf(rootNote)));
     }
   },
   methods: {}
@@ -778,6 +784,15 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.commit("setRootNote", {
           rootNote: value
         });
+        /*
+        	TODO: this is the new source of truth for the project's key system.
+        	Remember to implement this into the store properly and have it not
+        	affect notes already in the project if you change the root note etc.
+        */
+
+        var notes = this.$store.state.data.notes;
+        var rootNote = this.$store.state.project.rootNote;
+        console.log('aav', notes.slice(notes.indexOf(rootNote)), notes.slice(0, notes.indexOf(rootNote)));
       }
     }
   },
@@ -15258,7 +15273,9 @@ function () {
   }
 
   return Oscillator;
-}();
+}(); // TODO: Think about storing this data in localhost in case
+// the user accidentally exits?
+
 
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
