@@ -115,10 +115,6 @@ export default {
 				this.$store.state.keypressActive = true;
 				this.$store.state.activeOscillator.oscillatorNode && Oscillator.stopNote(this.$store.state.activeOscillator);
 
-				// this.$store.state.oscillators.forEach(function(oscillator) {
-				// 	Oscillator.stopNote(oscillator);
-				// })
-
 				switch (e.keyCode) {
 				case 81:
 					console.log('registered');

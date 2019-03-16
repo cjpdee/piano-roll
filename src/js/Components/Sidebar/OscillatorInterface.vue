@@ -1,7 +1,7 @@
 <template>
-	<div class="oscillator">
+	<label :for=id class="oscillator">
 		<h2>Osc {{ id }}</h2>
-		<input type="radio" name="current_oscillator" @click="setCurrentOscillator" />
+		<input type="radio" name="current_oscillator" :id=id @click="setCurrentOscillator" />
 		<!-- SETUP -->
 		<div class="oscillator__setup-wrap">
 			<select v-model="waveform" class="oscillator__select">
@@ -45,7 +45,7 @@
 				<input v-model="filter_resonance" class="oscillator__property" type="range" id="filter_resonance" /> -->
 			</div>
 		</span>
-	</div>
+	</label>
 </template>
 
 <script>
@@ -176,20 +176,7 @@ export default {
 					oscillator_id: this.id
 				});
 			}
-		},
-		// filter_resonance: {
-		// 	get() {
-		// 		let index = this.$store.state.oscillators.findIndex(oscillator => oscillator.id == this.id);
-		// 		return this.$store.state.oscillators[index].lowpass.resonance;
-		// 	},
-		// 	set(value) {
-		// 		this.$store.commit('lpHpFilter',{
-		// 			filter: "lowpass",
-		// 			property: 'resonance',
-		// 			value: parseInt(value),
-		// 			oscillator_id: this.id
-		// 		});
-		// 	}
+		}
 	},
 	methods: {
 		setCurrentOscillator() {

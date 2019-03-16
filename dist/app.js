@@ -207,9 +207,7 @@ var lastOscillator;
         this.previousKeyCode = e.keyCode;
         this.lastOscillator = _store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator;
         this.$store.state.keypressActive = true;
-        this.$store.state.activeOscillator.oscillatorNode && _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].stopNote(this.$store.state.activeOscillator); // this.$store.state.oscillators.forEach(function(oscillator) {
-        // 	Oscillator.stopNote(oscillator);
-        // })
+        this.$store.state.activeOscillator.oscillatorNode && _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].stopNote(this.$store.state.activeOscillator);
 
         switch (e.keyCode) {
           case 81:
@@ -627,20 +625,7 @@ __webpack_require__.r(__webpack_exports__);
           oscillator_id: this.id
         });
       }
-    } // filter_resonance: {
-    // 	get() {
-    // 		let index = this.$store.state.oscillators.findIndex(oscillator => oscillator.id == this.id);
-    // 		return this.$store.state.oscillators[index].lowpass.resonance;
-    // 	},
-    // 	set(value) {
-    // 		this.$store.commit('lpHpFilter',{
-    // 			filter: "lowpass",
-    // 			property: 'resonance',
-    // 			value: parseInt(value),
-    // 			oscillator_id: this.id
-    // 		});
-    // 	}
-
+    }
   },
   methods: {
     setCurrentOscillator: function setCurrentOscillator() {
@@ -1509,11 +1494,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "oscillator" }, [
+  return _c("label", { staticClass: "oscillator", attrs: { for: _vm.id } }, [
     _c("h2", [_vm._v("Osc " + _vm._s(_vm.id))]),
     _vm._v(" "),
     _c("input", {
-      attrs: { type: "radio", name: "current_oscillator" },
+      attrs: { type: "radio", name: "current_oscillator", id: _vm.id },
       on: { click: _vm.setCurrentOscillator }
     }),
     _vm._v(" "),

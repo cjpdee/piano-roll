@@ -214,8 +214,10 @@ button:before {
 }
 
 .oscillator {
+  display: block;
   border-top: 0.1111111111em solid grey;
   padding: 0.5555555556em;
+  cursor: pointer;
 }
 
 .oscillator h2 {

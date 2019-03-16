@@ -49,8 +49,11 @@ $sidebarPadding : 10;
 }
 
 .oscillator {
+    display: block;
     border-top: em(2) solid grey;
     padding: em(10);
+
+    cursor: pointer;
 
     & h2 {
         display: inline-block;
