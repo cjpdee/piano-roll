@@ -22,6 +22,10 @@ export default {
 	},
 	mounted() {
 		console.log(this.$el);
+		let activeOscillator = this.$store.state.oscillators.find(item => {
+			return item.id === this.$store.state.activeOscillator.id;
+		});
+		console.log(activeOscillator);
 	}
 };
 </script>

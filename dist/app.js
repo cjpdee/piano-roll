@@ -312,7 +312,13 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
+    var _this = this;
+
     console.log(this.$el);
+    var activeOscillator = this.$store.state.oscillators.find(function (item) {
+      return item.id === _this.$store.state.activeOscillator.id;
+    });
+    console.log(activeOscillator);
   }
 });
 
@@ -536,6 +542,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 // Custom wavetables : OscillatorNode.setPeriodicWave()
 // Make filter values relative to the base octave
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -547,15 +585,25 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
+    isOscillatorActive: function isOscillatorActive() {
+      var _this = this;
+
+      // TODO: refactor into a modular function
+      var index = this.$store.state.oscillators.findIndex(function (oscillator) {
+        return oscillator.id == _this.id;
+      });
+      return this.$store.state.oscillators[index] == this.$store.state.activeOscillator;
+    },
+
     /*
     	Waveform
     */
     waveform: {
       get: function get() {
-        var _this = this;
+        var _this2 = this;
 
         var index = this.$store.state.oscillators.findIndex(function (oscillator) {
-          return oscillator.id == _this.id;
+          return oscillator.id == _this2.id;
         });
         return this.$store.state.oscillators[index].waveform;
       },
@@ -572,16 +620,16 @@ __webpack_require__.r(__webpack_exports__);
     */
     volume_amplitude: {
       get: function get() {
-        var _this2 = this;
+        var _this3 = this;
 
         var index = this.$store.state.oscillators.findIndex(function (oscillator) {
-          return oscillator.id == _this2.id;
+          return oscillator.id == _this3.id;
         });
         return this.$store.state.oscillators[index].volume.amplitude;
       },
       set: function set(value) {
-        this.$store.commit('volume', {
-          property: 'amplitude',
+        this.$store.commit("volume", {
+          property: "amplitude",
           value: parseInt(value),
           oscillator_id: this.id
         });
@@ -589,16 +637,16 @@ __webpack_require__.r(__webpack_exports__);
     },
     volume_attack: {
       get: function get() {
-        var _this3 = this;
+        var _this4 = this;
 
         var index = this.$store.state.oscillators.findIndex(function (oscillator) {
-          return oscillator.id == _this3.id;
+          return oscillator.id == _this4.id;
         });
         return this.$store.state.oscillators[index].volume.attack;
       },
       set: function set(value) {
-        this.$store.commit('volume', {
-          property: 'attack',
+        this.$store.commit("volume", {
+          property: "attack",
           value: parseInt(value),
           oscillator_id: this.id
         });
@@ -606,16 +654,16 @@ __webpack_require__.r(__webpack_exports__);
     },
     volume_decay: {
       get: function get() {
-        var _this4 = this;
+        var _this5 = this;
 
         var index = this.$store.state.oscillators.findIndex(function (oscillator) {
-          return oscillator.id == _this4.id;
+          return oscillator.id == _this5.id;
         });
         return this.$store.state.oscillators[index].volume.decay;
       },
       set: function set(value) {
-        this.$store.commit('volume', {
-          property: 'decay',
+        this.$store.commit("volume", {
+          property: "decay",
           value: parseInt(value),
           oscillator_id: this.id
         });
@@ -627,10 +675,10 @@ __webpack_require__.r(__webpack_exports__);
     */
     filter_type: {
       get: function get() {
-        var _this5 = this;
+        var _this6 = this;
 
         var index = this.$store.state.oscillators.findIndex(function (oscillator) {
-          return oscillator.id == _this5.id;
+          return oscillator.id == _this6.id;
         });
         return this.$store.state.oscillators[index].filter.type;
       },
@@ -644,16 +692,16 @@ __webpack_require__.r(__webpack_exports__);
     },
     filter_cutoff: {
       get: function get() {
-        var _this6 = this;
+        var _this7 = this;
 
         var index = this.$store.state.oscillators.findIndex(function (oscillator) {
-          return oscillator.id == _this6.id;
+          return oscillator.id == _this7.id;
         });
         return this.$store.state.oscillators[index].filter.cutoff;
       },
       set: function set(value) {
-        this.$store.commit('biquadFilter', {
-          property: 'cutoff',
+        this.$store.commit("biquadFilter", {
+          property: "cutoff",
           value: parseInt(value),
           oscillator_id: this.id
         });
@@ -661,16 +709,16 @@ __webpack_require__.r(__webpack_exports__);
     },
     filter_attack: {
       get: function get() {
-        var _this7 = this;
+        var _this8 = this;
 
         var index = this.$store.state.oscillators.findIndex(function (oscillator) {
-          return oscillator.id == _this7.id;
+          return oscillator.id == _this8.id;
         });
         return this.$store.state.oscillators[index].filter.attack;
       },
       set: function set(value) {
-        this.$store.commit('biquadFilter', {
-          property: 'attack',
+        this.$store.commit("biquadFilter", {
+          property: "attack",
           value: parseInt(value),
           oscillator_id: this.id
         });
@@ -678,16 +726,16 @@ __webpack_require__.r(__webpack_exports__);
     },
     filter_decay: {
       get: function get() {
-        var _this8 = this;
+        var _this9 = this;
 
         var index = this.$store.state.oscillators.findIndex(function (oscillator) {
-          return oscillator.id == _this8.id;
+          return oscillator.id == _this9.id;
         });
         return this.$store.state.oscillators[index].filter.decay;
       },
       set: function set(value) {
-        this.$store.commit('biquadFilter', {
-          property: 'decay',
+        this.$store.commit("biquadFilter", {
+          property: "decay",
           value: parseInt(value),
           oscillator_id: this.id
         });
@@ -1610,6 +1658,7 @@ var render = function() {
     _vm._v(" "),
     _c("input", {
       attrs: { type: "radio", name: "current_oscillator", id: _vm.id },
+      domProps: { checked: _vm.isOscillatorActive },
       on: { click: _vm.setCurrentOscillator }
     }),
     _vm._v(" "),
