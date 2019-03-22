@@ -1,11 +1,11 @@
 <template>
-	<div :class="rowClass" @click="addNote" @contextmenu.prevent :data-note="note">
+	<div :class="rowClass" @click="addNote" @contextmenu.prevent :data-note="musicKey">
 		<Note
-			class="note"
 			v-for="(note,index) in notes"
 			@contextmenu="removeNote(index)"
 			:key="note.id"
 			:data="note"
+			:musicKey="musicKey"
 		></Note>
 	</div>
 </template>
@@ -13,7 +13,7 @@
 <script>
 export default {
 	props: {
-		note: {
+		musicKey: {
 			type: String
 		},
 		thisRowsKey: {
@@ -67,8 +67,6 @@ export default {
 					position: pos,
 					percentageFromLeft: pos,
 					lengthAsPercentage: lengthPercentage,
-					noteCSS:
-						"left: " + pos + "%; width: " + lengthPercentage + "%",
 					id: this.generateId()
 				};
 

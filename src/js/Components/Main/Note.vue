@@ -7,7 +7,8 @@
 <script>
 export default {
 	props: {
-		data: Object
+		data: Object,
+		musicKey: String
 	},
 	computed: {
 		style() {
@@ -26,6 +27,7 @@ export default {
 			return item.id === this.$store.state.activeOscillator.id;
 		});
 		console.log(activeOscillator);
+		activeOscillator.notes.push(this.data);
 	}
 };
 </script>

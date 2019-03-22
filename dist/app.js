@@ -99,14 +99,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./store/store */ "./src/js/store/store.js");
-/* harmony import */ var _Components_Sidebar_TheSidebar_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Components/Sidebar/TheSidebar.vue */ "./src/js/Components/Sidebar/TheSidebar.vue");
-/* harmony import */ var _Components_Sidebar_TheControls_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Components/Sidebar/TheControls.vue */ "./src/js/Components/Sidebar/TheControls.vue");
-/* harmony import */ var _Components_Sidebar_TheRack_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Components/Sidebar/TheRack.vue */ "./src/js/Components/Sidebar/TheRack.vue");
-/* harmony import */ var _Components_Sidebar_OscillatorUI_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Components/Sidebar/OscillatorUI.vue */ "./src/js/Components/Sidebar/OscillatorUI.vue");
-/* harmony import */ var _Components_ThePianoKeys_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Components/ThePianoKeys.vue */ "./src/js/Components/ThePianoKeys.vue");
-/* harmony import */ var _Components_Main_TheRoll_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Components/Main/TheRoll.vue */ "./src/js/Components/Main/TheRoll.vue");
-/* harmony import */ var _Components_Main_PitchRow_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Components/Main/PitchRow.vue */ "./src/js/Components/Main/PitchRow.vue");
-/* harmony import */ var _Components_Main_Note_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Components/Main/Note.vue */ "./src/js/Components/Main/Note.vue");
+/* harmony import */ var _store_helper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store/helper */ "./src/js/store/helper.js");
+/* harmony import */ var _Components_Sidebar_TheSidebar_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Components/Sidebar/TheSidebar.vue */ "./src/js/Components/Sidebar/TheSidebar.vue");
+/* harmony import */ var _Components_Sidebar_TheControls_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Components/Sidebar/TheControls.vue */ "./src/js/Components/Sidebar/TheControls.vue");
+/* harmony import */ var _Components_Sidebar_TheRack_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Components/Sidebar/TheRack.vue */ "./src/js/Components/Sidebar/TheRack.vue");
+/* harmony import */ var _Components_Sidebar_OscillatorUI_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Components/Sidebar/OscillatorUI.vue */ "./src/js/Components/Sidebar/OscillatorUI.vue");
+/* harmony import */ var _Components_ThePianoKeys_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Components/ThePianoKeys.vue */ "./src/js/Components/ThePianoKeys.vue");
+/* harmony import */ var _Components_Main_TheRoll_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Components/Main/TheRoll.vue */ "./src/js/Components/Main/TheRoll.vue");
+/* harmony import */ var _Components_Main_PitchRow_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Components/Main/PitchRow.vue */ "./src/js/Components/Main/PitchRow.vue");
+/* harmony import */ var _Components_Main_Note_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Components/Main/Note.vue */ "./src/js/Components/Main/Note.vue");
 //
 //
 //
@@ -115,6 +116,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -129,14 +131,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("Note", _Components_Main_Note_vue__WEBPACK_IMPORTED_MODULE_10__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("Note", _Components_Main_Note_vue__WEBPACK_IMPORTED_MODULE_11__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var lastOscillator;
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    TheSidebar: _Components_Sidebar_TheSidebar_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
-    ThePianoKeys: _Components_ThePianoKeys_vue__WEBPACK_IMPORTED_MODULE_7__["default"],
-    TheRoll: _Components_Main_TheRoll_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
+    TheSidebar: _Components_Sidebar_TheSidebar_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+    ThePianoKeys: _Components_ThePianoKeys_vue__WEBPACK_IMPORTED_MODULE_8__["default"],
+    TheRoll: _Components_Main_TheRoll_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
   },
   store: _store_store__WEBPACK_IMPORTED_MODULE_2__["store"],
   data: function data() {
@@ -151,54 +153,11 @@ var lastOscillator;
     _store_store__WEBPACK_IMPORTED_MODULE_2__["store"].commit("createAudioContext");
     window.addEventListener("keydown", this.keydownHandler);
     window.addEventListener("keyup", this.keyupHandler);
+    _store_store__WEBPACK_IMPORTED_MODULE_2__["store"].commit("addOscillator");
   },
   computed: {
     pianoKeys: function pianoKeys() {
-      // rename
-      // TODO: actually remove - this can now be an import from helper.js
-
-      /*
-      	This function takes the note that the user
-      	wants at the bottom of the piano roll and
-      	creates a new notes array starting with the
-      	chosen root note, and then sets this
-      	as the new piano roll order for the whole app
-      */
-      var chosenRootOctave = this.$store.state.project.baseOctave;
-      var numOctaves = this.$store.state.project.numOctaves;
-      var rootNote = this.$store.state.project.rootNote;
-      var notes = this.$store.state.data.notes;
-      /*
-      this property needs to be sorted out
-      the aim is to increase the octave number
-      in line with the actual note
-      at the moment it's not increasing the octave at the right point
-      so it might play C#3, A4 then suddenly A#5
-      works with A as the rootnote for now though
-      */
-
-      var offset = notes.indexOf(rootNote);
-      var orderedNotes = [];
-
-      for (var j = 0; j < notes.length; j++) {
-        var pointer = (j + offset) % notes.length;
-        orderedNotes.push(notes[pointer]);
-      }
-
-      var notesInRoll = []; // rename this is terrible
-
-      var _loop = function _loop(i) {
-        orderedNotes.forEach(function (note) {
-          notesInRoll.push(note + i);
-        });
-      };
-
-      for (var i = chosenRootOctave; i < chosenRootOctave + numOctaves; i++) {
-        _loop(i);
-      }
-
-      console.log(notesInRoll);
-      return notesInRoll.reverse();
+      return Object(_store_helper__WEBPACK_IMPORTED_MODULE_3__["getKeysArray"])();
     }
   },
   methods: {
@@ -304,7 +263,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    data: Object
+    data: Object,
+    musicKey: String
   },
   computed: {
     style: function style() {
@@ -319,6 +279,7 @@ __webpack_require__.r(__webpack_exports__);
       return item.id === _this.$store.state.activeOscillator.id;
     });
     console.log(activeOscillator);
+    activeOscillator.notes.push(this.data);
   }
 });
 
@@ -347,7 +308,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    note: {
+    musicKey: {
       type: String
     },
     thisRowsKey: {
@@ -394,7 +355,6 @@ __webpack_require__.r(__webpack_exports__);
           position: pos,
           percentageFromLeft: pos,
           lengthAsPercentage: lengthPercentage,
-          noteCSS: "left: " + pos + "%; width: " + lengthPercentage + "%",
           id: this.generateId()
         };
         this.notes.push(note);
@@ -443,13 +403,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -466,7 +419,6 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {},
   computed: {
     notes: function notes() {
-      console.log('keys', Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["getKeysArray"])());
       return Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["getKeysArray"])();
     },
     currentNoteLength: function currentNoteLength() {
@@ -475,7 +427,7 @@ __webpack_require__.r(__webpack_exports__);
     theNotes: function theNotes() {
       var notes = this.$store.state.data.notes;
       var rootNote = this.$store.state.project.rootNote;
-      console.log('aav', notes.slice(notes.indexOf(rootNote)));
+      console.log("aav", notes.slice(notes.indexOf(rootNote)));
     }
   },
   methods: {}
@@ -1561,7 +1513,7 @@ var render = function() {
     "div",
     {
       class: _vm.rowClass,
-      attrs: { "data-note": _vm.note },
+      attrs: { "data-note": _vm.musicKey },
       on: {
         click: _vm.addNote,
         contextmenu: function($event) {
@@ -1572,8 +1524,7 @@ var render = function() {
     _vm._l(_vm.notes, function(note, index) {
       return _c("Note", {
         key: note.id,
-        staticClass: "note",
-        attrs: { data: note },
+        attrs: { data: note, musicKey: _vm.musicKey },
         on: {
           contextmenu: function($event) {
             _vm.removeNote(index)
@@ -1623,7 +1574,7 @@ var render = function() {
           _vm._l(_vm.notes, function(note, index) {
             return _c("PitchRow", {
               key: note,
-              attrs: { index: index, note: note }
+              attrs: { index: index, musicKey: note }
             })
           })
         ],
@@ -15173,47 +15124,88 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./src/js/store/store.js");
 
 function getKeysArray() {
-  /*
-      This function takes the note that the user
-      wants at the bottom of the piano roll and
-      creates a new notes array starting with the
-      chosen root note, and then sets this
-      as the new piano roll order for the whole app
-  */
+  /**
+   * This function takes the note that the user
+   * wants at the bottom of the piano roll and
+   * creates a new notes array starting with the
+   * chosen root note, and then sets this
+   * as the new piano roll order for the whole app
+   */
   var chosenRootOctave = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.baseOctave;
   var numOctaves = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.numOctaves;
   var rootNote = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.rootNote;
   var notes = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.data.notes;
-  /*
-  this property needs to be sorted out
-  the aim is to increase the octave number
-  in line with the actual note
-  at the moment it's not increasing the octave at the right point
-  so it might play C#3, A4 then suddenly A#5
-  works with A as the rootnote for now though
-  */
 
-  var offset = notes.indexOf(rootNote);
-  var orderedNotes = [];
+  var octaveNotes = function () {
+    var array = [];
+
+    for (var j = 0; j < notes.length; j++) {
+      var pointer = (j + notes.indexOf('A')) % notes.length;
+      array.push(notes[pointer]); // console.log(notes[pointer]);
+    }
+
+    return array;
+  }(); // offset of rootNote in raw notes array
+
+
+  var offset = notes.indexOf(rootNote); // temp array to store the order of notes
+  // for this root note
+
+  var orderedNotes = []; // gets the order of notes without the octave
 
   for (var j = 0; j < notes.length; j++) {
     var pointer = (j + offset) % notes.length;
-    orderedNotes.push(notes[pointer]);
-  }
+    orderedNotes.push(notes[pointer]); // console.log(notes[pointer]);
+  } // final array to store the order as well as
+  // the octave of each note
+  // this must be consistent & start from C-A#
+
 
   var notesInRoll = []; // rename this is terrible
+  // TODO: replace all instances of"A" with octaveNotes[0]
+
+  /**
+   * All this is probably useless
+   */
+
+  var doesFirstHalfOfOrderNotesContainC = orderedNotes.slice(0, Math.ceil(orderedNotes.length / 2)).includes("A");
+  var computedRootOctave = chosenRootOctave;
+  var computedNumOctaves = numOctaves; // if (doesFirstHalfOfOrderNotesContainC && rootNote != "A") {
+  // 	computedRootOctave--;
+  // 	computedNumOctaves--;
+  // }
+
+  /**
+   * This series of loops run through the number of octaves the user has chosen,
+   * iterating through orderedNotes which starts with the root note and creating
+   * the final array which will display on the piano roll and be used
+   * across the project
+   */
 
   var _loop = function _loop(i) {
     orderedNotes.forEach(function (note) {
-      notesInRoll.push(note + i);
+      /**
+       * this conditional checks for when the current note gets
+       * to the octave boundary (A) which is the correct place to
+       * increment the octave
+       * 
+       * in this situation we are iterating through orderedNotes for
+       * the number of octaves chosen, so we just run through
+       * orderedNotes until we reach A (octave boundary) - then, we add 1
+       * to the note's octave value until we reach the root note.
+       */
+      if (orderedNotes.indexOf(note) > octaveNotes.indexOf(note)) {
+        notesInRoll.push(note + (i + 1));
+      } else {
+        notesInRoll.push(note + i);
+      }
     });
   };
 
-  for (var i = chosenRootOctave; i < chosenRootOctave + numOctaves; i++) {
+  for (var i = computedRootOctave; i < chosenRootOctave + computedNumOctaves; i++) {
     _loop(i);
   }
 
-  console.log(notesInRoll);
   return notesInRoll.reverse();
 }
 
@@ -15318,6 +15310,7 @@ function () {
       resonance: 0,
       filterNode: store.state.audioContext.createBiquadFilter()
     };
+    this.notes = [];
     this.filter.filterNode.type = this.filter.type;
   }
 
@@ -15333,7 +15326,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       bpm: 130,
       baseOctave: 2,
       numOctaves: 2,
-      rootNote: "A",
+      rootNote: "A#",
       numBars: 4,
       currentNoteLengthInBars: 0.5
     },

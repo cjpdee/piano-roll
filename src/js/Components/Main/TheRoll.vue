@@ -12,24 +12,17 @@
 				the user is interacting with the piano roll
 
 			each bar length: fixed or responsive depending on viewport width
-			-->
+		-->
 		<div class="flex-wrap">
-
-			<div class="bar-marker" v-for="divider in currentNoteLength" :key="divider" />
+			<div class="bar-marker" v-for="divider in currentNoteLength" :key="divider"/>
 		</div>
-		<PitchRow
-			v-for="(note,index) in notes"
-			:key=note
-			:index=index
-			:note=note
-		></PitchRow>
+		<PitchRow v-for="(note,index) in notes" :key="note" :index="index" :musicKey="note"></PitchRow>
 	</div>
-
 </template>
 
 <script>
-import PitchRow from './PitchRow';
-import {getKeysArray} from '../../store/helper';
+import PitchRow from "./PitchRow";
+import { getKeysArray } from "../../store/helper";
 
 export default {
 	components: {
@@ -41,29 +34,25 @@ export default {
 		// }
 	},
 	data() {
-		return {
-
-		}
+		return {};
 	},
-	mounted() {
-		
-	},
+	mounted() {},
 	computed: {
 		notes() {
-			console.log('keys',getKeysArray());
 			return getKeysArray();
 		},
 		currentNoteLength() {
-			return this.$store.state.project.numBars / this.$store.state.project.currentNoteLengthInBars
+			return (
+				this.$store.state.project.numBars /
+				this.$store.state.project.currentNoteLengthInBars
+			);
 		},
 		theNotes() {
 			let notes = this.$store.state.data.notes;
 			let rootNote = this.$store.state.project.rootNote;
-			console.log('aav',notes.slice(notes.indexOf(rootNote)));
+			console.log("aav", notes.slice(notes.indexOf(rootNote)));
 		}
 	},
-	methods: {
-	}
-}
-
+	methods: {}
+};
 </script>

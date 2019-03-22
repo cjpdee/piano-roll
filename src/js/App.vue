@@ -12,6 +12,7 @@ import Vuex from "vuex";
 
 import { store } from "./store/store";
 import { Oscillator } from "./store/store";
+import { getKeysArray } from "./store/helper";
 
 // Sidebar components
 import TheSidebar from "./Components/Sidebar/TheSidebar.vue";
@@ -50,56 +51,12 @@ export default {
 		store.commit("createAudioContext");
 		window.addEventListener("keydown", this.keydownHandler);
 		window.addEventListener("keyup", this.keyupHandler);
+		store.commit("addOscillator");
 	},
 
 	computed: {
 		pianoKeys() {
-			// rename
-			// TODO: actually remove - this can now be an import from helper.js
-			/*
-				This function takes the note that the user
-				wants at the bottom of the piano roll and
-				creates a new notes array starting with the
-				chosen root note, and then sets this
-				as the new piano roll order for the whole app
-			*/
-
-			let chosenRootOctave = this.$store.state.project.baseOctave;
-			let numOctaves = this.$store.state.project.numOctaves;
-			let rootNote = this.$store.state.project.rootNote;
-			let notes = this.$store.state.data.notes;
-
-			/*
-			this property needs to be sorted out
-			the aim is to increase the octave number
-			in line with the actual note
-			at the moment it's not increasing the octave at the right point
-			so it might play C#3, A4 then suddenly A#5
-			works with A as the rootnote for now though
-			*/
-
-			let offset = notes.indexOf(rootNote);
-
-			let orderedNotes = [];
-			for (let j = 0; j < notes.length; j++) {
-				let pointer = (j + offset) % notes.length;
-				orderedNotes.push(notes[pointer]);
-			}
-
-			let notesInRoll = []; // rename this is terrible
-
-			for (
-				let i = chosenRootOctave;
-				i < chosenRootOctave + numOctaves;
-				i++
-			) {
-				orderedNotes.forEach(note => {
-					notesInRoll.push(note + i);
-				});
-			}
-
-			console.log(notesInRoll);
-			return notesInRoll.reverse();
+			return getKeysArray();
 		}
 	},
 
