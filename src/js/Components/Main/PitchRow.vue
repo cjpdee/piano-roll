@@ -1,17 +1,16 @@
 <template>
-
-	<div :class="rowClass" @click="addNote" @contextmenu.prevent :data-note=note>
-		<div class="note" v-for="(note,index) in notes" @contextmenu="removeNote(index)" :key="note.position" :style="note.noteCSS">
-			<div class="note__handle">
-
-			</div>
-		</div>
+	<div :class="rowClass" @click="addNote" @contextmenu.prevent :data-note="note">
+		<Note
+			class="note"
+			v-for="(note,index) in notes"
+			@contextmenu="removeNote(index)"
+			:key="note.id"
+			:data="note"
+		></Note>
 	</div>
-
 </template>
 
 <script>
-
 export default {
 	props: {
 		note: {
@@ -23,7 +22,6 @@ export default {
 		index: {
 			type: Number
 		}
-
 	},
 
 	// TODO: Send all this data to the store,
@@ -32,18 +30,18 @@ export default {
 	data() {
 		return {
 			notes: []
-		}
+		};
 	},
 
 	computed: {
 		rowClass() {
-			return "row row-" + (this.index+1)
-		},
+			return "row row-" + (this.index + 1);
+		}
 	},
 
-	methods : {
+	methods: {
 		generateId() {
-			let id = Math.floor((Math.random() * 10000000)).toString(16);
+			let id = Math.floor(Math.random() * 10000000).toString(16);
 			// TODO: Make a check for other existing note ids
 			// if ( store.state.oscillators.filter(oscillator => oscillator.id == id) ) {
 			// 	return Math.floor((Math.random() * 10000000)).toString(16);
@@ -59,22 +57,24 @@ export default {
 				overlaps the left or right side
 			*/
 
-			console.log(e.offsetX,e.offsetY);
-			console.log( (e.offsetX / e.target.parentElement.clientWidth) * 100 );
-			let pos = (e.offsetX / e.target.parentElement.clientWidth) * 100;
-			let lengthPercentage = (100 / (this.$store.state.project.numBars) * this.$store.state.project.currentNoteLengthInBars);
-			console.log(window);
-			let note = {
-				position: pos,
-				noteCSS: 'left: ' + pos + '%; width: ' + lengthPercentage + '%',
-				id: this.generateId()
-			}
-			console.log(note);
-
-			this.notes.push(note);
-
 			if (this.$store.state.activeOscillator) {
-				
+				let pos =
+					(e.offsetX / e.target.parentElement.clientWidth) * 100;
+				let lengthPercentage =
+					(100 / this.$store.state.project.numBars) *
+					this.$store.state.project.currentNoteLengthInBars;
+				let note = {
+					position: pos,
+					percentageFromLeft: pos,
+					lengthAsPercentage: lengthPercentage,
+					noteCSS:
+						"left: " + pos + "%; width: " + lengthPercentage + "%",
+					id: this.generateId()
+				};
+
+				this.notes.push(note);
+			} else {
+				console.error("There is no oscillator to create notes for");
 			}
 		},
 
@@ -82,6 +82,5 @@ export default {
 			this.notes.pop(this.notes[index]);
 		}
 	}
-}
-
+};
 </script>

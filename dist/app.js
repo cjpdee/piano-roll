@@ -129,6 +129,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("Note", _Components_Main_Note_vue__WEBPACK_IMPORTED_MODULE_10__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var lastOscillator;
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -202,7 +203,7 @@ var lastOscillator;
   },
   methods: {
     keydownHandler: function keydownHandler(e) {
-      console.log('triggered');
+      console.log("triggered");
 
       if (_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator && e.keyCode != this.previousKeyCode) {
         this.previousKeyCode = e.keyCode;
@@ -212,56 +213,56 @@ var lastOscillator;
 
         switch (e.keyCode) {
           case 81:
-            console.log('registered');
+            console.log("registered");
             _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "C" + this.$store.state.project.baseOctave);
             this.currentNote = "C" + this.$store.state.project.baseOctave;
             break;
 
           case 50:
-            console.log('registered');
+            console.log("registered");
             _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "C#" + this.$store.state.project.baseOctave);
             this.currentNote = "C#" + this.$store.state.project.baseOctave;
             break;
 
           case 87:
-            console.log('registered');
+            console.log("registered");
             _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "D" + this.$store.state.project.baseOctave);
             this.currentNote = "D" + this.$store.state.project.baseOctave;
             break;
 
           case 51:
-            console.log('registered');
+            console.log("registered");
             _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "D#" + this.$store.state.project.baseOctave);
             this.currentNote = "D#" + this.$store.state.project.baseOctave;
             break;
 
           case 69:
-            console.log('registered');
+            console.log("registered");
             _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "E" + this.$store.state.project.baseOctave);
             break;
 
           case 82:
-            console.log('registered');
+            console.log("registered");
             _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "F" + this.$store.state.project.baseOctave);
             break;
 
           case 53:
-            console.log('registered');
+            console.log("registered");
             _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "F#" + this.$store.state.project.baseOctave);
             break;
 
           case 84:
-            console.log('registered');
+            console.log("registered");
             _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "G" + this.$store.state.project.baseOctave);
             break;
 
           case 54:
-            console.log('registered');
+            console.log("registered");
             _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "G#" + this.$store.state.project.baseOctave);
             break;
 
           case 89:
-            console.log('registered');
+            console.log("registered");
             _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "A" + this.$store.state.project.baseOctave);
             break;
 
@@ -301,9 +302,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    data: Object
+  },
+  computed: {
+    style: function style() {
+      return "left: " + this.data.percentageFromLeft + "%; width: " + this.data.lengthAsPercentage + "%";
+    }
+  },
+  mounted: function mounted() {
+    console.log(this.$el);
+  }
+});
 
 /***/ }),
 
@@ -370,20 +381,20 @@ __webpack_require__.r(__webpack_exports__);
       	and make a check in case the length of the note
       	overlaps the left or right side
       */
-      console.log(e.offsetX, e.offsetY);
-      console.log(e.offsetX / e.target.parentElement.clientWidth * 100);
-      var pos = e.offsetX / e.target.parentElement.clientWidth * 100;
-      var lengthPercentage = 100 / this.$store.state.project.numBars * this.$store.state.project.currentNoteLengthInBars;
-      console.log(window);
-      var note = {
-        position: pos,
-        noteCSS: 'left: ' + pos + '%; width: ' + lengthPercentage + '%',
-        id: this.generateId()
-      };
-      console.log(note);
-      this.notes.push(note);
-
-      if (this.$store.state.activeOscillator) {}
+      if (this.$store.state.activeOscillator) {
+        var pos = e.offsetX / e.target.parentElement.clientWidth * 100;
+        var lengthPercentage = 100 / this.$store.state.project.numBars * this.$store.state.project.currentNoteLengthInBars;
+        var note = {
+          position: pos,
+          percentageFromLeft: pos,
+          lengthAsPercentage: lengthPercentage,
+          noteCSS: "left: " + pos + "%; width: " + lengthPercentage + "%",
+          id: this.generateId()
+        };
+        this.notes.push(note);
+      } else {
+        console.error("There is no oscillator to create notes for");
+      }
     },
     removeNote: function removeNote(index) {
       this.notes.pop(this.notes[index]);
@@ -1472,18 +1483,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "note", style: _vm.style }, [
+    _c("div", { staticClass: "note__handle" })
+  ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "note" }, [
-      _c("div", { staticClass: "note__handle" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -1518,22 +1522,18 @@ var render = function() {
       }
     },
     _vm._l(_vm.notes, function(note, index) {
-      return _c(
-        "div",
-        {
-          key: note.position,
-          staticClass: "note",
-          style: note.noteCSS,
-          on: {
-            contextmenu: function($event) {
-              _vm.removeNote(index)
-            }
+      return _c("Note", {
+        key: note.id,
+        staticClass: "note",
+        attrs: { data: note },
+        on: {
+          contextmenu: function($event) {
+            _vm.removeNote(index)
           }
-        },
-        [_c("div", { staticClass: "note__handle" })]
-      )
+        }
+      })
     }),
-    0
+    1
   )
 }
 var staticRenderFns = []
@@ -15474,8 +15474,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/charlie/Code/piano-roll/src/js/main.js */"./src/js/main.js");
-module.exports = __webpack_require__(/*! /home/charlie/Code/piano-roll/src/scss/app.scss */"./src/scss/app.scss");
+__webpack_require__(/*! /Users/Charlie/Code/piano-roll/src/js/main.js */"./src/js/main.js");
+module.exports = __webpack_require__(/*! /Users/Charlie/Code/piano-roll/src/scss/app.scss */"./src/scss/app.scss");
 
 
 /***/ })
