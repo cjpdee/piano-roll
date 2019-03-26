@@ -55,6 +55,12 @@ class Oscillator {
 		oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
 	}
 
+	static playForDuration(oscillator, note, duration) {
+		Oscillator.playNote(oscillator, note);
+		console.log(store.state.audioContext.currentTime);
+		oscillator.oscillatorNode.stop(store.state.audioContext.currentTime + duration);
+	}
+
 	constructor() {
 		this.id = Oscillator.generateId();
 		this.volume = {
@@ -244,6 +250,12 @@ const store = new Vuex.Store({
 					break;
 			}
 		},
+
+		addNoteForActiveOsc(state, note) {
+			if (this.state.activeOscillator.notes.length < 10) {
+				this.state.activeOscillator.notes.push(note);
+			}
+		}
 	},
 });
 

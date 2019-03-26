@@ -232,6 +232,10 @@ var lastOscillator;
           case 85:
             _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "B" + this.$store.state.project.baseOctave);
             break;
+
+          case 32:
+            //TODO: remove
+            _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playForDuration(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "B" + this.$store.state.project.baseOctave, 1);
         }
       }
     },
@@ -322,13 +326,24 @@ __webpack_require__.r(__webpack_exports__);
   // organised by the oscillator the note
   // belongs to, perhaps ordered by position
   data: function data() {
-    return {
-      notes: []
+    return {// notes: []
     };
   },
   computed: {
     rowClass: function rowClass() {
       return "row row-" + (this.index + 1);
+    },
+    notes: function notes() {
+      var _this = this;
+
+      if (this.$store.state.activeOscillator) {
+        console.log("aa");
+        var thisRowsNotes = this.$store.state.activeOscillator.notes.filter(function (note) {
+          return note.pitch == _this.musicKey;
+        });
+        console.log(thisRowsNotes);
+        return thisRowsNotes;
+      }
     }
   },
   methods: {
@@ -352,12 +367,20 @@ __webpack_require__.r(__webpack_exports__);
         var pos = e.offsetX / e.target.parentElement.clientWidth * 100;
         var lengthPercentage = 100 / this.$store.state.project.numBars * this.$store.state.project.currentNoteLengthInBars;
         var note = {
+          pitch: this.musicKey,
           position: pos,
           percentageFromLeft: pos,
           lengthAsPercentage: lengthPercentage,
           id: this.generateId()
-        };
-        this.notes.push(note);
+        }; // this.notes.push(note);
+        // let index = this.$store.state.oscillators.findIndex(
+        // 	// TODO: make helper function
+        // 	oscillator => oscillator.id == this.id
+        // );
+        // console.log(this.$store.state.oscillators[index]);
+        // this.$store.state.activeOscillator.notes.push(note);
+
+        this.$store.commit("addNoteForActiveOsc", note);
       } else {
         console.error("There is no oscillator to create notes for");
       }
@@ -15141,7 +15164,7 @@ function getKeysArray() {
 
     for (var j = 0; j < notes.length; j++) {
       var pointer = (j + notes.indexOf('A')) % notes.length;
-      array.push(notes[pointer]); // console.log(notes[pointer]);
+      array.push(notes[pointer]);
     }
 
     return array;
@@ -15162,18 +15185,6 @@ function getKeysArray() {
 
 
   var notesInRoll = []; // rename this is terrible
-  // TODO: replace all instances of"A" with octaveNotes[0]
-
-  /**
-   * All this is probably useless
-   */
-
-  var doesFirstHalfOfOrderNotesContainC = orderedNotes.slice(0, Math.ceil(orderedNotes.length / 2)).includes("A");
-  var computedRootOctave = chosenRootOctave;
-  var computedNumOctaves = numOctaves; // if (doesFirstHalfOfOrderNotesContainC && rootNote != "A") {
-  // 	computedRootOctave--;
-  // 	computedNumOctaves--;
-  // }
 
   /**
    * This series of loops run through the number of octaves the user has chosen,
@@ -15202,7 +15213,7 @@ function getKeysArray() {
     });
   };
 
-  for (var i = computedRootOctave; i < chosenRootOctave + computedNumOctaves; i++) {
+  for (var i = chosenRootOctave; i < chosenRootOctave + numOctaves; i++) {
     _loop(i);
   }
 
@@ -15289,6 +15300,13 @@ function () {
     key: "stopNote",
     value: function stopNote(oscillator) {
       oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
+    }
+  }, {
+    key: "playForDuration",
+    value: function playForDuration(oscillator, note, duration) {
+      Oscillator.playNote(oscillator, note);
+      console.log(store.state.audioContext.currentTime);
+      oscillator.oscillatorNode.stop(store.state.audioContext.currentTime + duration);
     }
   }]);
 
@@ -15490,6 +15508,11 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
         case "resonance":
           property.resonance = payload.value;
           break;
+      }
+    },
+    addNoteForActiveOsc: function addNoteForActiveOsc(state, note) {
+      if (this.state.activeOscillator.notes.length < 10) {
+        this.state.activeOscillator.notes.push(note);
       }
     }
   }

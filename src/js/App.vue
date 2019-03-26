@@ -164,6 +164,12 @@ export default {
 							"B" + this.$store.state.project.baseOctave
 						);
 						break;
+					case 32: //TODO: remove
+						Oscillator.playForDuration(
+							store.state.activeOscillator,
+							"B" + this.$store.state.project.baseOctave,
+							1
+						);
 				}
 			}
 		},

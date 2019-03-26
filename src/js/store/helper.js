@@ -20,7 +20,6 @@ export function getKeysArray() {
 		for (let j = 0; j < notes.length; j++) {
 			let pointer = (j + notes.indexOf('A')) % notes.length;
 			array.push(notes[pointer]);
-			// console.log(notes[pointer]);
 		}
 		return array
 	})()
@@ -44,30 +43,13 @@ export function getKeysArray() {
 	// this must be consistent & start from C-A#
 	let notesInRoll = []; // rename this is terrible
 
-
-	// TODO: replace all instances of"A" with octaveNotes[0]
-
-
-	/**
-	 * All this is probably useless
-	 */
-
-	let doesFirstHalfOfOrderNotesContainC = orderedNotes.slice(0, Math.ceil(orderedNotes.length / 2)).includes("A")
-	let computedRootOctave = chosenRootOctave;
-	let computedNumOctaves = numOctaves;
-
-	// if (doesFirstHalfOfOrderNotesContainC && rootNote != "A") {
-	// 	computedRootOctave--;
-	// 	computedNumOctaves--;
-	// }
-
 	/**
 	 * This series of loops run through the number of octaves the user has chosen,
 	 * iterating through orderedNotes which starts with the root note and creating
 	 * the final array which will display on the piano roll and be used
 	 * across the project
 	 */
-	for (let i = computedRootOctave; i < chosenRootOctave + computedNumOctaves; i++) {
+	for (let i = chosenRootOctave; i < chosenRootOctave + numOctaves; i++) {
 		orderedNotes.forEach(note => {
 			/**
 			 * this conditional checks for when the current note gets

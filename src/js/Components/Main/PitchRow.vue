@@ -29,13 +29,23 @@ export default {
 	// belongs to, perhaps ordered by position
 	data() {
 		return {
-			notes: []
+			// notes: []
 		};
 	},
 
 	computed: {
 		rowClass() {
 			return "row row-" + (this.index + 1);
+		},
+		notes() {
+			if (this.$store.state.activeOscillator) {
+				console.log("aa");
+				let thisRowsNotes = this.$store.state.activeOscillator.notes.filter(
+					note => note.pitch == this.musicKey
+				);
+				console.log(thisRowsNotes);
+				return thisRowsNotes;
+			}
 		}
 	},
 
@@ -64,13 +74,20 @@ export default {
 					(100 / this.$store.state.project.numBars) *
 					this.$store.state.project.currentNoteLengthInBars;
 				let note = {
+					pitch: this.musicKey,
 					position: pos,
 					percentageFromLeft: pos,
 					lengthAsPercentage: lengthPercentage,
 					id: this.generateId()
 				};
-
-				this.notes.push(note);
+				// this.notes.push(note);
+				// let index = this.$store.state.oscillators.findIndex(
+				// 	// TODO: make helper function
+				// 	oscillator => oscillator.id == this.id
+				// );
+				// console.log(this.$store.state.oscillators[index]);
+				// this.$store.state.activeOscillator.notes.push(note);
+				this.$store.commit("addNoteForActiveOsc", note);
 			} else {
 				console.error("There is no oscillator to create notes for");
 			}
