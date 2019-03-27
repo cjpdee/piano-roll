@@ -14,7 +14,12 @@
 			each bar length: fixed or responsive depending on viewport width
 		-->
 		<div class="flex-wrap">
-			<div class="bar-marker" v-for="divider in currentNoteLength" :key="divider"/>
+			<div class="bar-marker" v-for="divider in numberOfBars" :key="divider">
+				<div class="beat-marker"></div>
+				<div class="beat-marker"></div>
+				<div class="beat-marker"></div>
+				<div class="beat-marker"></div>
+			</div>
 		</div>
 		<PitchRow v-for="(note,index) in notes" :key="note" :index="index" :musicKey="note"></PitchRow>
 	</div>
@@ -29,13 +34,7 @@ export default {
 		PitchRow
 	},
 	props: {
-		// notes: {
-		// 	type: Array
-		// }
 		bpm: {
-			type: Number
-		},
-		numBars: {
 			type: Number
 		}
 	},
@@ -47,11 +46,11 @@ export default {
 		notes() {
 			return getKeysArray();
 		},
-		currentNoteLength() {
-			return (
-				this.$store.state.project.numBars /
-				this.$store.state.project.currentNoteLengthInBars
-			);
+		numberOfBars() {
+			return this.$store.state.project.numBars;
+		},
+		numBars() {
+			return this.$store.state.project.numBars;
 		},
 		theNotes() {
 			let notes = this.$store.state.data.notes;

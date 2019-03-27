@@ -27,7 +27,9 @@ export default {
 			return item.id === this.$store.state.activeOscillator.id;
 		});
 		console.log(activeOscillator);
-		activeOscillator.notes.push(this.data);
+		// activeOscillator.notes.push(this.data);
+
+		// this.$store.commit("addNoteForActiveOsc", note);
 	}
 };
 </script>

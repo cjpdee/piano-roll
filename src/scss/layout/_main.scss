@@ -1,116 +1,138 @@
 %piano-key {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: calc(100vh / 24);
-    border: none;
-    border-top-right-radius: em(6);
-    border-bottom-right-radius: em(6);
+	position: relative;
+	display: block;
+	width: 100%;
+	height: calc(100vh / 24);
+	border: none;
+	border-top-right-radius: em(6);
+	border-bottom-right-radius: em(6);
 }
 
 .piano {
-    width: em(80);
-    height: 100%;
+	width: em(80);
+	height: 100%;
 
-    &__key {
-        @extend %piano-key;
-        background-color: white;
-        &:hover {
-            background-color: rgb(159, 217, 219);
-        }
-        &:focus { outline: none; }
-    }
+	&__key {
+		@extend %piano-key;
+		background-color: white;
 
-    &__key[data-key*="#"] {
-        background-color: white;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-        &:after {
-            content:'';
-            background-color: black;
-            width: 75%;
-            height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            border-top-right-radius: em(6);
-            border-bottom-right-radius: em(6);
-        }
-        &:hover:after {
-            background-color: rgb(54, 117, 119);
-        }
-        &:focus { outline: none; }
-    }
+		&:hover {
+			background-color: rgb(159, 217, 219);
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	&__key[data-key*="#"] {
+		background-color: white;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+
+		&:after {
+			content: '';
+			background-color: black;
+			width: 75%;
+			height: 100%;
+			position: absolute;
+			left: 0;
+			top: 0;
+			bottom: 0;
+			border-top-right-radius: em(6);
+			border-bottom-right-radius: em(6);
+		}
+
+		&:hover:after {
+			background-color: rgb(54, 117, 119);
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
 }
 
 .piano-roll {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-color: #999999;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: #999999;
 }
 
 .row {
-    position: absolute;
-    top: 0;
-    height: calc(100vh / 24);
-    width: 100%;
-    background-color: rgb(100, 159, 177);
-    border-bottom: em(1) solid grey;
-    &:last-child {
-        border-bottom: none;
-    }
-    
-    &[data-note*="#"] {
-        background-color: rgb(90, 145, 161);
-    }
+	position: absolute;
+	top: 0;
+	height: calc(100vh / 24);
+	width: 100%;
+	background-color: rgb(100, 159, 177);
+	border-bottom: em(1) solid grey;
+
+	&:last-child {
+		border-bottom: none;
+	}
+
+	&[data-note*="#"] {
+		background-color: rgb(90, 145, 161);
+	}
 }
 
 .note {
-    position: relative;
-    z-index: 100;
-    display: block;
-    height: 100%;
-    width: em(100);
+	position: relative;
+	z-index: 100;
+	display: block;
+	height: 100%;
+	// width: em(100);
 
-    border-radius: em(4);
-    background-color: darkslateblue;
-    &:hover {
-        background-color: rgba(darkslateblue,0.95);
-    }
+	border-radius: em(4);
+	background-color: darkslateblue;
 
-    &__handle {
-        position: absolute;
-        right: 0;
-        width: 5%;
-        height: 100%;
-        border-radius: em(4);
-        background-color: green;
-        &:hover {
-            background-color: rgba(green,0.5);
-        }
-    }
+	&:hover {
+		background-color: rgba(darkslateblue, 0.95);
+	}
+
+	&__handle {
+		position: absolute;
+		right: 0;
+		width: 5%;
+		height: 100%;
+		border-radius: em(4);
+		background-color: green;
+
+		&:hover {
+			background-color: rgba(green, 0.5);
+		}
+	}
 }
 
 .flex-wrap {
-    position: absolute;
-    top: 0; right: 0;
-    bottom: 0; left: 0;
-    display: flex;
-    width: 100%;
-    pointer-events: none;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	width: 100%;
+	pointer-events: none;
 }
 
 .bar-marker {
-    border: em(0.5) solid rgba(slategrey,0.5);
-    flex: 1 0 auto;
-    z-index: 99;
+	border: em(0.5) solid rgba(darkblue, 0.3);
+	flex: 1 0 auto;
+	z-index: 99;
+
+	display: flex;
+
+}
+
+.beat-marker {
+	border: em(0.5) solid rgba(slategrey, 0.4);
+	flex: 1 0 auto;
 }
 
 @for $i from 0 to 25 {
-    .row:nth-child(#{$i}) {
-        // because 100% caused gaps
-        top: ((99.9999% / 24) * ($i - 1));
-    }
+	.row:nth-child(#{$i}) {
+		// because 100% caused gaps
+		top: ((99.9999% / 24) * ($i - 1));
+	}
 }

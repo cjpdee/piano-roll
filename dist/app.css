@@ -108,7 +108,6 @@ body {
   z-index: 100;
   display: block;
   height: 100%;
-  width: 5.5555555556em;
   border-radius: 0.2222222222em;
   background-color: darkslateblue;
 }
@@ -142,9 +141,15 @@ body {
 }
 
 .bar-marker {
-  border: 0.0277777778em solid rgba(112, 128, 144, 0.5);
+  border: 0.0277777778em solid rgba(0, 0, 139, 0.3);
   flex: 1 0 auto;
   z-index: 99;
+  display: flex;
+}
+
+.beat-marker {
+  border: 0.0277777778em solid rgba(112, 128, 144, 0.4);
+  flex: 1 0 auto;
 }
 
 .row:nth-child(0) {

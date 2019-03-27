@@ -39,11 +39,10 @@ export default {
 		},
 		notes() {
 			if (this.$store.state.activeOscillator) {
-				console.log("aa");
 				let thisRowsNotes = this.$store.state.activeOscillator.notes.filter(
 					note => note.pitch == this.musicKey
 				);
-				console.log(thisRowsNotes);
+				// console.log(thisRowsNotes);
 				return thisRowsNotes;
 			}
 		}
@@ -70,9 +69,16 @@ export default {
 			if (this.$store.state.activeOscillator) {
 				let pos =
 					(e.offsetX / e.target.parentElement.clientWidth) * 100;
+
 				let lengthPercentage =
+					(100 / this.$store.state.project.numBars / 4) *
+					this.$store.state.project.currentNoteLengthInBeats;
+
+				console.log(this.$store.state.project.currentNoteLengthInBeats);
+				console.log(
 					(100 / this.$store.state.project.numBars) *
-					this.$store.state.project.currentNoteLengthInBars;
+						this.$store.state.project.currentNoteLengthInBeats
+				);
 				let note = {
 					pitch: this.musicKey,
 					position: pos,

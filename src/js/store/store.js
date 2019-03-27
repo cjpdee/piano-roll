@@ -15,8 +15,8 @@ const store = new Vuex.Store({
 			numBars: 4,
 			baseOctave: 2,
 			numOctaves: 2,
-			rootNote: "A#",
-			currentNoteLengthInBars: 0.5 // TODO: redundant?
+			rootNote: "C",
+			currentNoteLengthInBeats: 1
 		},
 		oscillators: [],
 		activeOscillator: null,
@@ -71,6 +71,9 @@ const store = new Vuex.Store({
 		setBPM(state, payload) {
 			this.state.project.bpm = payload.bpm;
 		},
+		setNumBars(state, payload) {
+			this.state.project.numBars = payload.numBars;
+		},
 		// Piano roll setup
 		setBaseOctave(state, payload) {
 			this.state.project.baseOctave = payload.baseOctave;
@@ -80,6 +83,10 @@ const store = new Vuex.Store({
 		},
 		setRootNote(state, payload) {
 			this.state.project.rootNote = payload.rootNote;
+		},
+
+		setNoteLengthInBeats(state, payload) {
+			this.state.project.currentNoteLengthInBeats = payload.length;
 		},
 
 		/*
