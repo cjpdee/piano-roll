@@ -32,6 +32,12 @@ export default {
 		// notes: {
 		// 	type: Array
 		// }
+		bpm: {
+			type: Number
+		},
+		numBars: {
+			type: Number
+		}
 	},
 	data() {
 		return {};

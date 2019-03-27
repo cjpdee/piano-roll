@@ -99,15 +99,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./store/store */ "./src/js/store/store.js");
-/* harmony import */ var _store_helper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store/helper */ "./src/js/store/helper.js");
-/* harmony import */ var _Components_Sidebar_TheSidebar_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Components/Sidebar/TheSidebar.vue */ "./src/js/Components/Sidebar/TheSidebar.vue");
-/* harmony import */ var _Components_Sidebar_TheControls_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Components/Sidebar/TheControls.vue */ "./src/js/Components/Sidebar/TheControls.vue");
-/* harmony import */ var _Components_Sidebar_TheRack_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Components/Sidebar/TheRack.vue */ "./src/js/Components/Sidebar/TheRack.vue");
-/* harmony import */ var _Components_Sidebar_OscillatorUI_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Components/Sidebar/OscillatorUI.vue */ "./src/js/Components/Sidebar/OscillatorUI.vue");
-/* harmony import */ var _Components_ThePianoKeys_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Components/ThePianoKeys.vue */ "./src/js/Components/ThePianoKeys.vue");
-/* harmony import */ var _Components_Main_TheRoll_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Components/Main/TheRoll.vue */ "./src/js/Components/Main/TheRoll.vue");
-/* harmony import */ var _Components_Main_PitchRow_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Components/Main/PitchRow.vue */ "./src/js/Components/Main/PitchRow.vue");
-/* harmony import */ var _Components_Main_Note_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Components/Main/Note.vue */ "./src/js/Components/Main/Note.vue");
+/* harmony import */ var _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store/Oscillator */ "./src/js/store/Oscillator.js");
+/* harmony import */ var _store_helper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./store/helper */ "./src/js/store/helper.js");
+/* harmony import */ var _Components_Sidebar_TheSidebar_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Components/Sidebar/TheSidebar.vue */ "./src/js/Components/Sidebar/TheSidebar.vue");
+/* harmony import */ var _Components_Sidebar_TheControls_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Components/Sidebar/TheControls.vue */ "./src/js/Components/Sidebar/TheControls.vue");
+/* harmony import */ var _Components_Sidebar_TheRack_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Components/Sidebar/TheRack.vue */ "./src/js/Components/Sidebar/TheRack.vue");
+/* harmony import */ var _Components_Sidebar_OscillatorUI_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Components/Sidebar/OscillatorUI.vue */ "./src/js/Components/Sidebar/OscillatorUI.vue");
+/* harmony import */ var _Components_ThePianoKeys_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Components/ThePianoKeys.vue */ "./src/js/Components/ThePianoKeys.vue");
+/* harmony import */ var _Components_Main_TheRoll_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Components/Main/TheRoll.vue */ "./src/js/Components/Main/TheRoll.vue");
+/* harmony import */ var _Components_Main_PitchRow_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Components/Main/PitchRow.vue */ "./src/js/Components/Main/PitchRow.vue");
+/* harmony import */ var _Components_Main_Note_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./Components/Main/Note.vue */ "./src/js/Components/Main/Note.vue");
 //
 //
 //
@@ -131,14 +132,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("Note", _Components_Main_Note_vue__WEBPACK_IMPORTED_MODULE_11__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("Note", _Components_Main_Note_vue__WEBPACK_IMPORTED_MODULE_12__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var lastOscillator;
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    TheSidebar: _Components_Sidebar_TheSidebar_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-    ThePianoKeys: _Components_ThePianoKeys_vue__WEBPACK_IMPORTED_MODULE_8__["default"],
-    TheRoll: _Components_Main_TheRoll_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
+    TheSidebar: _Components_Sidebar_TheSidebar_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
+    ThePianoKeys: _Components_ThePianoKeys_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
+    TheRoll: _Components_Main_TheRoll_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
   },
   store: _store_store__WEBPACK_IMPORTED_MODULE_2__["store"],
   data: function data() {
@@ -157,7 +158,7 @@ var lastOscillator;
   },
   computed: {
     pianoKeys: function pianoKeys() {
-      return Object(_store_helper__WEBPACK_IMPORTED_MODULE_3__["getKeysArray"])();
+      return Object(_store_helper__WEBPACK_IMPORTED_MODULE_4__["getKeysArray"])();
     }
   },
   methods: {
@@ -168,80 +169,80 @@ var lastOscillator;
         this.previousKeyCode = e.keyCode;
         this.lastOscillator = _store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator;
         this.$store.state.keypressActive = true;
-        this.$store.state.activeOscillator.oscillatorNode && _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].stopNote(this.$store.state.activeOscillator);
+        this.$store.state.activeOscillator.oscillatorNode && _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].stopNote(this.$store.state.activeOscillator);
 
         switch (e.keyCode) {
           case 81:
             console.log("registered");
-            _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "C" + this.$store.state.project.baseOctave);
+            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "C" + this.$store.state.project.baseOctave);
             this.currentNote = "C" + this.$store.state.project.baseOctave;
             break;
 
           case 50:
             console.log("registered");
-            _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "C#" + this.$store.state.project.baseOctave);
+            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "C#" + this.$store.state.project.baseOctave);
             this.currentNote = "C#" + this.$store.state.project.baseOctave;
             break;
 
           case 87:
             console.log("registered");
-            _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "D" + this.$store.state.project.baseOctave);
+            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "D" + this.$store.state.project.baseOctave);
             this.currentNote = "D" + this.$store.state.project.baseOctave;
             break;
 
           case 51:
             console.log("registered");
-            _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "D#" + this.$store.state.project.baseOctave);
+            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "D#" + this.$store.state.project.baseOctave);
             this.currentNote = "D#" + this.$store.state.project.baseOctave;
             break;
 
           case 69:
             console.log("registered");
-            _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "E" + this.$store.state.project.baseOctave);
+            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "E" + this.$store.state.project.baseOctave);
             break;
 
           case 82:
             console.log("registered");
-            _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "F" + this.$store.state.project.baseOctave);
+            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "F" + this.$store.state.project.baseOctave);
             break;
 
           case 53:
             console.log("registered");
-            _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "F#" + this.$store.state.project.baseOctave);
+            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "F#" + this.$store.state.project.baseOctave);
             break;
 
           case 84:
             console.log("registered");
-            _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "G" + this.$store.state.project.baseOctave);
+            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "G" + this.$store.state.project.baseOctave);
             break;
 
           case 54:
             console.log("registered");
-            _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "G#" + this.$store.state.project.baseOctave);
+            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "G#" + this.$store.state.project.baseOctave);
             break;
 
           case 89:
             console.log("registered");
-            _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "A" + this.$store.state.project.baseOctave);
+            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "A" + this.$store.state.project.baseOctave);
             break;
 
           case 55:
-            _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "A#" + this.$store.state.project.baseOctave);
+            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "A#" + this.$store.state.project.baseOctave);
             break;
 
           case 85:
-            _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "B" + this.$store.state.project.baseOctave);
+            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "B" + this.$store.state.project.baseOctave);
             break;
 
           case 32:
             //TODO: remove
-            _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].playForDuration(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "B" + this.$store.state.project.baseOctave, 1);
+            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playForDuration(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "B" + this.$store.state.project.baseOctave, 1);
         }
       }
     },
     keyupHandler: function keyupHandler(e) {
       if (this.$store.state.activeOscillator && e.keyCode == this.previousKeyCode) {
-        _store_store__WEBPACK_IMPORTED_MODULE_2__["Oscillator"].stopNote(this.$store.state.activeOscillator);
+        _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].stopNote(this.$store.state.activeOscillator);
         this.$store.state.keypressActive = false;
       }
     }
@@ -432,9 +433,16 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     PitchRow: _PitchRow__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: {// notes: {
+  props: {
+    // notes: {
     // 	type: Array
     // }
+    bpm: {
+      type: Number
+    },
+    numBars: {
+      type: Number
+    }
   },
   data: function data() {
     return {};
@@ -924,7 +932,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store/store */ "./src/js/store/store.js");
+/* harmony import */ var _store_Oscillator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store/Oscillator */ "./src/js/store/Oscillator.js");
 //
 //
 //
@@ -964,7 +972,7 @@ __webpack_require__.r(__webpack_exports__);
       if (this.$store.state.activeOscillator) {
         var osc = this.$store.state.activeOscillator;
         var note = e.target.getAttribute("data-key");
-        _store_store__WEBPACK_IMPORTED_MODULE_0__["Oscillator"].playNote(osc, note);
+        _store_Oscillator__WEBPACK_IMPORTED_MODULE_0__["default"].playNote(osc, note);
       } else {
         console.error("There is currently no active oscillator to play");
       } // this.playOscForInterval
@@ -973,18 +981,17 @@ __webpack_require__.r(__webpack_exports__);
     stopKey: function stopKey(e) {
       if (this.$store.state.activeOscillator) {
         var osc = this.$store.state.activeOscillator;
-        _store_store__WEBPACK_IMPORTED_MODULE_0__["Oscillator"].stopNote(osc);
+        _store_Oscillator__WEBPACK_IMPORTED_MODULE_0__["default"].stopNote(osc);
       }
     }
   }
-  /*
-  For the future:
-  
-  Create a keypress handler that maps 2 octaves to the keyboard
-  
-  */
-
 });
+/*
+For the future:
+
+Create a keypress handler that maps 2 octaves to the keyboard
+
+*/
 
 /***/ }),
 
@@ -15134,17 +15141,142 @@ new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
+/***/ "./src/js/store/Oscillator.js":
+/*!************************************!*\
+  !*** ./src/js/store/Oscillator.js ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Oscillator; });
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./src/js/store/store.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var Oscillator =
+/*#__PURE__*/
+function () {
+  _createClass(Oscillator, null, [{
+    key: "generateId",
+    value: function generateId() {
+      var id = Math.floor(Math.random() * 10000000).toString(16);
+
+      if (_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.oscillators.filter(function (oscillator) {
+        return oscillator.id == id;
+      })) {
+        return Math.floor(Math.random() * 10000000).toString(16);
+      } else {
+        return id;
+      }
+    }
+  }, {
+    key: "noteFrequency",
+    value: function noteFrequency(note) {
+      var tone = note.slice(0, note.length - 1);
+      var octave = note.slice(-1);
+      console.log(tone, octave); // (octave num * keys in octave) + index of note in the notes array
+
+      var keyNumber = octave * 12 + (_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.data.notes.indexOf(tone) + 1); // key is a pretty bad name
+      // The algorithm to get the frequency of a note
+      // from its key number (A0 - C8)
+      // can adjust the tuning - 440 is A4 tuning
+
+      var freq = 440 * Math.pow(2, keyNumber / 12 - 49 / 12);
+      console.log("frequency", freq);
+      return freq;
+    }
+  }, {
+    key: "playNote",
+    value: function playNote(oscillator, note) {
+      // new 1
+      oscillator.oscillatorNode && oscillator.oscillatorNode.stop(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
+      var frequency = Oscillator.noteFrequency(note); // create & setup oscillatorNode to play the note
+
+      oscillator.oscillatorNode = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createOscillator();
+      oscillator.oscillatorNode.type = oscillator.waveform; // Setup filter
+
+      oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
+      oscillator.oscillatorNode.connect(oscillator.filter.filterNode); // Connect filter to audio output
+
+      oscillator.filter.filterNode.connect(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.destination); // Start the oscillator
+
+      oscillator.oscillatorNode.frequency.setValueAtTime(frequency, _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
+      oscillator.oscillatorNode.start();
+    }
+  }, {
+    key: "stopNote",
+    value: function stopNote(oscillator) {
+      oscillator.oscillatorNode && oscillator.oscillatorNode.stop(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
+    }
+  }, {
+    key: "playForDuration",
+    value: function playForDuration(oscillator, note, duration) {
+      Oscillator.playNote(oscillator, note);
+      console.log(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
+      oscillator.oscillatorNode.stop(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime + duration);
+    }
+  }]);
+
+  function Oscillator() {
+    _classCallCheck(this, Oscillator);
+
+    this.id = Oscillator.generateId();
+    this.volume = {
+      amplitude: 50,
+      attack: 0,
+      decay: 0
+    };
+    this.waveform = "sine";
+    this.filter = {
+      type: "lowpass",
+      cutoff: 2000,
+      attack: 0,
+      decay: 0,
+      resonance: 0,
+      filterNode: _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createBiquadFilter()
+    };
+    this.notes = [];
+    this.filter.filterNode.type = this.filter.type;
+  }
+
+  return Oscillator;
+}();
+
+
+
+/***/ }),
+
 /***/ "./src/js/store/helper.js":
 /*!********************************!*\
   !*** ./src/js/store/helper.js ***!
   \********************************/
-/*! exports provided: getKeysArray */
+/*! exports provided: getKeysArray, getSecondsPerBeat, getLoopTimeframe */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getKeysArray", function() { return getKeysArray; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSecondsPerBeat", function() { return getSecondsPerBeat; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getLoopTimeframe", function() { return getLoopTimeframe; });
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./src/js/store/store.js");
+
+/**
+ * KEY
+ * 
+ * Note order functions:
+ * > getKeysArray()
+ * 
+ * Timing functions:
+ * > getSecondsPerBeat()
+ * > getLoopTimeFrame()
+ */
 
 function getKeysArray() {
   /**
@@ -15219,6 +15351,21 @@ function getKeysArray() {
 
   return notesInRoll.reverse();
 }
+/**
+ * Functions related to timing
+ */
+
+function getSecondsPerBeat() {
+  var bpm = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.bpm;
+  return 60 / bpm;
+}
+function getLoopTimeframe() {
+  var numBars = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.numBars;
+  var secondsPerBeat = getSecondsPerBeat();
+  var oneBar = secondsPerBeat * 4; // 4 can be changed if we want to support 3/4 or other time signatures
+
+  return oneBar * numBars;
+}
 
 /***/ }),
 
@@ -15231,122 +15378,30 @@ function getKeysArray() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Oscillator", function() { return Oscillator; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "store", function() { return store; });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+/* harmony import */ var _Oscillator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Oscillator */ "./src/js/store/Oscillator.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Oscillator", function() { return _Oscillator__WEBPACK_IMPORTED_MODULE_2__["default"]; });
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
-var Oscillator =
-/*#__PURE__*/
-function () {
-  _createClass(Oscillator, null, [{
-    key: "generateId",
-    value: function generateId() {
-      var id = Math.floor(Math.random() * 10000000).toString(16);
-
-      if (store.state.oscillators.filter(function (oscillator) {
-        return oscillator.id == id;
-      })) {
-        return Math.floor(Math.random() * 10000000).toString(16);
-      } else {
-        return id;
-      }
-    }
-  }, {
-    key: "noteFrequency",
-    value: function noteFrequency(note) {
-      var tone = note.slice(0, note.length - 1);
-      var octave = note.slice(-1);
-      console.log(tone, octave); // (octave num * keys in octave) + index of note in the notes array
-
-      var keyNumber = octave * 12 + (store.state.data.notes.indexOf(tone) + 1); // key is a pretty bad name
-      // The algorithm to get the frequency of a note
-      // from its key number (A0 - C8)
-      // can adjust the tuning - 440 is A4 tuning
-
-      var freq = 440 * Math.pow(2, keyNumber / 12 - 49 / 12);
-      console.log("frequency", freq);
-      return freq;
-    }
-  }, {
-    key: "playNote",
-    value: function playNote(oscillator, note) {
-      // new 1
-      oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
-      var frequency = Oscillator.noteFrequency(note); // create & setup oscillatorNode to play the note
-
-      oscillator.oscillatorNode = store.state.audioContext.createOscillator();
-      oscillator.oscillatorNode.type = oscillator.waveform; // Setup filter
-
-      oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
-      oscillator.oscillatorNode.connect(oscillator.filter.filterNode); // Connect filter to audio output
-
-      oscillator.filter.filterNode.connect(store.state.audioContext.destination); // Start the oscillator
-
-      oscillator.oscillatorNode.frequency.setValueAtTime(frequency, store.state.audioContext.currentTime);
-      oscillator.oscillatorNode.start();
-    }
-  }, {
-    key: "stopNote",
-    value: function stopNote(oscillator) {
-      oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
-    }
-  }, {
-    key: "playForDuration",
-    value: function playForDuration(oscillator, note, duration) {
-      Oscillator.playNote(oscillator, note);
-      console.log(store.state.audioContext.currentTime);
-      oscillator.oscillatorNode.stop(store.state.audioContext.currentTime + duration);
-    }
-  }]);
-
-  function Oscillator() {
-    _classCallCheck(this, Oscillator);
-
-    this.id = Oscillator.generateId();
-    this.volume = {
-      amplitude: 50,
-      attack: 0,
-      decay: 0
-    };
-    this.waveform = "sine";
-    this.filter = {
-      type: "lowpass",
-      cutoff: 2000,
-      attack: 0,
-      decay: 0,
-      resonance: 0,
-      filterNode: store.state.audioContext.createBiquadFilter()
-    };
-    this.notes = [];
-    this.filter.filterNode.type = this.filter.type;
-  }
-
-  return Oscillator;
-}(); // TODO: Think about storing this data in localhost in case
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]); // TODO: Think about storing this data in localhost in case
 // the user accidentally exits?
-
 
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
     project: {
       name: "myProject",
       bpm: 130,
+      numBars: 4,
       baseOctave: 2,
       numOctaves: 2,
       rootNote: "A#",
-      numBars: 4,
-      currentNoteLengthInBars: 0.5
+      currentNoteLengthInBars: 0.5 // TODO: redundant?
+
     },
     oscillators: [],
     activeOscillator: null,
@@ -15410,7 +15465,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     	Adding / removing oscillators
     */
     addOscillator: function addOscillator() {
-      var osc = new Oscillator();
+      var osc = new _Oscillator__WEBPACK_IMPORTED_MODULE_2__["default"]();
       this.state.oscillators.push(osc);
       this.state.activeOscillator = osc;
     },

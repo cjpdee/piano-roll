@@ -11,7 +11,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import { store } from "./store/store";
-import { Oscillator } from "./store/store";
+import Oscillator from "./store/Oscillator";
 import { getKeysArray } from "./store/helper";
 
 // Sidebar components

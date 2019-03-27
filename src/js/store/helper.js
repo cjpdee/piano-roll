@@ -1,6 +1,19 @@
 import {
 	store
 } from './store';
+
+/**
+ * KEY
+ * 
+ * Note order functions:
+ * > getKeysArray()
+ * 
+ * Timing functions:
+ * > getSecondsPerBeat()
+ * > getLoopTimeFrame()
+ */
+
+
 export function getKeysArray() {
 	/**
 	 * This function takes the note that the user
@@ -70,4 +83,23 @@ export function getKeysArray() {
 	}
 
 	return notesInRoll.reverse()
+}
+
+/**
+ * Functions related to timing
+ */
+
+export function getSecondsPerBeat() {
+	let bpm = store.state.project.bpm;
+	return 60 / bpm;
+}
+
+export function getLoopTimeframe() {
+	let numBars = store.state.project.numBars;
+
+	let secondsPerBeat = getSecondsPerBeat();
+
+	let oneBar = secondsPerBeat * 4; // 4 can be changed if we want to support 3/4 or other time signatures
+
+	return oneBar * numBars;
 }
