@@ -911,8 +911,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    startAudioContext: function startAudioContext() {
-      this.$store.state.audioContext.resume();
+    // startAudioContext() {
+    // 	this.$store.state.audioContext.resume();
+    // },
+    play: function play() {
+      _store_Player__WEBPACK_IMPORTED_MODULE_0__["default"].play();
     }
   }
 });
@@ -2923,7 +2926,11 @@ var render = function() {
         "button",
         {
           staticClass: "project-setup__control green",
-          on: { click: _vm.startAudioContext }
+          on: {
+            click: function($event) {
+              _vm.play()
+            }
+          }
         },
         [_vm._v("Play")]
       ),
@@ -16099,41 +16106,34 @@ function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Player; });
 /* harmony import */ var _Oscillator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Oscillator */ "./src/js/store/Oscillator.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./store */ "./src/js/store/store.js");
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 // a class with all the play + timing methods inside.
 // neccessary? I'm not sure
 
 
-
-var Player =
-/*#__PURE__*/
-function () {
-  function Player() {
-    _classCallCheck(this, Player);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  /**
+   * Get all the notes from each oscillator
+   * and order it by time
+   */
+  createQueue: function createQueue() {
+    var allNotes = [];
+    _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.oscillators.forEach(function (item) {
+      allNotes = allNotes.concat(item.notes);
+    });
+    var sortedNotes = allNotes.sort(function (noteA, noteB) {
+      console.log('note A', noteA.position);
+      console.log('note B', noteB.position);
+      return noteA.position > noteB.position;
+    });
+    console.log('all notes', allNotes);
+    console.log('sorted notes', sortedNotes);
+  },
+  play: function play() {
+    this.createQueue();
   }
-
-  _createClass(Player, [{
-    key: "createQueue",
-    value: function createQueue() {
-      var allNotes = [];
-      _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.oscillators.forEach(function (item) {
-        console.log(item.notes);
-      });
-    }
-  }]);
-
-  return Player;
-}();
-
-
+});
 
 /***/ }),
 

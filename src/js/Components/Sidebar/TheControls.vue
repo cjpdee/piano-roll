@@ -68,7 +68,7 @@
 		</div>
 
 		<span class="project-setup__controls">
-			<button @click="startAudioContext" class="project-setup__control green">Play</button>
+			<button @click="play()" class="project-setup__control green">Play</button>
 			<button class="project-setup__control red">Stop</button>
 		</span>
 	</div>
@@ -162,8 +162,11 @@ export default {
 		}
 	},
 	methods: {
-		startAudioContext() {
-			this.$store.state.audioContext.resume();
+		// startAudioContext() {
+		// 	this.$store.state.audioContext.resume();
+		// },
+		play() {
+			Player.play();
 		}
 	}
 };
