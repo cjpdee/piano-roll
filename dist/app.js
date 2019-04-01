@@ -16118,17 +16118,34 @@ __webpack_require__.r(__webpack_exports__);
    * and order it by time
    */
   createQueue: function createQueue() {
-    var allNotes = [];
+    // create an array which contains all notes from the project
+    var notes = [];
     _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.oscillators.forEach(function (item) {
-      allNotes = allNotes.concat(item.notes);
-    });
-    var sortedNotes = allNotes.sort(function (noteA, noteB) {
-      console.log('note A', noteA.position);
-      console.log('note B', noteB.position);
-      return noteA.position > noteB.position;
-    });
-    console.log('all notes', allNotes);
-    console.log('sorted notes', sortedNotes);
+      notes = notes.concat(item.notes);
+    }); // sort the notes by their position in the roll
+
+    function compare(a, b) {
+      var positionA = a.position;
+      var positionB = b.position;
+      var comparison = 0;
+
+      if (positionA > positionB) {
+        comparison = 1;
+      } else if (positionA < positionB) {
+        comparison = -1;
+      }
+
+      return comparison;
+    }
+
+    console.log('unsorted notes', notes.map(function (x) {
+      return x.position;
+    }));
+    notes.sort(compare);
+    console.log('sorted notes', notes.map(function (x) {
+      return x.position;
+    }));
+    return notes;
   },
   play: function play() {
     this.createQueue();
