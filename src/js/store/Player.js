@@ -5,6 +5,11 @@ import Oscillator from './Oscillator';
 import {
 	store
 } from './store';
+import {
+	secondsPerBeat,
+	loopTimeFrame,
+	noteLength
+} from "./helper";
 
 export default {
 	/**
@@ -42,6 +47,34 @@ export default {
 	},
 
 	play() {
-		this.createQueue();
+
+
+
+		let notes = this.createQueue();
+
+		notes.forEach((note) => {
+			console.log(
+				note.pitch,
+				"length in secs",
+				noteLength(note.lengthAsPercentage),
+				"position in secs",
+				noteLength(note.percentageFromLeft)
+			);
+		})
+		// noteLength(50);
+
+		// let lookahead = 25.0;
+		// let scheduleAheadTime = 0.1;
+
+		// let currentNote = 0;
+		// let nextNoteDueTime = store.state.audioCtx.currentTime;
+
+		// let noteCounter = 0;
+
+		// function nextNote(note) {
+		// 	// TODO: make a function which works out length in time from length as percentage
+		// 	nextNoteDueTime += noteLength(note.lengthAsPercentage); // add the length of the note to the time
+		// }
+
 	}
 };

@@ -16108,8 +16108,10 @@ function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Oscillator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Oscillator */ "./src/js/store/Oscillator.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./store */ "./src/js/store/store.js");
+/* harmony import */ var _helper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helper */ "./src/js/store/helper.js");
 // a class with all the play + timing methods inside.
 // neccessary? I'm not sure
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -16148,7 +16150,19 @@ __webpack_require__.r(__webpack_exports__);
     return notes;
   },
   play: function play() {
-    this.createQueue();
+    var notes = this.createQueue();
+    notes.forEach(function (note) {
+      console.log(note.pitch, "length in secs", Object(_helper__WEBPACK_IMPORTED_MODULE_2__["noteLength"])(note.lengthAsPercentage), "position in secs", Object(_helper__WEBPACK_IMPORTED_MODULE_2__["noteLength"])(note.percentageFromLeft));
+    }); // noteLength(50);
+    // let lookahead = 25.0;
+    // let scheduleAheadTime = 0.1;
+    // let currentNote = 0;
+    // let nextNoteDueTime = store.state.audioCtx.currentTime;
+    // let noteCounter = 0;
+    // function nextNote(note) {
+    // 	// TODO: make a function which works out length in time from length as percentage
+    // 	nextNoteDueTime += noteLength(note.lengthAsPercentage); // add the length of the note to the time
+    // }
   }
 });
 
@@ -16158,14 +16172,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!********************************!*\
   !*** ./src/js/store/helper.js ***!
   \********************************/
-/*! exports provided: getKeysArray, getSecondsPerBeat, getLoopTimeframe */
+/*! exports provided: getKeysArray, secondsPerBeat, loopTimeframe, noteLength */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getKeysArray", function() { return getKeysArray; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSecondsPerBeat", function() { return getSecondsPerBeat; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getLoopTimeframe", function() { return getLoopTimeframe; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "secondsPerBeat", function() { return secondsPerBeat; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loopTimeframe", function() { return loopTimeframe; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "noteLength", function() { return noteLength; });
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./src/js/store/store.js");
 
 /**
@@ -16260,12 +16275,28 @@ function getSecondsPerBeat() {
   var bpm = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.bpm;
   return 60 / bpm;
 }
+
 function getLoopTimeframe() {
   var numBars = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.numBars;
   var secondsPerBeat = getSecondsPerBeat();
   var oneBar = secondsPerBeat * 4; // 4 can be changed if we want to support 3/4 or other time signatures
 
   return oneBar * numBars;
+}
+
+function secondsPerBeat() {
+  getSecondsPerBeat();
+}
+function loopTimeframe() {
+  getLoopTimeframe();
+}
+function noteLength(lengthAsPercentage) {
+  // let secondsPerBeat = getSecondsPerBeat();
+  // let numBeats = store.state.project.numBars * 4;
+  var loopTime = getLoopTimeframe();
+  var noteLengthInSeconds = loopTime / 100 * lengthAsPercentage; // console.log("Note length in seconds", noteLengthInSeconds);
+
+  return noteLengthInSeconds;
 }
 
 /***/ }),

@@ -89,12 +89,12 @@ export function getKeysArray() {
  * Functions related to timing
  */
 
-export function getSecondsPerBeat() {
+function getSecondsPerBeat() {
 	let bpm = store.state.project.bpm;
 	return 60 / bpm;
 }
 
-export function getLoopTimeframe() {
+function getLoopTimeframe() {
 	let numBars = store.state.project.numBars;
 
 	let secondsPerBeat = getSecondsPerBeat();
@@ -102,4 +102,25 @@ export function getLoopTimeframe() {
 	let oneBar = secondsPerBeat * 4; // 4 can be changed if we want to support 3/4 or other time signatures
 
 	return oneBar * numBars;
+}
+
+export function secondsPerBeat() {
+	getSecondsPerBeat();
+}
+
+export function loopTimeframe() {
+	getLoopTimeframe();
+}
+
+export function noteLength(lengthAsPercentage) {
+	// let secondsPerBeat = getSecondsPerBeat();
+	// let numBeats = store.state.project.numBars * 4;
+
+	let loopTime = getLoopTimeframe();
+
+	let noteLengthInSeconds = (loopTime / 100) * lengthAsPercentage;
+
+	// console.log("Note length in seconds", noteLengthInSeconds);
+
+	return noteLengthInSeconds
 }
