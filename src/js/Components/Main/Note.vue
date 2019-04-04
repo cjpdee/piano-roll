@@ -22,11 +22,11 @@ export default {
 		}
 	},
 	mounted() {
-		console.log(this.$el);
+		// console.log(this.$el);
 		let activeOscillator = this.$store.state.oscillators.find(item => {
 			return item.id === this.$store.state.activeOscillator.id;
 		});
-		console.log(activeOscillator);
+		// console.log(activeOscillator);
 		// activeOscillator.notes.push(this.data);
 
 		// this.$store.commit("addNoteForActiveOsc", note);

@@ -112,6 +112,7 @@ export function loopTimeframe() {
 	getLoopTimeframe();
 }
 
+// rename - convertPercentageToTime
 export function noteLength(lengthAsPercentage) {
 	// let secondsPerBeat = getSecondsPerBeat();
 	// let numBeats = store.state.project.numBars * 4;

@@ -74,11 +74,11 @@ export default {
 					(100 / this.$store.state.project.numBars / 4) *
 					this.$store.state.project.currentNoteLengthInBeats;
 
-				console.log(this.$store.state.project.currentNoteLengthInBeats);
-				console.log(
-					(100 / this.$store.state.project.numBars) *
-						this.$store.state.project.currentNoteLengthInBeats
-				);
+				// console.log(this.$store.state.project.currentNoteLengthInBeats);
+				// console.log(
+				// 	(100 / this.$store.state.project.numBars) *
+				// 		this.$store.state.project.currentNoteLengthInBeats
+				// );
 				let note = {
 					pitch: this.musicKey,
 					position: pos,

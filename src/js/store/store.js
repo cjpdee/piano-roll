@@ -11,7 +11,7 @@ const store = new Vuex.Store({
 	state: {
 		project: {
 			name: "myProject",
-			bpm: 130,
+			bpm: 100,
 			numBars: 4,
 			baseOctave: 2,
 			numOctaves: 2,

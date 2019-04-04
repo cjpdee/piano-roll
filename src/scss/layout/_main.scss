@@ -130,9 +130,9 @@
 	flex: 1 0 auto;
 }
 
-@for $i from 0 to 25 {
+@for $i from 0 to 26 {
 	.row:nth-child(#{$i}) {
 		// because 100% caused gaps
-		top: ((99.9999% / 24) * ($i - 1));
+		top: ((99.9999% / 24) * ($i - 2));
 	}
 }

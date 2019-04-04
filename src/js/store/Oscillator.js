@@ -28,9 +28,9 @@ export default class Oscillator {
 		return freq;
 	}
 
-	static playNote(oscillator, note) { // new 1
+	static playNote(oscillator, note, startTime) {
 
-		oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
+		// oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
 
 		let frequency = Oscillator.noteFrequency(note);
 
@@ -47,7 +47,7 @@ export default class Oscillator {
 
 		// Start the oscillator
 		oscillator.oscillatorNode.frequency.setValueAtTime(frequency, store.state.audioContext.currentTime);
-		oscillator.oscillatorNode.start();
+		oscillator.oscillatorNode.start(startTime);
 	}
 
 
@@ -55,10 +55,37 @@ export default class Oscillator {
 		oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
 	}
 
-	static playForDuration(oscillator, note, duration) {
-		Oscillator.playNote(oscillator, note);
-		console.log(store.state.audioContext.currentTime);
-		oscillator.oscillatorNode.stop(store.state.audioContext.currentTime + duration);
+	static playForDuration(oscillator, note, startTime, duration) {
+		// oscillator.playNote:
+		// problem: cannot play multiple notes at the same time
+		// possible solution: use oscillatorNode as an array of nodes, with a tracking system
+
+
+		let frequency = Oscillator.noteFrequency(note);
+
+		// create & setup oscillatorNode to play the note
+		oscillator.oscillatorNode = store.state.audioContext.createOscillator();
+		oscillator.oscillatorNode.type = oscillator.waveform;
+
+		// Setup filter
+		oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
+		oscillator.oscillatorNode.connect(oscillator.filter.filterNode);
+
+		// Connect filter to audio output
+		oscillator.filter.filterNode.connect(store.state.audioContext.destination);
+
+		// Start the oscillator
+		oscillator.oscillatorNode.frequency.setValueAtTime(frequency, store.state.audioContext.currentTime);
+		oscillator.oscillatorNode.start(startTime);
+
+
+		// Oscillator.playNote(oscillator, note, startTime);
+
+
+
+
+		console.log("playForDuration() - current time:", store.state.audioContext.currentTime);
+		oscillator.oscillatorNode.stop(store.state.audioContext.currentTime + 0.5);
 	}
 
 	constructor() {

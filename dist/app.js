@@ -279,11 +279,11 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    console.log(this.$el);
+    // console.log(this.$el);
     var activeOscillator = this.$store.state.oscillators.find(function (item) {
       return item.id === _this.$store.state.activeOscillator.id;
-    });
-    console.log(activeOscillator); // activeOscillator.notes.push(this.data);
+    }); // console.log(activeOscillator);
+    // activeOscillator.notes.push(this.data);
     // this.$store.commit("addNoteForActiveOsc", note);
   }
 });
@@ -365,9 +365,12 @@ __webpack_require__.r(__webpack_exports__);
       */
       if (this.$store.state.activeOscillator) {
         var pos = e.offsetX / e.target.parentElement.clientWidth * 100;
-        var lengthPercentage = 100 / this.$store.state.project.numBars / 4 * this.$store.state.project.currentNoteLengthInBeats;
-        console.log(this.$store.state.project.currentNoteLengthInBeats);
-        console.log(100 / this.$store.state.project.numBars * this.$store.state.project.currentNoteLengthInBeats);
+        var lengthPercentage = 100 / this.$store.state.project.numBars / 4 * this.$store.state.project.currentNoteLengthInBeats; // console.log(this.$store.state.project.currentNoteLengthInBeats);
+        // console.log(
+        // 	(100 / this.$store.state.project.numBars) *
+        // 		this.$store.state.project.currentNoteLengthInBeats
+        // );
+
         var note = {
           pitch: this.musicKey,
           position: pos,
@@ -916,6 +919,9 @@ __webpack_require__.r(__webpack_exports__);
     // },
     play: function play() {
       _store_Player__WEBPACK_IMPORTED_MODULE_0__["default"].play();
+    },
+    stop: function stop() {
+      _store_Player__WEBPACK_IMPORTED_MODULE_0__["default"].stop();
     }
   }
 });
@@ -2935,9 +2941,18 @@ var render = function() {
         [_vm._v("Play")]
       ),
       _vm._v(" "),
-      _c("button", { staticClass: "project-setup__control red" }, [
-        _vm._v("Stop")
-      ])
+      _c(
+        "button",
+        {
+          staticClass: "project-setup__control red",
+          on: {
+            click: function($event) {
+              _vm.stop()
+            }
+          }
+        },
+        [_vm._v("Stop")]
+      )
     ])
   ])
 }
@@ -16038,9 +16053,8 @@ function () {
     }
   }, {
     key: "playNote",
-    value: function playNote(oscillator, note) {
-      // new 1
-      oscillator.oscillatorNode && oscillator.oscillatorNode.stop(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
+    value: function playNote(oscillator, note, startTime) {
+      // oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
       var frequency = Oscillator.noteFrequency(note); // create & setup oscillatorNode to play the note
 
       oscillator.oscillatorNode = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createOscillator();
@@ -16052,7 +16066,7 @@ function () {
       oscillator.filter.filterNode.connect(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.destination); // Start the oscillator
 
       oscillator.oscillatorNode.frequency.setValueAtTime(frequency, _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
-      oscillator.oscillatorNode.start();
+      oscillator.oscillatorNode.start(startTime);
     }
   }, {
     key: "stopNote",
@@ -16061,10 +16075,25 @@ function () {
     }
   }, {
     key: "playForDuration",
-    value: function playForDuration(oscillator, note, duration) {
-      Oscillator.playNote(oscillator, note);
-      console.log(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
-      oscillator.oscillatorNode.stop(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime + duration);
+    value: function playForDuration(oscillator, note, startTime, duration) {
+      // oscillator.playNote:
+      // problem: cannot play multiple notes at the same time
+      // possible solution: use oscillatorNode as an array of nodes, with a tracking system
+      var frequency = Oscillator.noteFrequency(note); // create & setup oscillatorNode to play the note
+
+      oscillator.oscillatorNode = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createOscillator();
+      oscillator.oscillatorNode.type = oscillator.waveform; // Setup filter
+
+      oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
+      oscillator.oscillatorNode.connect(oscillator.filter.filterNode); // Connect filter to audio output
+
+      oscillator.filter.filterNode.connect(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.destination); // Start the oscillator
+
+      oscillator.oscillatorNode.frequency.setValueAtTime(frequency, _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
+      oscillator.oscillatorNode.start(startTime); // Oscillator.playNote(oscillator, note, startTime);
+
+      console.log("playForDuration() - current time:", _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
+      oscillator.oscillatorNode.stop(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime + 0.5);
     }
   }]);
 
@@ -16123,8 +16152,15 @@ __webpack_require__.r(__webpack_exports__);
     // create an array which contains all notes from the project
     var notes = [];
     _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.oscillators.forEach(function (item) {
-      notes = notes.concat(item.notes);
-    }); // sort the notes by their position in the roll
+      var notesArrayWithOscId = []; // Add the oscillator id to each note
+
+      item.notes.forEach(function (noteObj) {
+        noteObj.oscId = item.id;
+        notesArrayWithOscId.push(noteObj);
+      });
+      notes = notes.concat(notesArrayWithOscId);
+    }); // console.log("HERE BOY", notes);
+    // sort the notes by their position in the roll
 
     function compare(a, b) {
       var positionA = a.position;
@@ -16138,31 +16174,91 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return comparison;
-    }
+    } // console.log('unsorted notes', notes.map((x) => x.position));
 
-    console.log('unsorted notes', notes.map(function (x) {
-      return x.position;
-    }));
-    notes.sort(compare);
-    console.log('sorted notes', notes.map(function (x) {
-      return x.position;
-    }));
+
+    notes.sort(compare); // console.log('sorted notes', notes.map((x) => x.position));
+
     return notes;
   },
+  timeout: null,
+  playing: false,
   play: function play() {
-    var notes = this.createQueue();
-    notes.forEach(function (note) {
-      console.log(note.pitch, "length in secs", Object(_helper__WEBPACK_IMPORTED_MODULE_2__["noteLength"])(note.lengthAsPercentage), "position in secs", Object(_helper__WEBPACK_IMPORTED_MODULE_2__["noteLength"])(note.percentageFromLeft));
-    }); // noteLength(50);
-    // let lookahead = 25.0;
-    // let scheduleAheadTime = 0.1;
-    // let currentNote = 0;
-    // let nextNoteDueTime = store.state.audioCtx.currentTime;
-    // let noteCounter = 0;
-    // function nextNote(note) {
-    // 	// TODO: make a function which works out length in time from length as percentage
-    // 	nextNoteDueTime += noteLength(note.lengthAsPercentage); // add the length of the note to the time
-    // }
+    this.playing = true;
+    console.log("PLAY START ------------------------------");
+    var notes = this.createQueue(); // just logging the notes, remove later
+    // notes.forEach((note) => {
+    // 	console.log(
+    // 		note.pitch,
+    // 		"length in secs",
+    // 		noteLength(note.lengthAsPercentage),
+    // 		"position in secs",
+    // 		noteLength(note.percentageFromLeft)
+    // 	);
+    // })
+
+    var lookahead = 25.0;
+    var scheduleAheadTime = 0.1;
+    var currentNote = 0;
+    var nextNoteStartTime = _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + Object(_helper__WEBPACK_IMPORTED_MODULE_2__["noteLength"])(notes[currentNote].lengthAsPercentage); // let startTime = store.state.audioContext.currentTime;
+
+    console.log('time', _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime);
+    console.log('start', nextNoteStartTime);
+    console.log('first note start:', Object(_helper__WEBPACK_IMPORTED_MODULE_2__["noteLength"])(notes[currentNote].percentageFromLeft));
+
+    var _this = this;
+
+    console.log(this);
+
+    function scheduler() {
+      while (nextNoteStartTime < _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + scheduleAheadTime && notes[currentNote]) {
+        scheduleNote(notes[currentNote], nextNoteStartTime);
+        nextNote();
+      }
+
+      _this.playing === true && function () {
+        _this.timeout = window.setTimeout(scheduler, 50.0);
+      }();
+    } // Scheduling basically
+
+
+    var notesInQueue = [];
+
+    function scheduleNote(note, nextNoteStartTime) {
+      // console.log("scheduleNote() note:", note);
+      // console.log("scheduleNote() nextNoteStartTime", nextNoteStartTime);
+      if (note) {
+        var oscillator = _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.oscillators.find(function (item) {
+          return item.id === note.oscId;
+        });
+        _Oscillator__WEBPACK_IMPORTED_MODULE_0__["default"].playForDuration(oscillator, note.pitch, nextNoteStartTime, Object(_helper__WEBPACK_IMPORTED_MODULE_2__["noteLength"])(note.lengthAsPercentage));
+      } else {
+        _this.playing = false;
+        console.log('playback finished');
+      }
+    }
+
+    function nextNote() {
+      if (notes[currentNote]) {
+        var note = notes[currentNote];
+        console.log("nextNote() - current Note: ", note); // TODO: make a function which works out length in time from length as percentage
+        // nextNoteStartTime += noteLength(note.lengthAsPercentage); // add the length of the note to the time
+
+        notes[currentNote + 1] ? nextNoteStartTime += Object(_helper__WEBPACK_IMPORTED_MODULE_2__["noteLength"])(notes[currentNote + 1].percentageFromLeft) : function () {
+          nextNoteStartTime = 0;
+          currentNote = 0;
+        }; // add the distance between the (next note - start time)
+
+        currentNote++;
+      }
+    }
+
+    scheduler();
+  },
+  stop: function stop() {
+    window.clearTimeout(this.timeout);
+    this.playing = false;
+    console.log('playback was stopped');
   }
 });
 
@@ -16289,7 +16385,8 @@ function secondsPerBeat() {
 }
 function loopTimeframe() {
   getLoopTimeframe();
-}
+} // rename - convertPercentageToTime
+
 function noteLength(lengthAsPercentage) {
   // let secondsPerBeat = getSecondsPerBeat();
   // let numBeats = store.state.project.numBars * 4;
@@ -16327,7 +16424,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
     project: {
       name: "myProject",
-      bpm: 130,
+      bpm: 100,
       numBars: 4,
       baseOctave: 2,
       numOctaves: 2,

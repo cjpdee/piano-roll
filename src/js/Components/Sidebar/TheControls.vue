@@ -69,7 +69,7 @@
 
 		<span class="project-setup__controls">
 			<button @click="play()" class="project-setup__control green">Play</button>
-			<button class="project-setup__control red">Stop</button>
+			<button @click="stop()" class="project-setup__control red">Stop</button>
 		</span>
 	</div>
 </template>
@@ -167,6 +167,9 @@ export default {
 		// },
 		play() {
 			Player.play();
+		},
+		stop() {
+			Player.stop();
 		}
 	}
 };
