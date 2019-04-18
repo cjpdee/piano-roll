@@ -2,6 +2,9 @@ A live in-browser piano roll with synthesisers to get musical ideas down quickly
 
 Development Notes:
 
+Future Considerations:
+
+- Implement swing
 
 Todo:
 
@@ -25,11 +28,12 @@ In piano roll:
 - 'onion skin' effect for scales - in notes
 - the scale + key will be controlled from the Controls component
 
+
 - Ability to select root note which the piano roll starts on
 
 
 Drum machine tab - switch using v-if
-
+- Implement swing - changing the timing by a % for certain beats
 
 
 - design something
