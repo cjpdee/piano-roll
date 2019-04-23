@@ -162,9 +162,6 @@ export default {
 		}
 	},
 	methods: {
-		// startAudioContext() {
-		// 	this.$store.state.audioContext.resume();
-		// },
 		play() {
 			Player.play();
 		},

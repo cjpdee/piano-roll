@@ -1,6 +1,9 @@
 import {
 	store
 } from "./store";
+import {
+	durationFromPercentage
+} from "./helper";
 
 export default class Oscillator {
 	static generateId() {
@@ -60,7 +63,6 @@ export default class Oscillator {
 		// problem: cannot play multiple notes at the same time
 		// possible solution: use oscillatorNode as an array of nodes, with a tracking system
 
-
 		let frequency = Oscillator.noteFrequency(note);
 
 		// create & setup oscillatorNode to play the note
@@ -85,7 +87,7 @@ export default class Oscillator {
 
 
 		console.log("playForDuration() - current time:", store.state.audioContext.currentTime);
-		oscillator.oscillatorNode.stop(store.state.audioContext.currentTime + 0.5);
+		oscillator.oscillatorNode.stop(store.state.audioContext.currentTime + duration);
 	}
 
 	constructor() {

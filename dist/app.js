@@ -311,6 +311,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+// rounding function to snap notes to nearest bar
+Number.prototype.floorTo = function (num) {
+  var resto = this % num;
+  return this - resto;
+};
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     musicKey: {
@@ -359,32 +365,31 @@ __webpack_require__.r(__webpack_exports__);
     },
     addNote: function addNote(e) {
       /*
-      	TODO: add the note in slightly left of the cursor,
-      	and make a check in case the length of the note
-      	overlaps the left or right side
+      	TODO: change this system a bit so the user can choose
+      	their settings for grid snapping / time signature.
+      	By default is 4, but they should be able to place
+      	1/3 and 1/6 notes also
+      		default 4,
+      	8, 16
+      		default 3,
+      	6, 12
+      		The note size also needs to reflect this
+      		And for the number keys to work nicely, change the placement
+      	settings to also make use of this system
+      	e.g 1 = 1 beat, a 1/3rd note in 4:3 and a 1/4th note in 4:4
       */
       if (this.$store.state.activeOscillator) {
         var pos = e.offsetX / e.target.parentElement.clientWidth * 100;
-        var lengthPercentage = 100 / this.$store.state.project.numBars / 4 * this.$store.state.project.currentNoteLengthInBeats; // console.log(this.$store.state.project.currentNoteLengthInBeats);
-        // console.log(
-        // 	(100 / this.$store.state.project.numBars) *
-        // 		this.$store.state.project.currentNoteLengthInBeats
-        // );
-
+        var division = 100 / (this.$store.state.project.numBars * this.$store.state.project.timeSignature);
+        var snappedPos = pos.floorTo(division);
+        var lengthPercentage = 100 / this.$store.state.project.numBars / 4 * this.$store.state.project.currentNoteLengthInBeats;
         var note = {
           pitch: this.musicKey,
-          position: pos,
-          percentageFromLeft: pos,
+          position: snappedPos,
+          percentageFromLeft: snappedPos,
           lengthAsPercentage: lengthPercentage,
           id: this.generateId()
-        }; // this.notes.push(note);
-        // let index = this.$store.state.oscillators.findIndex(
-        // 	// TODO: make helper function
-        // 	oscillator => oscillator.id == this.id
-        // );
-        // console.log(this.$store.state.oscillators[index]);
-        // this.$store.state.activeOscillator.notes.push(note);
-
+        };
         this.$store.commit("addNoteForActiveOsc", note);
       } else {
         console.error("There is no oscillator to create notes for");
@@ -914,9 +919,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    // startAudioContext() {
-    // 	this.$store.state.audioContext.resume();
-    // },
     play: function play() {
       _store_Player__WEBPACK_IMPORTED_MODULE_0__["default"].play();
     },
@@ -16011,11 +16013,13 @@ new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Oscillator; });
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./src/js/store/store.js");
+/* harmony import */ var _helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helper */ "./src/js/store/helper.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -16093,7 +16097,7 @@ function () {
       oscillator.oscillatorNode.start(startTime); // Oscillator.playNote(oscillator, note, startTime);
 
       console.log("playForDuration() - current time:", _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
-      oscillator.oscillatorNode.stop(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime + 0.5);
+      oscillator.oscillatorNode.stop(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime + duration);
     }
   }]);
 
@@ -16159,8 +16163,7 @@ __webpack_require__.r(__webpack_exports__);
         notesArrayWithOscId.push(noteObj);
       });
       notes = notes.concat(notesArrayWithOscId);
-    }); // console.log("HERE BOY", notes);
-    // sort the notes by their position in the roll
+    }); // sort the notes by their position in the roll
 
     function compare(a, b) {
       var positionA = a.position;
@@ -16186,25 +16189,15 @@ __webpack_require__.r(__webpack_exports__);
   play: function play() {
     this.playing = true;
     console.log("PLAY START ------------------------------");
-    var notes = this.createQueue(); // just logging the notes, remove later
-    // notes.forEach((note) => {
-    // 	console.log(
-    // 		note.pitch,
-    // 		"length in secs",
-    // 		noteLength(note.lengthAsPercentage),
-    // 		"position in secs",
-    // 		noteLength(note.percentageFromLeft)
-    // 	);
-    // })
-
+    var notes = this.createQueue();
     var lookahead = 25.0;
     var scheduleAheadTime = 0.1;
     var currentNote = 0;
-    var nextNoteStartTime = _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + Object(_helper__WEBPACK_IMPORTED_MODULE_2__["noteLength"])(notes[currentNote].lengthAsPercentage); // let startTime = store.state.audioContext.currentTime;
-
+    var nextNoteStartTime = _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + Object(_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote].percentageFromLeft);
+    var startTime = _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime;
     console.log('time', _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime);
     console.log('start', nextNoteStartTime);
-    console.log('first note start:', Object(_helper__WEBPACK_IMPORTED_MODULE_2__["noteLength"])(notes[currentNote].percentageFromLeft));
+    console.log('first note start:', Object(_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote].percentageFromLeft));
 
     var _this = this;
 
@@ -16225,13 +16218,11 @@ __webpack_require__.r(__webpack_exports__);
     var notesInQueue = [];
 
     function scheduleNote(note, nextNoteStartTime) {
-      // console.log("scheduleNote() note:", note);
-      // console.log("scheduleNote() nextNoteStartTime", nextNoteStartTime);
       if (note) {
         var oscillator = _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.oscillators.find(function (item) {
           return item.id === note.oscId;
         });
-        _Oscillator__WEBPACK_IMPORTED_MODULE_0__["default"].playForDuration(oscillator, note.pitch, nextNoteStartTime, Object(_helper__WEBPACK_IMPORTED_MODULE_2__["noteLength"])(note.lengthAsPercentage));
+        _Oscillator__WEBPACK_IMPORTED_MODULE_0__["default"].playForDuration(oscillator, note.pitch, nextNoteStartTime, Object(_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(note.lengthAsPercentage));
       } else {
         _this.playing = false;
         console.log('playback finished');
@@ -16240,11 +16231,14 @@ __webpack_require__.r(__webpack_exports__);
 
     function nextNote() {
       if (notes[currentNote]) {
-        var note = notes[currentNote];
-        console.log("nextNote() - current Note: ", note); // TODO: make a function which works out length in time from length as percentage
-        // nextNoteStartTime += noteLength(note.lengthAsPercentage); // add the length of the note to the time
+        console.log("nextNote() - current Note: ", notes[currentNote]); // TODO: make a function which works out length in time from length as percentage
+        // nextNoteStartTime += durationFromPercentage(note.lengthAsPercentage); // add the length of the note to the time
+        // console.log("Just played: ", notes[currentNote]);
+        // console.log("Just played: ", durationFromPercentage(notes[currentNote + 1].percentageFromLeft));
+        // console.log("Up next: ", notes[currentNote + 1]);
+        // console.log("Up next: ", durationFromPercentage(notes[currentNote + 1].percentageFromLeft));
 
-        notes[currentNote + 1] ? nextNoteStartTime += Object(_helper__WEBPACK_IMPORTED_MODULE_2__["noteLength"])(notes[currentNote + 1].percentageFromLeft) : function () {
+        notes[currentNote + 1] ? nextNoteStartTime = startTime + Object(_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote + 1].percentageFromLeft) : function () {
           nextNoteStartTime = 0;
           currentNote = 0;
         }; // add the distance between the (next note - start time)
@@ -16268,7 +16262,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!********************************!*\
   !*** ./src/js/store/helper.js ***!
   \********************************/
-/*! exports provided: getKeysArray, secondsPerBeat, loopTimeframe, noteLength */
+/*! exports provided: getKeysArray, secondsPerBeat, loopTimeframe, durationFromPercentage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16276,7 +16270,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getKeysArray", function() { return getKeysArray; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "secondsPerBeat", function() { return secondsPerBeat; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loopTimeframe", function() { return loopTimeframe; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "noteLength", function() { return noteLength; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "durationFromPercentage", function() { return durationFromPercentage; });
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./src/js/store/store.js");
 
 /**
@@ -16387,12 +16381,9 @@ function loopTimeframe() {
   getLoopTimeframe();
 } // rename - convertPercentageToTime
 
-function noteLength(lengthAsPercentage) {
-  // let secondsPerBeat = getSecondsPerBeat();
-  // let numBeats = store.state.project.numBars * 4;
+function durationFromPercentage(lengthAsPercentage) {
   var loopTime = getLoopTimeframe();
-  var noteLengthInSeconds = loopTime / 100 * lengthAsPercentage; // console.log("Note length in seconds", noteLengthInSeconds);
-
+  var noteLengthInSeconds = loopTime / 100 * lengthAsPercentage;
   return noteLengthInSeconds;
 }
 
@@ -16424,7 +16415,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
     project: {
       name: "myProject",
-      bpm: 100,
+      bpm: 120,
+      timeSignature: 4,
       numBars: 4,
       baseOctave: 2,
       numOctaves: 2,

@@ -11,6 +11,12 @@
 </template>
 
 <script>
+// rounding function to snap notes to nearest bar
+Number.prototype.floorTo = function(num) {
+	var resto = this % num;
+	return this - resto;
+};
+
 export default {
 	props: {
 		musicKey: {
@@ -61,38 +67,46 @@ export default {
 		},
 		addNote(e) {
 			/*
-				TODO: add the note in slightly left of the cursor,
-				and make a check in case the length of the note
-				overlaps the left or right side
+				TODO: change this system a bit so the user can choose
+				their settings for grid snapping / time signature.
+				By default is 4, but they should be able to place
+				1/3 and 1/6 notes also
+
+				default 4,
+				8, 16
+
+				default 3,
+				6, 12
+
+				The note size also needs to reflect this
+
+				And for the number keys to work nicely, change the placement
+				settings to also make use of this system
+				e.g 1 = 1 beat, a 1/3rd note in 4:3 and a 1/4th note in 4:4
 			*/
 
 			if (this.$store.state.activeOscillator) {
 				let pos =
 					(e.offsetX / e.target.parentElement.clientWidth) * 100;
 
+				let division =
+					100 /
+					(this.$store.state.project.numBars *
+						this.$store.state.project.timeSignature);
+				let snappedPos = pos.floorTo(division);
+
 				let lengthPercentage =
 					(100 / this.$store.state.project.numBars / 4) *
 					this.$store.state.project.currentNoteLengthInBeats;
 
-				// console.log(this.$store.state.project.currentNoteLengthInBeats);
-				// console.log(
-				// 	(100 / this.$store.state.project.numBars) *
-				// 		this.$store.state.project.currentNoteLengthInBeats
-				// );
 				let note = {
 					pitch: this.musicKey,
-					position: pos,
-					percentageFromLeft: pos,
+					position: snappedPos,
+					percentageFromLeft: snappedPos,
 					lengthAsPercentage: lengthPercentage,
 					id: this.generateId()
 				};
-				// this.notes.push(note);
-				// let index = this.$store.state.oscillators.findIndex(
-				// 	// TODO: make helper function
-				// 	oscillator => oscillator.id == this.id
-				// );
-				// console.log(this.$store.state.oscillators[index]);
-				// this.$store.state.activeOscillator.notes.push(note);
+
 				this.$store.commit("addNoteForActiveOsc", note);
 			} else {
 				console.error("There is no oscillator to create notes for");

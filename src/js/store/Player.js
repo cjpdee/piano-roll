@@ -8,7 +8,7 @@ import {
 import {
 	secondsPerBeat,
 	loopTimeFrame,
-	noteLength
+	durationFromPercentage
 } from "./helper";
 export default {
 
@@ -30,8 +30,6 @@ export default {
 
 			notes = notes.concat(notesArrayWithOscId);
 		});
-
-		// console.log("HERE BOY", notes);
 
 		// sort the notes by their position in the roll
 		function compare(a, b) {
@@ -65,27 +63,16 @@ export default {
 
 		let notes = this.createQueue();
 
-		// just logging the notes, remove later
-		// notes.forEach((note) => {
-		// 	console.log(
-		// 		note.pitch,
-		// 		"length in secs",
-		// 		noteLength(note.lengthAsPercentage),
-		// 		"position in secs",
-		// 		noteLength(note.percentageFromLeft)
-		// 	);
-		// })
-
 		let lookahead = 25.0;
 		let scheduleAheadTime = 0.1;
 
 		let currentNote = 0;
-		let nextNoteStartTime = store.state.audioContext.currentTime + noteLength(notes[currentNote].lengthAsPercentage);
-		// let startTime = store.state.audioContext.currentTime;
+		let nextNoteStartTime = store.state.audioContext.currentTime + durationFromPercentage(notes[currentNote].percentageFromLeft);
+		let startTime = store.state.audioContext.currentTime;
 
 		console.log('time', store.state.audioContext.currentTime);
 		console.log('start', nextNoteStartTime);
-		console.log('first note start:', noteLength(notes[currentNote].percentageFromLeft));
+		console.log('first note start:', durationFromPercentage(notes[currentNote].percentageFromLeft));
 		let _this = this;
 		console.log(this);
 
@@ -100,18 +87,16 @@ export default {
 		}
 
 		// Scheduling basically
+
 		var notesInQueue = [];
 
 		function scheduleNote(note, nextNoteStartTime) {
-
-			// console.log("scheduleNote() note:", note);
-			// console.log("scheduleNote() nextNoteStartTime", nextNoteStartTime);
 			if (note) {
 				let oscillator = store.state.oscillators.find(item => {
 					return item.id === note.oscId;
 				});
 
-				Oscillator.playForDuration(oscillator, note.pitch, nextNoteStartTime, noteLength(note.lengthAsPercentage));
+				Oscillator.playForDuration(oscillator, note.pitch, nextNoteStartTime, durationFromPercentage(note.lengthAsPercentage));
 			} else {
 				_this.playing = false;
 				console.log('playback finished');
@@ -120,13 +105,16 @@ export default {
 
 		function nextNote() {
 			if (notes[currentNote]) {
-				let note = notes[currentNote]
 
-				console.log("nextNote() - current Note: ", note);
+				console.log("nextNote() - current Note: ", notes[currentNote]);
 				// TODO: make a function which works out length in time from length as percentage
-				// nextNoteStartTime += noteLength(note.lengthAsPercentage); // add the length of the note to the time
+				// nextNoteStartTime += durationFromPercentage(note.lengthAsPercentage); // add the length of the note to the time
+				// console.log("Just played: ", notes[currentNote]);
+				// console.log("Just played: ", durationFromPercentage(notes[currentNote + 1].percentageFromLeft));
+				// console.log("Up next: ", notes[currentNote + 1]);
+				// console.log("Up next: ", durationFromPercentage(notes[currentNote + 1].percentageFromLeft));
 
-				notes[currentNote + 1] ? nextNoteStartTime += (noteLength(notes[currentNote + 1].percentageFromLeft)) : () => {
+				notes[currentNote + 1] ? nextNoteStartTime = startTime + (durationFromPercentage(notes[currentNote + 1].percentageFromLeft)) : () => {
 					nextNoteStartTime = 0;
 					currentNote = 0;
 				}; // add the distance between the (next note - start time)

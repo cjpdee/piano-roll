@@ -78,11 +78,10 @@
 }
 
 .note {
-	position: relative;
+	position: absolute;
 	z-index: 100;
-	display: block;
+	display: inline-block;
 	height: 100%;
-	// width: em(100);
 
 	border-radius: em(4);
 	background-color: darkslateblue;

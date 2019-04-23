@@ -104,9 +104,9 @@ body {
 }
 
 .note {
-  position: relative;
+  position: absolute;
   z-index: 100;
-  display: block;
+  display: inline-block;
   height: 100%;
   border-radius: 0.2222222222em;
   background-color: darkslateblue;

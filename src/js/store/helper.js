@@ -113,15 +113,10 @@ export function loopTimeframe() {
 }
 
 // rename - convertPercentageToTime
-export function noteLength(lengthAsPercentage) {
-	// let secondsPerBeat = getSecondsPerBeat();
-	// let numBeats = store.state.project.numBars * 4;
-
+export function durationFromPercentage(lengthAsPercentage) {
 	let loopTime = getLoopTimeframe();
 
 	let noteLengthInSeconds = (loopTime / 100) * lengthAsPercentage;
-
-	// console.log("Note length in seconds", noteLengthInSeconds);
 
 	return noteLengthInSeconds
 }
