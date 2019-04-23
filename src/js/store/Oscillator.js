@@ -61,10 +61,6 @@ export default class Oscillator {
 	static playForDuration(oscillator, note, startTime, duration) {
 		let frequency = Oscillator.noteFrequency(note);
 
-		console.log('-------- note start ---------');
-		console.log('start: ', startTime);
-		console.log('computed finish: ', startTime + duration)
-
 		// create & setup oscillatorNode to play the note
 		oscillator.oscillatorNode = store.state.audioContext.createOscillator();
 		oscillator.oscillatorNode.type = oscillator.waveform;

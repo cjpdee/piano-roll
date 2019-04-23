@@ -27,7 +27,6 @@ export default {
 				let thisRowsNotes = this.$store.state.activeOscillator.notes.filter(
 					note => note.pitch == this.musicKey
 				);
-				// console.log(thisRowsNotes);
 				return thisRowsNotes;
 			}
 		}

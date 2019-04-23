@@ -1,5 +1,5 @@
 <template>
-	<div :style="style" class="note" @contextmenu.prevent="removeNote">
+	<div :style="style" class="note" :id="data.id" @contextmenu.prevent="removeNote">
 		<div class="note__handle" @click="resize"></div>
 	</div>
 </template>

@@ -121,7 +121,7 @@ body {
 .note__handle {
   position: absolute;
   right: 0;
-  width: 5%;
+  width: 1.1111111111em;
   height: 100%;
   border-radius: 0.2222222222em;
   background-color: green;

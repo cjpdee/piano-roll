@@ -188,9 +188,14 @@ const store = new Vuex.Store({
 			}
 		},
 
-		removeNoteFromActiveOsc(state, note) {
-			if (this.state.activeOscillator.notes.length) {
-				this.state.activeOscillator.notes.pop(note);
+		removeNoteFromActiveOsc(state, e) {
+			// TODO: fix
+			if (this.state.activeOscillator.notes.length > -1) {
+				console.log(this.state.activeOscillator.notes.findIndex(note => note.id === e.target.id));
+				this.state.activeOscillator.notes.splice(
+					this.state.activeOscillator.notes.findIndex(note => note.id === e.target.id),
+					this.state.activeOscillator.notes.findIndex(note => note.id === e.target.id)
+				);
 			}
 		}
 	},

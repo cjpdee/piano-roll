@@ -419,8 +419,7 @@ __webpack_require__.r(__webpack_exports__);
       if (this.$store.state.activeOscillator) {
         var thisRowsNotes = this.$store.state.activeOscillator.notes.filter(function (note) {
           return note.pitch == _this.musicKey;
-        }); // console.log(thisRowsNotes);
-
+        });
         return thisRowsNotes;
       }
     }
@@ -2316,6 +2315,7 @@ var render = function() {
     {
       staticClass: "note",
       style: _vm.style,
+      attrs: { id: _vm.data.id },
       on: {
         contextmenu: function($event) {
           $event.preventDefault()
@@ -16167,10 +16167,7 @@ function () {
   }, {
     key: "playForDuration",
     value: function playForDuration(oscillator, note, startTime, duration) {
-      var frequency = Oscillator.noteFrequency(note);
-      console.log('-------- note start ---------');
-      console.log('start: ', startTime);
-      console.log('computed finish: ', startTime + duration); // create & setup oscillatorNode to play the note
+      var frequency = Oscillator.noteFrequency(note); // create & setup oscillatorNode to play the note
 
       oscillator.oscillatorNode = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createOscillator();
       oscillator.oscillatorNode.type = oscillator.waveform; // Setup filter
@@ -16682,9 +16679,17 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
         this.state.activeOscillator.notes.push(note);
       }
     },
-    removeNoteFromActiveOsc: function removeNoteFromActiveOsc(state, note) {
-      if (this.state.activeOscillator.notes.length) {
-        this.state.activeOscillator.notes.pop(note);
+    removeNoteFromActiveOsc: function removeNoteFromActiveOsc(state, e) {
+      // TODO: fix
+      if (this.state.activeOscillator.notes.length > -1) {
+        console.log(this.state.activeOscillator.notes.findIndex(function (note) {
+          return note.id === e.target.id;
+        }));
+        this.state.activeOscillator.notes.splice(this.state.activeOscillator.notes.findIndex(function (note) {
+          return note.id === e.target.id;
+        }), this.state.activeOscillator.notes.findIndex(function (note) {
+          return note.id === e.target.id;
+        }));
       }
     }
   }
