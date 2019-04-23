@@ -73,6 +73,10 @@ export default {
 				this.$store.state.activeOscillator.oscillatorNode &&
 					Oscillator.stopNote(this.$store.state.activeOscillator);
 
+				/**
+				 * TODO: This whole section can be done with vue directives
+				 * on the pianoKeys component
+				 */
 				switch (e.keyCode) {
 					case 81:
 						console.log("registered");

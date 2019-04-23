@@ -106,14 +106,6 @@ export default {
 		function nextNote() {
 			if (notes[currentNote]) {
 
-				console.log("nextNote() - current Note: ", notes[currentNote]);
-				// TODO: make a function which works out length in time from length as percentage
-				// nextNoteStartTime += durationFromPercentage(note.lengthAsPercentage); // add the length of the note to the time
-				// console.log("Just played: ", notes[currentNote]);
-				// console.log("Just played: ", durationFromPercentage(notes[currentNote + 1].percentageFromLeft));
-				// console.log("Up next: ", notes[currentNote + 1]);
-				// console.log("Up next: ", durationFromPercentage(notes[currentNote + 1].percentageFromLeft));
-
 				notes[currentNote + 1] ? nextNoteStartTime = startTime + (durationFromPercentage(notes[currentNote + 1].percentageFromLeft)) : () => {
 					nextNoteStartTime = 0;
 					currentNote = 0;

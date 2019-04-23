@@ -183,8 +183,14 @@ const store = new Vuex.Store({
 		},
 
 		addNoteForActiveOsc(state, note) {
-			if (this.state.activeOscillator.notes.length < 10) {
+			if (this.state.activeOscillator.notes.length < 32) {
 				this.state.activeOscillator.notes.push(note);
+			}
+		},
+
+		removeNoteFromActiveOsc(state, note) {
+			if (this.state.activeOscillator.notes.length) {
+				this.state.activeOscillator.notes.pop(note);
 			}
 		}
 	},

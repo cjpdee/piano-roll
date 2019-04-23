@@ -1,18 +1,12 @@
 <template>
-	<div class="piano-roll" v-if="notes.length">
-		<!-- 
-			absolute positioned grid system
-				height of each row: ( 100vh / 24 )
-				top: 0;
-					then: ( ( 100vh / 24 ) * number of items - 1 )
-					calc(100vh / 24 * x)
-				for smaller viewport heights: divide everything by 12 instead
-
-				using absolute positioning to prevent heavy reflows when
-				the user is interacting with the piano roll
-
-			each bar length: fixed or responsive depending on viewport width
-		-->
+	<div
+		class="piano-roll"
+		v-if="notes.length"
+		@mousedown="mousedownHandler"
+		@mousemove="mousemoveHandler"
+		@mouseup="mouseupHandler"
+		@contextmenu.prevent="contextmenuHandler"
+	>
 		<div class="flex-wrap">
 			<div class="bar-marker" v-for="divider in numberOfBars" :key="divider">
 				<div class="beat-marker"></div>
@@ -32,11 +26,6 @@ import { getKeysArray } from "../../store/helper";
 export default {
 	components: {
 		PitchRow
-	},
-	props: {
-		bpm: {
-			type: Number
-		}
 	},
 	data() {
 		return {};
@@ -58,6 +47,17 @@ export default {
 			console.log("aav", notes.slice(notes.indexOf(rootNote)));
 		}
 	},
-	methods: {}
+	methods: {
+		mousedownHandler(e) {
+			if (e.target.classList.contains("row")) {
+				console.log("clicked pitch row");
+			} else if (e.target.classList.contains("note")) {
+				console.log("clicked note");
+			}
+		},
+		mouseupHandler(e) {},
+		mousemoveHandler(e) {},
+		contextmenuHandler(e) {}
+	}
 };
 </script>

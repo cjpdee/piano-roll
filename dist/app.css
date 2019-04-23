@@ -110,6 +110,8 @@ body {
   height: 100%;
   border-radius: 0.2222222222em;
   background-color: darkslateblue;
+  cursor: -webkit-grab;
+  cursor: grab;
 }
 
 .note:hover {
@@ -123,6 +125,7 @@ body {
   height: 100%;
   border-radius: 0.2222222222em;
   background-color: green;
+  cursor: ew-resize;
 }
 
 .note__handle:hover {

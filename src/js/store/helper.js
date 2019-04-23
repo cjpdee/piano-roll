@@ -13,6 +13,12 @@ import {
  * > getLoopTimeFrame()
  */
 
+// rounding function to snap notes to nearest bar
+Number.prototype.floorTo = function(num) {
+	var resto = this % num;
+	return this - resto;
+};
+
 
 export function getKeysArray() {
 	/**
@@ -86,9 +92,10 @@ export function getKeysArray() {
 }
 
 /**
- * Functions related to timing
+ * TIMING FUNCTIONS
  */
 
+// These two aren't 
 function getSecondsPerBeat() {
 	let bpm = store.state.project.bpm;
 	return 60 / bpm;
@@ -112,7 +119,7 @@ export function loopTimeframe() {
 	getLoopTimeframe();
 }
 
-// rename - convertPercentageToTime
+// get duration from a percentage of the loop
 export function durationFromPercentage(lengthAsPercentage) {
 	let loopTime = getLoopTimeframe();
 

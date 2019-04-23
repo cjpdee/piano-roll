@@ -170,6 +170,10 @@ var lastOscillator;
         this.lastOscillator = _store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator;
         this.$store.state.keypressActive = true;
         this.$store.state.activeOscillator.oscillatorNode && _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].stopNote(this.$store.state.activeOscillator);
+        /**
+         * TODO: This whole section can be done with vue directives
+         * on the pianoKeys component
+         */
 
         switch (e.keyCode) {
           case 81:
@@ -260,12 +264,28 @@ var lastOscillator;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _store_helper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../store/helper */ "./src/js/store/helper.js");
 //
 //
 //
 //
 //
 //
+//
+//
+
+/*
+	@contextmenu.prevent="removeNote"
+	@mousedown.stop="dragStart"
+	@mousemove="drag"
+	@mouseup.stop="dragEnd"
+ */
+
+var isDragging = false;
+var isResizing = false;
+var currentX;
+var initialX;
+var xOffset = 0;
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     data: Object,
@@ -285,6 +305,78 @@ __webpack_require__.r(__webpack_exports__);
     }); // console.log(activeOscillator);
     // activeOscillator.notes.push(this.data);
     // this.$store.commit("addNoteForActiveOsc", note);
+  },
+  methods: {
+    removeNote: function removeNote(note) {
+      this.$store.commit("removeNoteFromActiveOsc", note);
+    },
+    // Moving
+    dragStart: function dragStart(e) {
+      console.log(this.$el);
+      initialX = e.clientX - xOffset;
+
+      if (this.$el === e.target) {
+        isDragging = true;
+        console.log("isDragging = ", isDragging);
+      }
+    },
+    dragEnd: function dragEnd(e) {
+      initialX = currentX;
+      isDragging = false;
+      console.error("dragging stopped");
+    },
+    drag: function drag(e) {
+      this.resize(e);
+
+      if (isDragging) {
+        currentX = e.clientX - initialX;
+        xOffset = currentX;
+        this.setTranslate(currentX, this.$el);
+      }
+    },
+    setTranslate: function setTranslate(xPos, el) {
+      console.log("xpos: ", xPos);
+      var style = el.getAttribute("style");
+      var xPosPercentage = Object(_store_helper__WEBPACK_IMPORTED_MODULE_0__["durationFromPercentage"])(xPos);
+      console.log(style.split(";"));
+      var attributes = style.split(";").filter(function (el) {
+        // get rid of the position attribute
+        if (el.includes("left")) {
+          return;
+        }
+
+        return el;
+      });
+      el.setAttribute("style", attributes.join(";") + "; left:" + xPosPercentage + "%");
+      console.log(attributes);
+    },
+    // resizing
+    resize: function resize(e) {
+      if (isResizing) {
+        var $object = $(e.target);
+
+        if ($object.is($resizeHandle)) {
+          $object = $(e.target).parent($handle);
+        }
+
+        console.log("w", $object);
+        var currentPosX = e.pageX - parseInt($object.offset().left);
+        console.log("currentPosX", currentPosX);
+        var currentSize = parseInt($object.css("width"));
+        console.log("currentSize", currentSize);
+        var resizeStartPosXInsideDiv = currentSize - resizeStartPosX;
+        var spaceRightOfMouse = startSize - (e.pageX - $object.offset().left);
+        var spaceLeftOfMouse = e.pageX - $object.offset().left;
+        console.log("space left of mouse", spaceLeftOfMouse);
+        console.log("space right of mouse", spaceRightOfMouse);
+        console.log("resizeStartPosXInsideDiv", resizeStartPosXInsideDiv);
+        var mousePosXDifference = resizeStartPosX - currentPosX;
+        console.log("new size calc", "".concat(startSize, " - ").concat(mousePosXDifference, "px"));
+        console.log("new size: ", startSize - mousePosXDifference + "px");
+        $object.css("width", startSize - mousePosXDifference - startSize / 1.3 + "px");
+        console.log("Different between start/current pos", mousePosXDifference); // $object.css('width') =
+      }
+    }
   }
 });
 
@@ -305,18 +397,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-// rounding function to snap notes to nearest bar
-Number.prototype.floorTo = function (num) {
-  var resto = this % num;
-  return this - resto;
-};
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     musicKey: {
@@ -328,13 +408,6 @@ Number.prototype.floorTo = function (num) {
     index: {
       type: Number
     }
-  },
-  // TODO: Send all this data to the store,
-  // organised by the oscillator the note
-  // belongs to, perhaps ordered by position
-  data: function data() {
-    return {// notes: []
-    };
   },
   computed: {
     rowClass: function rowClass() {
@@ -394,9 +467,6 @@ Number.prototype.floorTo = function (num) {
       } else {
         console.error("There is no oscillator to create notes for");
       }
-    },
-    removeNote: function removeNote(index) {
-      this.notes.pop(this.notes[index]);
     }
   }
 });
@@ -435,22 +505,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     PitchRow: _PitchRow__WEBPACK_IMPORTED_MODULE_0__["default"]
-  },
-  props: {
-    bpm: {
-      type: Number
-    }
   },
   data: function data() {
     return {};
@@ -472,7 +531,18 @@ __webpack_require__.r(__webpack_exports__);
       console.log("aav", notes.slice(notes.indexOf(rootNote)));
     }
   },
-  methods: {}
+  methods: {
+    mousedownHandler: function mousedownHandler(e) {
+      if (e.target.classList.contains("row")) {
+        console.log("clicked pitch row");
+      } else if (e.target.classList.contains("note")) {
+        console.log("clicked note");
+      }
+    },
+    mouseupHandler: function mouseupHandler(e) {},
+    mousemoveHandler: function mousemoveHandler(e) {},
+    contextmenuHandler: function contextmenuHandler(e) {}
+  }
 });
 
 /***/ }),
@@ -2241,9 +2311,20 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "note", style: _vm.style }, [
-    _c("div", { staticClass: "note__handle" })
-  ])
+  return _c(
+    "div",
+    {
+      staticClass: "note",
+      style: _vm.style,
+      on: {
+        contextmenu: function($event) {
+          $event.preventDefault()
+          return _vm.removeNote($event)
+        }
+      }
+    },
+    [_c("div", { staticClass: "note__handle", on: { click: _vm.resize } })]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -2279,15 +2360,10 @@ var render = function() {
         }
       }
     },
-    _vm._l(_vm.notes, function(note, index) {
+    _vm._l(_vm.notes, function(note) {
       return _c("Note", {
         key: note.id,
-        attrs: { data: note, musicKey: _vm.musicKey },
-        on: {
-          contextmenu: function($event) {
-            _vm.removeNote(index)
-          }
-        }
+        attrs: { data: note, musicKey: _vm.musicKey }
       })
     }),
     1
@@ -2318,7 +2394,18 @@ var render = function() {
   return _vm.notes.length
     ? _c(
         "div",
-        { staticClass: "piano-roll" },
+        {
+          staticClass: "piano-roll",
+          on: {
+            mousedown: _vm.mousedownHandler,
+            mousemove: _vm.mousemoveHandler,
+            mouseup: _vm.mouseupHandler,
+            contextmenu: function($event) {
+              $event.preventDefault()
+              return _vm.contextmenuHandler($event)
+            }
+          }
+        },
         [
           _c(
             "div",
@@ -16043,16 +16130,16 @@ function () {
     key: "noteFrequency",
     value: function noteFrequency(note) {
       var tone = note.slice(0, note.length - 1);
-      var octave = note.slice(-1);
-      console.log(tone, octave); // (octave num * keys in octave) + index of note in the notes array
+      var octave = note.slice(-1); // console.log(tone, octave);
+      // (octave num * keys in octave) + index of note in the notes array
 
       var keyNumber = octave * 12 + (_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.data.notes.indexOf(tone) + 1); // key is a pretty bad name
       // The algorithm to get the frequency of a note
       // from its key number (A0 - C8)
       // can adjust the tuning - 440 is A4 tuning
 
-      var freq = 440 * Math.pow(2, keyNumber / 12 - 49 / 12);
-      console.log("frequency", freq);
+      var freq = 440 * Math.pow(2, keyNumber / 12 - 49 / 12); // console.log("frequency", freq);
+
       return freq;
     }
   }, {
@@ -16080,10 +16167,10 @@ function () {
   }, {
     key: "playForDuration",
     value: function playForDuration(oscillator, note, startTime, duration) {
-      // oscillator.playNote:
-      // problem: cannot play multiple notes at the same time
-      // possible solution: use oscillatorNode as an array of nodes, with a tracking system
-      var frequency = Oscillator.noteFrequency(note); // create & setup oscillatorNode to play the note
+      var frequency = Oscillator.noteFrequency(note);
+      console.log('-------- note start ---------');
+      console.log('start: ', startTime);
+      console.log('computed finish: ', startTime + duration); // create & setup oscillatorNode to play the note
 
       oscillator.oscillatorNode = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createOscillator();
       oscillator.oscillatorNode.type = oscillator.waveform; // Setup filter
@@ -16094,10 +16181,9 @@ function () {
       oscillator.filter.filterNode.connect(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.destination); // Start the oscillator
 
       oscillator.oscillatorNode.frequency.setValueAtTime(frequency, _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
-      oscillator.oscillatorNode.start(startTime); // Oscillator.playNote(oscillator, note, startTime);
+      oscillator.oscillatorNode.start(startTime); // console.log("playForDuration() - current time:", store.state.audioContext.currentTime);
 
-      console.log("playForDuration() - current time:", _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
-      oscillator.oscillatorNode.stop(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime + duration);
+      oscillator.oscillatorNode.stop(startTime + duration);
     }
   }]);
 
@@ -16231,13 +16317,6 @@ __webpack_require__.r(__webpack_exports__);
 
     function nextNote() {
       if (notes[currentNote]) {
-        console.log("nextNote() - current Note: ", notes[currentNote]); // TODO: make a function which works out length in time from length as percentage
-        // nextNoteStartTime += durationFromPercentage(note.lengthAsPercentage); // add the length of the note to the time
-        // console.log("Just played: ", notes[currentNote]);
-        // console.log("Just played: ", durationFromPercentage(notes[currentNote + 1].percentageFromLeft));
-        // console.log("Up next: ", notes[currentNote + 1]);
-        // console.log("Up next: ", durationFromPercentage(notes[currentNote + 1].percentageFromLeft));
-
         notes[currentNote + 1] ? nextNoteStartTime = startTime + Object(_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote + 1].percentageFromLeft) : function () {
           nextNoteStartTime = 0;
           currentNote = 0;
@@ -16283,6 +16362,12 @@ __webpack_require__.r(__webpack_exports__);
  * > getSecondsPerBeat()
  * > getLoopTimeFrame()
  */
+// rounding function to snap notes to nearest bar
+
+Number.prototype.floorTo = function (num) {
+  var resto = this % num;
+  return this - resto;
+};
 
 function getKeysArray() {
   /**
@@ -16358,8 +16443,9 @@ function getKeysArray() {
   return notesInRoll.reverse();
 }
 /**
- * Functions related to timing
+ * TIMING FUNCTIONS
  */
+// These two aren't 
 
 function getSecondsPerBeat() {
   var bpm = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.bpm;
@@ -16379,7 +16465,7 @@ function secondsPerBeat() {
 }
 function loopTimeframe() {
   getLoopTimeframe();
-} // rename - convertPercentageToTime
+} // get duration from a percentage of the loop
 
 function durationFromPercentage(lengthAsPercentage) {
   var loopTime = getLoopTimeframe();
@@ -16592,8 +16678,13 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       }
     },
     addNoteForActiveOsc: function addNoteForActiveOsc(state, note) {
-      if (this.state.activeOscillator.notes.length < 10) {
+      if (this.state.activeOscillator.notes.length < 32) {
         this.state.activeOscillator.notes.push(note);
+      }
+    },
+    removeNoteFromActiveOsc: function removeNoteFromActiveOsc(state, note) {
+      if (this.state.activeOscillator.notes.length) {
+        this.state.activeOscillator.notes.pop(note);
       }
     }
   }

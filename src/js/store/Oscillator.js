@@ -18,7 +18,7 @@ export default class Oscillator {
 	static noteFrequency(note) {
 		let tone = note.slice(0, note.length - 1);
 		let octave = note.slice(-1);
-		console.log(tone, octave);
+		// console.log(tone, octave);
 
 		// (octave num * keys in octave) + index of note in the notes array
 		let keyNumber = ((octave * 12) + (store.state.data.notes.indexOf(tone) + 1)); // key is a pretty bad name
@@ -27,7 +27,7 @@ export default class Oscillator {
 		// can adjust the tuning - 440 is A4 tuning
 		let freq = 440 * Math.pow(2, ((keyNumber / 12) - 49 / 12));
 
-		console.log("frequency", freq);
+		// console.log("frequency", freq);
 		return freq;
 	}
 
@@ -59,11 +59,11 @@ export default class Oscillator {
 	}
 
 	static playForDuration(oscillator, note, startTime, duration) {
-		// oscillator.playNote:
-		// problem: cannot play multiple notes at the same time
-		// possible solution: use oscillatorNode as an array of nodes, with a tracking system
-
 		let frequency = Oscillator.noteFrequency(note);
+
+		console.log('-------- note start ---------');
+		console.log('start: ', startTime);
+		console.log('computed finish: ', startTime + duration)
 
 		// create & setup oscillatorNode to play the note
 		oscillator.oscillatorNode = store.state.audioContext.createOscillator();
@@ -80,14 +80,8 @@ export default class Oscillator {
 		oscillator.oscillatorNode.frequency.setValueAtTime(frequency, store.state.audioContext.currentTime);
 		oscillator.oscillatorNode.start(startTime);
 
-
-		// Oscillator.playNote(oscillator, note, startTime);
-
-
-
-
-		console.log("playForDuration() - current time:", store.state.audioContext.currentTime);
-		oscillator.oscillatorNode.stop(store.state.audioContext.currentTime + duration);
+		// console.log("playForDuration() - current time:", store.state.audioContext.currentTime);
+		oscillator.oscillatorNode.stop(startTime + duration);
 	}
 
 	constructor() {

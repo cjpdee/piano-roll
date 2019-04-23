@@ -1,22 +1,10 @@
 <template>
 	<div :class="rowClass" @click="addNote" @contextmenu.prevent :data-note="musicKey">
-		<Note
-			v-for="(note,index) in notes"
-			@contextmenu="removeNote(index)"
-			:key="note.id"
-			:data="note"
-			:musicKey="musicKey"
-		></Note>
+		<Note v-for="note in notes" :key="note.id" :data="note" :musicKey="musicKey"></Note>
 	</div>
 </template>
 
 <script>
-// rounding function to snap notes to nearest bar
-Number.prototype.floorTo = function(num) {
-	var resto = this % num;
-	return this - resto;
-};
-
 export default {
 	props: {
 		musicKey: {
@@ -28,15 +16,6 @@ export default {
 		index: {
 			type: Number
 		}
-	},
-
-	// TODO: Send all this data to the store,
-	// organised by the oscillator the note
-	// belongs to, perhaps ordered by position
-	data() {
-		return {
-			// notes: []
-		};
 	},
 
 	computed: {
@@ -111,10 +90,6 @@ export default {
 			} else {
 				console.error("There is no oscillator to create notes for");
 			}
-		},
-
-		removeNote(index) {
-			this.notes.pop(this.notes[index]);
 		}
 	}
 };
