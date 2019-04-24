@@ -3,6 +3,8 @@ Development Notes:
 Todo:
 - designs
 
+- reduce master volume to around 60%
+
 - make it easier to work with beats/timing - renaming variables for clarity, figure out something that makes more sense.
     there should be functions to get timings, like an array of times when a sound should play based on a pattern, or if we want a metronome or sound to play every 1 beats or half beats etc.
 
