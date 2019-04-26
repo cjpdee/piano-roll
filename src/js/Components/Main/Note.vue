@@ -29,7 +29,7 @@ export default {
 		style() {
 			return (
 				"left: " +
-				this.data.percentageFromLeft +
+				this.data.position +
 				"%; width: " +
 				this.data.lengthAsPercentage +
 				"%"
@@ -47,61 +47,61 @@ export default {
 		// this.$store.commit("addNoteForActiveOsc", note);
 	},
 	methods: {
-		removeNote(note) {
-			this.$store.commit("removeNoteFromActiveOsc", note);
+		removeNote(e) {
+			this.$store.commit("removeNoteFromActiveOsc", e.currentTarget.id);
 		},
 
 		// Moving
 
-		dragStart(e) {
-			console.log(this.$el);
-			initialX = e.clientX - xOffset;
-			if (this.$el === e.target) {
-				isDragging = true;
-				console.log("isDragging = ", isDragging);
-			}
-		},
+		// dragStart(e) {
+		// 	console.log(this.$el);
+		// 	initialX = e.clientX - xOffset;
+		// 	if (this.$el === e.target) {
+		// 		isDragging = true;
+		// 		console.log("isDragging = ", isDragging);
+		// 	}
+		// },
 
-		dragEnd(e) {
-			initialX = currentX;
+		// dragEnd(e) {
+		// 	initialX = currentX;
 
-			isDragging = false;
+		// 	isDragging = false;
 
-			console.error("dragging stopped");
-		},
+		// 	console.error("dragging stopped");
+		// },
 
-		drag(e) {
-			this.resize(e);
-			if (isDragging) {
-				currentX = e.clientX - initialX;
+		// drag(e) {
+		// 	this.resize(e);
+		// 	if (isDragging) {
+		// 		currentX = e.clientX - initialX;
 
-				xOffset = currentX;
+		// 		xOffset = currentX;
 
-				this.setTranslate(currentX, this.$el);
-			}
-		},
+		// 		this.setTranslate(currentX, this.$el);
+		// 	}
+		// },
 
-		setTranslate(xPos, el) {
-			console.log("xpos: ", xPos);
-			let style = el.getAttribute("style");
-			let xPosPercentage = durationFromPercentage(xPos);
-			console.log(style.split(";"));
+		// setTranslate(xPos, el) {
+		// 	console.log("xpos: ", xPos);
+		// 	let style = el.getAttribute("style");
+		// 	let xPosPercentage = durationFromPercentage(xPos);
+		// 	console.log(style.split(";"));
 
-			let attributes = style.split(";").filter(el => {
-				// get rid of the position attribute
-				if (el.includes("left")) {
-					return;
-				}
-				return el;
-			});
+		// 	let attributes = style.split(";").filter(el => {
+		// 		// get rid of the position attribute
+		// 		if (el.includes("left")) {
+		// 			return;
+		// 		}
+		// 		return el;
+		// 	});
 
-			el.setAttribute(
-				"style",
-				attributes.join(";") + "; left:" + xPosPercentage + "%"
-			);
+		// 	el.setAttribute(
+		// 		"style",
+		// 		attributes.join(";") + "; left:" + xPosPercentage + "%"
+		// 	);
 
-			console.log(attributes);
-		},
+		// 	console.log(attributes);
+		// },
 
 		// resizing
 		resize(e) {

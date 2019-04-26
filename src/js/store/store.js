@@ -17,7 +17,7 @@ const store = new Vuex.Store({
 			baseOctave: 2,
 			numOctaves: 2,
 			rootNote: "C",
-			currentNoteLengthInBeats: 1
+			noteLength: 1
 		},
 		oscillators: [],
 		activeOscillator: null,
@@ -79,6 +79,9 @@ const store = new Vuex.Store({
 		setBaseOctave(state, payload) {
 			this.state.project.baseOctave = payload.baseOctave;
 		},
+		setTimeSignature(state, payload) {
+			this.state.project.timeSignature = payload.timeSignature
+		},
 		setNumOctaves(state, payload) {
 			this.state.project.numOctaves = payload.numOctaves;
 		},
@@ -87,7 +90,7 @@ const store = new Vuex.Store({
 		},
 
 		setNoteLengthInBeats(state, payload) {
-			this.state.project.currentNoteLengthInBeats = payload.length;
+			this.state.project.noteLength = payload.length;
 		},
 
 		/*
@@ -183,18 +186,19 @@ const store = new Vuex.Store({
 		},
 
 		addNoteForActiveOsc(state, note) {
-			if (this.state.activeOscillator.notes.length < 32) {
-				this.state.activeOscillator.notes.push(note);
+			// add note object to notes array
+			if (state.activeOscillator.notes.length < 32) {
+				state.activeOscillator.notes.push(note);
 			}
 		},
 
-		removeNoteFromActiveOsc(state, e) {
-			// TODO: fix
-			if (this.state.activeOscillator.notes.length > -1) {
-				console.log(this.state.activeOscillator.notes.findIndex(note => note.id === e.target.id));
-				this.state.activeOscillator.notes.splice(
-					this.state.activeOscillator.notes.findIndex(note => note.id === e.target.id),
-					this.state.activeOscillator.notes.findIndex(note => note.id === e.target.id)
+		removeNoteFromActiveOsc(state, id) {
+			// splice the Note object out of the notes array
+			if (state.activeOscillator.notes.length > -1) {
+				console.log(state.activeOscillator.notes.findIndex(note => note.id === id))
+				state.activeOscillator.notes.splice(
+					state.activeOscillator.notes.findIndex(note => note.id === id),
+					1
 				);
 			}
 		}

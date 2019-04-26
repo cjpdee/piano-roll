@@ -293,7 +293,7 @@ var xOffset = 0;
   },
   computed: {
     style: function style() {
-      return "left: " + this.data.percentageFromLeft + "%; width: " + this.data.lengthAsPercentage + "%";
+      return "left: " + this.data.position + "%; width: " + this.data.lengthAsPercentage + "%";
     }
   },
   mounted: function mounted() {
@@ -307,49 +307,49 @@ var xOffset = 0;
     // this.$store.commit("addNoteForActiveOsc", note);
   },
   methods: {
-    removeNote: function removeNote(note) {
-      this.$store.commit("removeNoteFromActiveOsc", note);
+    removeNote: function removeNote(e) {
+      this.$store.commit("removeNoteFromActiveOsc", e.currentTarget.id);
     },
     // Moving
-    dragStart: function dragStart(e) {
-      console.log(this.$el);
-      initialX = e.clientX - xOffset;
-
-      if (this.$el === e.target) {
-        isDragging = true;
-        console.log("isDragging = ", isDragging);
-      }
-    },
-    dragEnd: function dragEnd(e) {
-      initialX = currentX;
-      isDragging = false;
-      console.error("dragging stopped");
-    },
-    drag: function drag(e) {
-      this.resize(e);
-
-      if (isDragging) {
-        currentX = e.clientX - initialX;
-        xOffset = currentX;
-        this.setTranslate(currentX, this.$el);
-      }
-    },
-    setTranslate: function setTranslate(xPos, el) {
-      console.log("xpos: ", xPos);
-      var style = el.getAttribute("style");
-      var xPosPercentage = Object(_store_helper__WEBPACK_IMPORTED_MODULE_0__["durationFromPercentage"])(xPos);
-      console.log(style.split(";"));
-      var attributes = style.split(";").filter(function (el) {
-        // get rid of the position attribute
-        if (el.includes("left")) {
-          return;
-        }
-
-        return el;
-      });
-      el.setAttribute("style", attributes.join(";") + "; left:" + xPosPercentage + "%");
-      console.log(attributes);
-    },
+    // dragStart(e) {
+    // 	console.log(this.$el);
+    // 	initialX = e.clientX - xOffset;
+    // 	if (this.$el === e.target) {
+    // 		isDragging = true;
+    // 		console.log("isDragging = ", isDragging);
+    // 	}
+    // },
+    // dragEnd(e) {
+    // 	initialX = currentX;
+    // 	isDragging = false;
+    // 	console.error("dragging stopped");
+    // },
+    // drag(e) {
+    // 	this.resize(e);
+    // 	if (isDragging) {
+    // 		currentX = e.clientX - initialX;
+    // 		xOffset = currentX;
+    // 		this.setTranslate(currentX, this.$el);
+    // 	}
+    // },
+    // setTranslate(xPos, el) {
+    // 	console.log("xpos: ", xPos);
+    // 	let style = el.getAttribute("style");
+    // 	let xPosPercentage = durationFromPercentage(xPos);
+    // 	console.log(style.split(";"));
+    // 	let attributes = style.split(";").filter(el => {
+    // 		// get rid of the position attribute
+    // 		if (el.includes("left")) {
+    // 			return;
+    // 		}
+    // 		return el;
+    // 	});
+    // 	el.setAttribute(
+    // 		"style",
+    // 		attributes.join(";") + "; left:" + xPosPercentage + "%"
+    // 	);
+    // 	console.log(attributes);
+    // },
     // resizing
     resize: function resize(e) {
       if (isResizing) {
@@ -391,6 +391,8 @@ var xOffset = 0;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -451,17 +453,18 @@ __webpack_require__.r(__webpack_exports__);
       	e.g 1 = 1 beat, a 1/3rd note in 4:3 and a 1/4th note in 4:4
       */
       if (this.$store.state.activeOscillator) {
+        var _note;
+
         var pos = e.offsetX / e.target.parentElement.clientWidth * 100;
         var division = 100 / (this.$store.state.project.numBars * this.$store.state.project.timeSignature);
         var snappedPos = pos.floorTo(division);
-        var lengthPercentage = 100 / this.$store.state.project.numBars / 4 * this.$store.state.project.currentNoteLengthInBeats;
-        var note = {
+        var lengthPercentage = 100 / this.$store.state.project.numBars / this.$store.state.project.timeSignature; // *
+        //this.$store.state.project.noteLength;
+
+        var note = (_note = {
           pitch: this.musicKey,
-          position: snappedPos,
-          percentageFromLeft: snappedPos,
-          lengthAsPercentage: lengthPercentage,
-          id: this.generateId()
-        };
+          position: snappedPos
+        }, _defineProperty(_note, "position", snappedPos), _defineProperty(_note, "lengthAsPercentage", lengthPercentage), _defineProperty(_note, "id", this.generateId()), _note);
         this.$store.commit("addNoteForActiveOsc", note);
       } else {
         console.error("There is no oscillator to create notes for");
@@ -501,11 +504,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
+ // Dragging / resizing variables
 
+var isDragging = false;
+var dragElement = null;
+var isResizing = false;
+var currentX;
+var initialX;
+var xOffset = 0;
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     PitchRow: _PitchRow__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -524,6 +531,9 @@ __webpack_require__.r(__webpack_exports__);
     numBars: function numBars() {
       return this.$store.state.project.numBars;
     },
+    divisionsPerBar: function divisionsPerBar() {
+      return this.$store.state.project.timeSignature;
+    },
     theNotes: function theNotes() {
       var notes = this.$store.state.data.notes;
       var rootNote = this.$store.state.project.rootNote;
@@ -531,15 +541,79 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    mousedownHandler: function mousedownHandler(e) {
-      if (e.target.classList.contains("row")) {
-        console.log("clicked pitch row");
-      } else if (e.target.classList.contains("note")) {
-        console.log("clicked note");
+    // create unique ids
+    generateId: function generateId() {
+      var id = Math.floor(Math.random() * 10000000).toString(16); // TODO: Make a check for other existing note ids
+      // if ( store.state.oscillators.filter(oscillator => oscillator.id == id) ) {
+      // 	return Math.floor((Math.random() * 10000000)).toString(16);
+      // } else {
+      // 	return id;
+      // }
+
+      return id;
+    },
+    // Dragging methods
+    dragStart: function dragStart(e) {
+      // console.log(this.$el);
+      // console.log(e.target);
+      dragElement = e.target;
+      initialX = e.clientX - xOffset; // if (this.$el === e.target) {
+
+      isDragging = true;
+      console.log("isDragging = ", isDragging); // }
+    },
+    dragEnd: function dragEnd(e) {
+      initialX = currentX;
+      isDragging = false;
+      dragElement = null; // set the note's new position in the store
+
+      console.error("dragging stopped");
+    },
+    drag: function drag(e) {
+      // this.resize(e);
+      if (isDragging) {
+        currentX = e.clientX - initialX;
+        xOffset = currentX;
+        this.setTranslate(currentX, dragElement);
       }
     },
-    mouseupHandler: function mouseupHandler(e) {},
-    mousemoveHandler: function mousemoveHandler(e) {},
+    setTranslate: function setTranslate(xPos, el) {
+      console.log("xpos: ", xPos);
+      var style = el.getAttribute("style");
+      var xPosPercentage = Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["durationFromPercentage"])(xPos);
+      console.log(style.split(";"));
+      var attributes = style.split(";").filter(function (el) {
+        // get rid of the position attribute
+        if (el.includes("left")) {
+          return;
+        }
+
+        return el;
+      });
+      el.setAttribute("style", attributes.join(";") + "; left:" + xPosPercentage + "%");
+      console.log(attributes);
+    },
+    // Handlers
+    mousedownHandler: function mousedownHandler(e) {
+      if (e.target.classList.contains("row")) {
+        // Add Note
+        console.log("clicked pitch row");
+      } else if (e.target.classList.contains("note")) {
+        // Drag Notes
+        console.log("clicked note");
+        this.dragStart(e);
+      }
+    },
+    mouseupHandler: function mouseupHandler(e) {
+      if (isDragging) {
+        isDragging = false;
+      }
+    },
+    mousemoveHandler: function mousemoveHandler(e) {
+      if (isDragging) {
+        this.drag(e);
+      }
+    },
     contextmenuHandler: function contextmenuHandler(e) {}
   }
 });
@@ -914,6 +988,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TheControls",
@@ -966,6 +1055,16 @@ __webpack_require__.r(__webpack_exports__);
         var rootNote = this.$store.state.project.rootNote; // console.log('aav',notes.slice(notes.indexOf(rootNote)),notes.slice(0,notes.indexOf(rootNote)));
       }
     },
+    timeSignature: {
+      get: function get() {
+        return this.$store.state.project.timeSignature;
+      },
+      set: function set(value) {
+        this.$store.commit("setTimeSignature", {
+          timeSignature: value
+        });
+      }
+    },
     numBars: {
       get: function get() {
         return this.$store.state.project.numBars;
@@ -978,7 +1077,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     noteLengthInBeats: {
       get: function get() {
-        return this.$store.state.project.currentNoteLengthInBeats;
+        return this.$store.state.project.noteLength;
       },
       set: function set(value) {
         this.$store.commit("setNoteLengthInBeats", {
@@ -2411,15 +2510,17 @@ var render = function() {
             "div",
             { staticClass: "flex-wrap" },
             _vm._l(_vm.numberOfBars, function(divider) {
-              return _c("div", { key: divider, staticClass: "bar-marker" }, [
-                _c("div", { staticClass: "beat-marker" }),
-                _vm._v(" "),
-                _c("div", { staticClass: "beat-marker" }),
-                _vm._v(" "),
-                _c("div", { staticClass: "beat-marker" }),
-                _vm._v(" "),
-                _c("div", { staticClass: "beat-marker" })
-              ])
+              return _c(
+                "div",
+                { key: divider, staticClass: "bar-marker" },
+                _vm._l(_vm.divisionsPerBar, function(division) {
+                  return _c("div", {
+                    key: division,
+                    staticClass: "beat-marker"
+                  })
+                }),
+                0
+              )
             }),
             0
           ),
@@ -2788,48 +2889,9 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
-    _c("label", [
-      _vm._v("\n\t\t# of bars\n\t\t"),
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.numBars,
-              expression: "numBars"
-            }
-          ],
-          on: {
-            change: function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.numBars = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
-            }
-          }
-        },
-        [
-          _c("option", { domProps: { value: 1 } }, [_vm._v("1")]),
-          _vm._v(" "),
-          _c("option", { domProps: { value: 2 } }, [_vm._v("2")]),
-          _vm._v(" "),
-          _c("option", { domProps: { value: 4 } }, [_vm._v("4")]),
-          _vm._v(" "),
-          _c("option", { domProps: { value: 8 } }, [_vm._v("8")])
-        ]
-      )
-    ]),
-    _vm._v(" "),
     _c("div", [
+      _c("h4", [_vm._v("Piano Roll Setup")]),
+      _vm._v(" "),
       _c("label", [
         _vm._v("\n\t\t\tBase Octave\n\t\t\t"),
         _c(
@@ -2972,8 +3034,10 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", [
+      _c("h4", [_vm._v("Grid Settings")]),
+      _vm._v(" "),
       _c("label", [
-        _vm._v("\n\t\t\tSize of notes in beats\n\t\t\t"),
+        _vm._v("\n\t\t\tTime Signature\n\t\t\t"),
         _c(
           "select",
           {
@@ -2981,8 +3045,8 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.noteLengthInBeats,
-                expression: "noteLengthInBeats"
+                value: _vm.timeSignature,
+                expression: "timeSignature"
               }
             ],
             on: {
@@ -2995,22 +3059,67 @@ var render = function() {
                     var val = "_value" in o ? o._value : o.value
                     return val
                   })
-                _vm.noteLengthInBeats = $event.target.multiple
+                _vm.timeSignature = $event.target.multiple
                   ? $$selectedVal
                   : $$selectedVal[0]
               }
             }
           },
           [
-            _c("option", { domProps: { value: 0.5 } }, [_vm._v("0.5")]),
+            _c("option", { domProps: { value: 1 } }, [_vm._v("1")]),
             _vm._v(" "),
+            _c("option", { domProps: { value: 2 } }, [_vm._v("1/2")]),
+            _vm._v(" "),
+            _c("option", { domProps: { value: 3 } }, [_vm._v("1/3")]),
+            _vm._v(" "),
+            _c("option", { domProps: { value: 4 } }, [_vm._v("1/4")]),
+            _vm._v(" "),
+            _c("option", { domProps: { value: 6 } }, [_vm._v("1/6")]),
+            _vm._v(" "),
+            _c("option", { domProps: { value: 8 } }, [_vm._v("1/8")]),
+            _vm._v(" "),
+            _c("option", { domProps: { value: 16 } }, [_vm._v("1/16")])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("label", [
+        _vm._v("\n\t\t\t# of bars\n\t\t\t"),
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.numBars,
+                expression: "numBars"
+              }
+            ],
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.numBars = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          [
             _c("option", { domProps: { value: 1 } }, [_vm._v("1")]),
             _vm._v(" "),
             _c("option", { domProps: { value: 2 } }, [_vm._v("2")]),
             _vm._v(" "),
-            _c("option", { domProps: { value: 3 } }, [_vm._v("3")]),
+            _c("option", { domProps: { value: 4 } }, [_vm._v("4")]),
             _vm._v(" "),
-            _c("option", { domProps: { value: 4 } }, [_vm._v("4")])
+            _c("option", { domProps: { value: 8 } }, [_vm._v("8")])
           ]
         )
       ])
@@ -16271,20 +16380,13 @@ __webpack_require__.r(__webpack_exports__);
   playing: false,
   play: function play() {
     this.playing = true;
-    console.log("PLAY START ------------------------------");
     var notes = this.createQueue();
-    var lookahead = 25.0;
     var scheduleAheadTime = 0.1;
     var currentNote = 0;
-    var nextNoteStartTime = _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + Object(_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote].percentageFromLeft);
+    var nextNoteStartTime = _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + Object(_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote].position);
     var startTime = _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime;
-    console.log('time', _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime);
-    console.log('start', nextNoteStartTime);
-    console.log('first note start:', Object(_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote].percentageFromLeft));
 
     var _this = this;
-
-    console.log(this);
 
     function scheduler() {
       while (nextNoteStartTime < _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + scheduleAheadTime && notes[currentNote]) {
@@ -16314,7 +16416,7 @@ __webpack_require__.r(__webpack_exports__);
 
     function nextNote() {
       if (notes[currentNote]) {
-        notes[currentNote + 1] ? nextNoteStartTime = startTime + Object(_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote + 1].percentageFromLeft) : function () {
+        notes[currentNote + 1] ? nextNoteStartTime = startTime + Object(_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote + 1].position) : function () {
           nextNoteStartTime = 0;
           currentNote = 0;
         }; // add the distance between the (next note - start time)
@@ -16504,7 +16606,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       baseOctave: 2,
       numOctaves: 2,
       rootNote: "C",
-      currentNoteLengthInBeats: 1
+      noteLength: 1
     },
     oscillators: [],
     activeOscillator: null,
@@ -16560,6 +16662,9 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     setBaseOctave: function setBaseOctave(state, payload) {
       this.state.project.baseOctave = payload.baseOctave;
     },
+    setTimeSignature: function setTimeSignature(state, payload) {
+      this.state.project.timeSignature = payload.timeSignature;
+    },
     setNumOctaves: function setNumOctaves(state, payload) {
       this.state.project.numOctaves = payload.numOctaves;
     },
@@ -16567,7 +16672,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       this.state.project.rootNote = payload.rootNote;
     },
     setNoteLengthInBeats: function setNoteLengthInBeats(state, payload) {
-      this.state.project.currentNoteLengthInBeats = payload.length;
+      this.state.project.noteLength = payload.length;
     },
 
     /*
@@ -16675,21 +16780,20 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       }
     },
     addNoteForActiveOsc: function addNoteForActiveOsc(state, note) {
-      if (this.state.activeOscillator.notes.length < 32) {
-        this.state.activeOscillator.notes.push(note);
+      // add note object to notes array
+      if (state.activeOscillator.notes.length < 32) {
+        state.activeOscillator.notes.push(note);
       }
     },
-    removeNoteFromActiveOsc: function removeNoteFromActiveOsc(state, e) {
-      // TODO: fix
-      if (this.state.activeOscillator.notes.length > -1) {
-        console.log(this.state.activeOscillator.notes.findIndex(function (note) {
-          return note.id === e.target.id;
+    removeNoteFromActiveOsc: function removeNoteFromActiveOsc(state, id) {
+      // splice the Note object out of the notes array
+      if (state.activeOscillator.notes.length > -1) {
+        console.log(state.activeOscillator.notes.findIndex(function (note) {
+          return note.id === id;
         }));
-        this.state.activeOscillator.notes.splice(this.state.activeOscillator.notes.findIndex(function (note) {
-          return note.id === e.target.id;
-        }), this.state.activeOscillator.notes.findIndex(function (note) {
-          return note.id === e.target.id;
-        }));
+        state.activeOscillator.notes.splice(state.activeOscillator.notes.findIndex(function (note) {
+          return note.id === id;
+        }), 1);
       }
     }
   }

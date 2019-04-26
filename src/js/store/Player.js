@@ -59,22 +59,15 @@ export default {
 
 	play() {
 		this.playing = true;
-		console.log("PLAY START ------------------------------");
 
 		let notes = this.createQueue();
 
-		let lookahead = 25.0;
 		let scheduleAheadTime = 0.1;
 
 		let currentNote = 0;
-		let nextNoteStartTime = store.state.audioContext.currentTime + durationFromPercentage(notes[currentNote].percentageFromLeft);
+		let nextNoteStartTime = store.state.audioContext.currentTime + durationFromPercentage(notes[currentNote].position);
 		let startTime = store.state.audioContext.currentTime;
-
-		console.log('time', store.state.audioContext.currentTime);
-		console.log('start', nextNoteStartTime);
-		console.log('first note start:', durationFromPercentage(notes[currentNote].percentageFromLeft));
 		let _this = this;
-		console.log(this);
 
 		function scheduler() {
 			while (nextNoteStartTime < store.state.audioContext.currentTime + scheduleAheadTime && notes[currentNote]) {
@@ -106,7 +99,7 @@ export default {
 		function nextNote() {
 			if (notes[currentNote]) {
 
-				notes[currentNote + 1] ? nextNoteStartTime = startTime + (durationFromPercentage(notes[currentNote + 1].percentageFromLeft)) : () => {
+				notes[currentNote + 1] ? nextNoteStartTime = startTime + (durationFromPercentage(notes[currentNote + 1].position)) : () => {
 					nextNoteStartTime = 0;
 					currentNote = 0;
 				}; // add the distance between the (next note - start time)

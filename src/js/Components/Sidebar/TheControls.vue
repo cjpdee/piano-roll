@@ -5,17 +5,8 @@
 			<input data-js-project="bpm" type="number" v-model="bpm" name="bpm" step="5" id="bpm">
 		</label>
 
-		<label>
-			# of bars
-			<select v-model="numBars">
-				<option :value="1">1</option>
-				<option :value="2">2</option>
-				<option :value="4">4</option>
-				<option :value="8">8</option>
-			</select>
-		</label>
-
 		<div>
+			<h4>Piano Roll Setup</h4>
 			<label>
 				Base Octave
 				<select v-model="baseOctave" name="octave" id="octave">
@@ -55,7 +46,31 @@
 		</div>
 
 		<div>
+			<h4>Grid Settings</h4>
 			<label>
+				Time Signature
+				<select v-model="timeSignature">
+					<option :value="1">1</option>
+					<option :value="2">1/2</option>
+					<option :value="3">1/3</option>
+					<option :value="4">1/4</option>
+					<option :value="6">1/6</option>
+					<option :value="8">1/8</option>
+					<option :value="16">1/16</option>
+				</select>
+			</label>
+
+			<label>
+				# of bars
+				<select v-model="numBars">
+					<option :value="1">1</option>
+					<option :value="2">2</option>
+					<option :value="4">4</option>
+					<option :value="8">8</option>
+				</select>
+			</label>
+
+			<!-- <label>
 				Size of notes in beats
 				<select v-model="noteLengthInBeats">
 					<option :value="0.5">0.5</option>
@@ -64,7 +79,7 @@
 					<option :value="3">3</option>
 					<option :value="4">4</option>
 				</select>
-			</label>
+			</label>-->
 		</div>
 
 		<span class="project-setup__controls">
@@ -140,6 +155,16 @@ export default {
 				// console.log('aav',notes.slice(notes.indexOf(rootNote)),notes.slice(0,notes.indexOf(rootNote)));
 			}
 		},
+		timeSignature: {
+			get() {
+				return this.$store.state.project.timeSignature;
+			},
+			set(value) {
+				this.$store.commit("setTimeSignature", {
+					timeSignature: value
+				});
+			}
+		},
 		numBars: {
 			get() {
 				return this.$store.state.project.numBars;
@@ -152,7 +177,7 @@ export default {
 		},
 		noteLengthInBeats: {
 			get() {
-				return this.$store.state.project.currentNoteLengthInBeats;
+				return this.$store.state.project.noteLength;
 			},
 			set(value) {
 				this.$store.commit("setNoteLengthInBeats", {

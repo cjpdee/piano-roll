@@ -74,13 +74,15 @@ export default {
 				let snappedPos = pos.floorTo(division);
 
 				let lengthPercentage =
-					(100 / this.$store.state.project.numBars / 4) *
-					this.$store.state.project.currentNoteLengthInBeats;
+					100 /
+					this.$store.state.project.numBars /
+					this.$store.state.project.timeSignature; // *
+				//this.$store.state.project.noteLength;
 
 				let note = {
 					pitch: this.musicKey,
 					position: snappedPos,
-					percentageFromLeft: snappedPos,
+					position: snappedPos,
 					lengthAsPercentage: lengthPercentage,
 					id: this.generateId()
 				};
