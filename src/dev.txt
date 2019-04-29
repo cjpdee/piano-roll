@@ -5,9 +5,12 @@ Todo:
 
 - make it possible to either lock or unlock the roll:
     lock would fix 24 or 12 notes & the length of the loop to the screen
-    unlocked would be free movement, choose either x or y unlock
+    unlocked would be free movement, choose either x or y unlock or both
 
 - reduce master volume to around 60%
+- by running the output through a gain node
+- possibly 1 for each oscillator as well as a master gain node
+- although I think oscillators might have their own gain attribute
 
 - make it easier to work with beats/timing - renaming variables for clarity, figure out something that makes more sense.
     there should be functions to get timings, like an array of times when a sound should play based on a pattern, or if we want a metronome or sound to play every 1 beats or half beats etc.
@@ -17,12 +20,11 @@ Todo:
 Oscillator.vue
 - on oscillator - if user clicks osc name + id, allow to give the osc a name
 - should be able to expand + minimise instruments
+- or pop out to an extended view - using vertical range sliders
 
 In piano roll:
 - 'onion skin' effect for scales - in notes
 
 Drum machine tab - new tab or just bottom part of screen ( can be minimised )
-- Implement swing - changing the timing by a % for certain beats
-    probably this can be done by editing the sorted notes array;    
 
-- Implement swing (modify notes array so if beats occur within certain ranges, they are snapped to different %s of each beat (subtracted from if is early, added to if is late)
+- Implement swing (modify notes array so if beats occur within certain ranges, they are snapped to different %s of each beat (negative from if is early, positive to if is late)
