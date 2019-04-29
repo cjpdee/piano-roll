@@ -76,8 +76,7 @@ export default {
 				let lengthPercentage =
 					100 /
 					this.$store.state.project.numBars /
-					this.$store.state.project.timeSignature; // *
-				//this.$store.state.project.noteLength;
+					this.$store.state.project.noteSize;
 
 				let note = {
 					pitch: this.musicKey,

@@ -132,6 +132,16 @@
 	flex: 1 0 auto;
 }
 
+.position-marker {
+	position: absolute;
+	z-index: 1000;
+	top: 0; bottom: 0;
+	left: 0;
+	width: em(5);
+	height: 100%;
+	background-color: crimson;
+}
+
 @for $i from 0 to 26 {
 	.row:nth-child(#{$i}) {
 		// because 100% caused gaps

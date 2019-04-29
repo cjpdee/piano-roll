@@ -48,8 +48,21 @@
 		<div>
 			<h4>Grid Settings</h4>
 			<label>
-				Time Signature
+				Grid Time Signature
 				<select v-model="timeSignature">
+					<option :value="1">1</option>
+					<option :value="2">1/2</option>
+					<option :value="3">1/3</option>
+					<option :value="4">1/4</option>
+					<option :value="6">1/6</option>
+					<option :value="8">1/8</option>
+					<option :value="16">1/16</option>
+				</select>
+			</label>
+
+			<label>
+				Note Length
+				<select v-model="noteSize">
 					<option :value="1">1</option>
 					<option :value="2">1/2</option>
 					<option :value="3">1/3</option>
@@ -69,22 +82,12 @@
 					<option :value="8">8</option>
 				</select>
 			</label>
-
-			<!-- <label>
-				Size of notes in beats
-				<select v-model="noteLengthInBeats">
-					<option :value="0.5">0.5</option>
-					<option :value="1">1</option>
-					<option :value="2">2</option>
-					<option :value="3">3</option>
-					<option :value="4">4</option>
-				</select>
-			</label>-->
 		</div>
 
 		<span class="project-setup__controls">
 			<button @click="play()" class="project-setup__control green">Play</button>
 			<button @click="stop()" class="project-setup__control red">Stop</button>
+			<button @click="save()" class="project-setup__control red">Save</button>
 		</span>
 	</div>
 </template>
@@ -103,6 +106,7 @@ input[type="number"] {
 
 <script>
 import Player from "../../store/Player";
+import {durationFromPercentage} from "../../store/helper";
 
 export default {
 	name: "TheControls",
@@ -165,6 +169,16 @@ export default {
 				});
 			}
 		},
+		noteSize: {
+			get() {
+				return this.$store.state.project.noteSize;
+			},
+			set(value) {
+				this.$store.commit("setNoteSize", {
+					noteSize: value
+				})
+			}
+		},
 		numBars: {
 			get() {
 				return this.$store.state.project.numBars;
@@ -175,23 +189,35 @@ export default {
 				});
 			}
 		},
-		noteLengthInBeats: {
-			get() {
-				return this.$store.state.project.noteLength;
-			},
-			set(value) {
-				this.$store.commit("setNoteLengthInBeats", {
-					length: value
-				});
-			}
-		}
 	},
 	methods: {
 		play() {
 			Player.play();
+			this.animatePositionMarker();
 		},
+
+		animatePositionMarker() {
+			let time = durationFromPercentage(100);
+			console.log(time)
+			let posMarker = document.querySelector("[data-js=position-marker]");
+
+			posMarker.setAttribute('style','');
+
+			posMarker.setAttribute('style',`transition: left linear ${time}s; left: 99%;`);
+		},
+		
 		stop() {
 			Player.stop();
+
+			let posMarker = document.querySelector("[data-js=position-marker]");
+			posMarker.setAttribute('style','');
+			console.log(posMarker)
+		},
+		save() {
+			const data = JSON.stringify(this.$store.state);
+			console.log(data);
+			window.localStorage.setItem('project', data);
+			console.log(JSON.parse(window.localStorage.getItem('arr')))
 		}
 	}
 };

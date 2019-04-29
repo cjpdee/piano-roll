@@ -155,6 +155,17 @@ body {
   flex: 1 0 auto;
 }
 
+.position-marker {
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0.2777777778em;
+  height: 100%;
+  background-color: crimson;
+}
+
 .row:nth-child(0) {
   top: -8.333325%;
 }

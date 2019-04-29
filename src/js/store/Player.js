@@ -67,6 +67,7 @@ export default {
 		let currentNote = 0;
 		let nextNoteStartTime = store.state.audioContext.currentTime + durationFromPercentage(notes[currentNote].position);
 		let startTime = store.state.audioContext.currentTime;
+		let finishTime = store.state.audioContext.currentTime + durationFromPercentage(100);
 		let _this = this;
 
 		function scheduler() {
@@ -90,7 +91,7 @@ export default {
 				});
 
 				Oscillator.playForDuration(oscillator, note.pitch, nextNoteStartTime, durationFromPercentage(note.lengthAsPercentage));
-			} else {
+			} else { // TODO: this isn't getting used anymore
 				_this.playing = false;
 				console.log('playback finished');
 			}

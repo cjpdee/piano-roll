@@ -3,6 +3,10 @@ Development Notes:
 Todo:
 - designs
 
+- make it possible to either lock or unlock the roll:
+    lock would fix 24 or 12 notes & the length of the loop to the screen
+    unlocked would be free movement, choose either x or y unlock
+
 - reduce master volume to around 60%
 
 - make it easier to work with beats/timing - renaming variables for clarity, figure out something that makes more sense.

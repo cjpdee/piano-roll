@@ -13,20 +13,21 @@ const store = new Vuex.Store({
 			name: "myProject",
 			bpm: 120,
 			timeSignature: 4,
+			noteSize: 4,
 			numBars: 4,
 			baseOctave: 2,
 			numOctaves: 2,
 			rootNote: "C",
 			noteLength: 1
 		},
-		oscillators: [],
-		activeOscillator: null,
+		oscillators: [], 
+		activeOscillator: null, // saves reference only
 		mouseActive: false,
 		keypressActive: false,
 
 		data: {
 			notes: ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"],
-			keys: {
+			keys: { // unnecessary
 				C: 81,
 				Csh: 50,
 				D: 87,
@@ -81,6 +82,9 @@ const store = new Vuex.Store({
 		},
 		setTimeSignature(state, payload) {
 			this.state.project.timeSignature = payload.timeSignature
+		},
+		setNoteSize(state, payload) {
+			this.state.project.noteSize = payload.noteSize
 		},
 		setNumOctaves(state, payload) {
 			this.state.project.numOctaves = payload.numOctaves;

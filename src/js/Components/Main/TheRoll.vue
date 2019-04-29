@@ -8,6 +8,7 @@
 		@contextmenu.prevent="contextmenuHandler"
 	>
 		<div class="flex-wrap">
+			<div class="position-marker" data-js="position-marker"></div>
 			<div class="bar-marker" v-for="divider in numberOfBars" :key="divider">
 				<div class="beat-marker" v-for="division in divisionsPerBar" :key="division"></div>
 			</div>
@@ -145,7 +146,7 @@ export default {
 				this.drag(e);
 			}
 		},
-		contextmenuHandler(e) {}
+		contextmenuHandler(e) {},
 	}
 };
 </script>
