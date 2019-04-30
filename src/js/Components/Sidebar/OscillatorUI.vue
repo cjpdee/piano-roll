@@ -13,14 +13,22 @@
 			<select v-model="waveform" class="oscillator__select">
 				<option v-for="wave in this.$store.state.data.waveforms" :key="wave" :value="wave">{{ wave }}</option>
 			</select>
+		</div>
+		<div class="oscillator__filter-wrap">
+			Filters &amp; Shapers
+			<br>
+			<label>
+				<select>
+					<option value="lowpass">Lowpass</option>
+					<option value="highpass">Highpass</option>
+					<option value>Waveshaper</option>
+				</select>
 
-			<select v-model="filter_type" class="oscillator__select">
-				<option
-					v-for="filter in this.$store.state.data.filters"
-					:key="filter"
-					:value="filter"
-				>{{ filter }}</option>
-			</select>
+				<select>
+					<option value="env">Envelope</option>
+					<option value="lfo">LFO</option>
+				</select>
+			</label>
 		</div>
 		<!-- VOLUME -->
 		<span class="oscillator__property-wrap">

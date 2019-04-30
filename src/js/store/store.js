@@ -2,6 +2,9 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import Oscillator from "./Oscillator";
+import {
+	getOscillator
+} from "./helper";
 
 Vue.use(Vuex);
 
@@ -20,14 +23,14 @@ const store = new Vuex.Store({
 			rootNote: "C",
 			noteLength: 1
 		},
-		oscillators: [], 
+		oscillators: [],
 		activeOscillator: null, // saves reference only
 		mouseActive: false,
 		keypressActive: false,
 
 		data: {
 			notes: ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"],
-			keys: { // unnecessary
+			keys: { // TODO: unnecessary
 				C: 81,
 				Csh: 50,
 				D: 87,
@@ -45,6 +48,7 @@ const store = new Vuex.Store({
 			filters: ["lowpass", "highpass", "bandpass"]
 		},
 		audioContext: null,
+		masterGain: null
 	},
 
 	mutations: {
@@ -57,6 +61,11 @@ const store = new Vuex.Store({
 			let audioCtx;
 			audioCtx = window.AudioContext || window.webkitAudioContext;
 			state.audioContext = new audioCtx;
+
+			// Create the master volume control
+			state.masterGain = state.audioContext.createGain();
+			state.masterGain.gain.value = 0.6;
+			console.log(state.masterGain)
 		},
 
 		setMouseActiveState(state, payload) {
@@ -97,6 +106,12 @@ const store = new Vuex.Store({
 			this.state.project.noteLength = payload.length;
 		},
 
+		setMasterGain(state, payload) {
+			if (this.state.masterGain) {
+				this.state.masterGain.gain.value = payload.masterGain;
+			}
+		},
+
 		/*
 			Adding / removing oscillators
 		*/
@@ -113,8 +128,7 @@ const store = new Vuex.Store({
 		},
 
 		setCurrentOscillator(state, payload) {
-			let oscIndex = this.state.oscillators.findIndex(oscillator => oscillator.id == payload.oscillator_id);
-			let osc = this.state.oscillators[oscIndex];
+			let osc = getOscillator(payload.oscillator_id);
 			this.state.activeOscillator = osc;
 		},
 
@@ -123,14 +137,13 @@ const store = new Vuex.Store({
 		*/
 
 		waveform(state, payload) {
-			let oscIndex = this.state.oscillators.findIndex(oscillator => oscillator.id == payload.oscillator_id);
-			let osc = this.state.oscillators[oscIndex];
+			let osc = getOscillator(payload.oscillator_id);
 			osc.waveform = payload.waveform;
 		},
 
 		volume(state, payload) {
-			let oscIndex = this.state.oscillators.findIndex(oscillator => oscillator.id == payload.oscillator_id);
-			let property = this.state.oscillators[oscIndex].volume;
+			let osc = getOscillator(payload.oscillator_id);
+			let property = osc.volume;
 			switch (payload.property) {
 				case "amplitude":
 					property.amplitude = payload.value;
@@ -145,8 +158,8 @@ const store = new Vuex.Store({
 		},
 
 		biquadFilter(state, payload) {
-			let oscIndex = this.state.oscillators.findIndex(oscillator => oscillator.id == payload.oscillator_id);
-			let property = this.state.oscillators[oscIndex].filter;
+			let osc = getOscillator(payload.oscillator_id);
+			let property = osc.filter;
 			switch (payload.property) {
 				case "type":
 					property.type = payload.value;
@@ -164,13 +177,13 @@ const store = new Vuex.Store({
 		},
 
 		lpHpFilter(state, payload) {
-			let oscIndex = this.state.oscillators.findIndex(oscillator => oscillator.id == payload.oscillator_id);
+			let osc = getOscillator(payload.oscillator_id);
 			let property;
 
 			if (payload.filter) {
-				property = this.state.oscillators[oscIndex].lowpass;
+				property = osc.lowpass;
 			} else {
-				property = this.state.oscillators[oscIndex].highpass;
+				property = osc.highpass;
 			}
 
 			switch (payload.property) {

@@ -4,109 +4,104 @@ $sidebarAccentColor: darkgrey;
 $sidebarPadding : 10;
 
 .sidebar {
-    flex: 0 0 em(280);
-    padding: em(10);
+	flex: 0 0 em(340);
+	padding: em(10);
 
-    background-color: $sidebarBgColor;
+	background-color: $sidebarBgColor;
 
-    & > * {
-        margin-bottom: em(10);
-        &:last-child {
-            margin-bottom: 0;
-        }
-    }
+	&>* {
+		margin-bottom: em(10);
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
 }
 
 .project-setup {
-    padding: em($sidebarPadding);
-    border: em(2) solid $sidebarAccentColor;
+	padding: em($sidebarPadding);
+	border: em(2) solid $sidebarAccentColor;
 }
 
 .rack {
-    background-color: skyblue;
-    padding: em(10);
+	background-color: skyblue;
+	padding: em(10);
 
-    &__heading {
-        display: block;
-        text-align: center;
-        margin: 0;
-        padding: 0;
-        font-size: em(22);
-    }
+	&__heading {
+		display: block;
+		text-align: center;
+		margin: 0;
+		padding: 0;
+		font-size: em(22);
+	}
 
-    &__button {
-        @extend %button;
-        padding: em(5);
-        margin-bottom: em(10);
-    }
-
-    // & * {
-    //     margin-bottom: em(10);
-    //     &:last-child {
-    //         margin-bottom: 0;
-    //     }
-    // }
+	&__button {
+		@extend %button;
+		padding: em(5);
+		margin-bottom: em(10);
+	}
 }
 
 .oscillator {
-    display: block;
-    border-top: em(2) solid grey;
-    padding: em(10);
+	display: block;
+	border-top: em(2) solid grey;
+	padding: em(10);
 
-    cursor: pointer;
+	cursor: pointer;
 
-    & h2 {
-        display: inline-block;
-        font-size: em(18);
-        margin-bottom: em(10);
-    }
+	& h2 {
+		display: inline-block;
+		font-size: em(18);
+		margin-bottom: em(10);
+	}
 
-    &__setup-wrap {
-        margin-left: em(-5);
-        margin-bottom: em(10);
-    }
+	&__setup-wrap {
+		margin-left: em(-5);
+		margin-bottom: em(10);
+	}
 
-    &__select {
-        display: inline-block;
-        margin-left: auto;
-    }
+	&__select {
+		display: inline-block;
+		margin-left: auto;
+	}
 
-    &__property-wrap {
-        position: relative;
-        display: block;
-    }
+	&__property-wrap {
+		position: relative;
+		display: block;
+	}
 
-    &__property {
-        display: inline-block;
-        width: 75%;
-        vertical-align: middle;
-    }
+	&__property {
+		display: inline-block;
+		width: 75%;
+		vertical-align: middle;
+	}
 
-    &__property-label {
-        display: inline-block;
-        width: 20%;
-        vertical-align: center;
-        vertical-align: middle;
-    }
+	&__property-label {
+		display: inline-block;
+		width: 20%;
+		vertical-align: center;
+		vertical-align: middle;
+	}
 
-    &__property__dropdown-toggle {
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: block;
-        width: 20%;
-        height: 100%;
+	&__property__dropdown-toggle {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: block;
+		width: 20%;
+		height: 100%;
 
-        opacity: 0;
-        cursor: pointer;
-    }
+		opacity: 0;
+		cursor: pointer;
+	}
 
-    &__property__dropdown {
-        display: none;
+	&__property__dropdown {
+		display: none;
 
-        background-color: rgb(119, 188, 216);
-        .oscillator__property__dropdown-toggle:checked + & {
-            display: block;
-        }
-    }
+		background-color: rgb(119, 188, 216);
+
+		.oscillator__property__dropdown-toggle:checked+& {
+			display: block;
+		}
+	}
 }

@@ -103,69 +103,6 @@ body {
   background-color: #5a91a1;
 }
 
-.note {
-  position: absolute;
-  z-index: 100;
-  display: inline-block;
-  height: 100%;
-  border-radius: 0.2222222222em;
-  background-color: darkslateblue;
-  cursor: -webkit-grab;
-  cursor: grab;
-}
-
-.note:hover {
-  background-color: rgba(72, 61, 139, 0.95);
-}
-
-.note__handle {
-  position: absolute;
-  right: 0;
-  width: 1.1111111111em;
-  height: 100%;
-  border-radius: 0.2222222222em;
-  background-color: green;
-  cursor: ew-resize;
-}
-
-.note__handle:hover {
-  background-color: rgba(0, 128, 0, 0.5);
-}
-
-.flex-wrap {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  width: 100%;
-  pointer-events: none;
-}
-
-.bar-marker {
-  border: 0.0277777778em solid rgba(0, 0, 139, 0.3);
-  flex: 1 0 auto;
-  z-index: 99;
-  display: flex;
-}
-
-.beat-marker {
-  border: 0.0277777778em solid rgba(112, 128, 144, 0.4);
-  flex: 1 0 auto;
-}
-
-.position-marker {
-  position: absolute;
-  z-index: 1000;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 0.2777777778em;
-  height: 100%;
-  background-color: crimson;
-}
-
 .row:nth-child(0) {
   top: -8.333325%;
 }
@@ -270,8 +207,74 @@ body {
   top: 95.8332375%;
 }
 
+.note {
+  position: absolute;
+  z-index: 100;
+  display: inline-block;
+  height: 100%;
+  border-radius: 0.2222222222em;
+  background-color: darkslateblue;
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+.note:hover {
+  background-color: rgba(72, 61, 139, 0.95);
+}
+
+.note__handle {
+  position: absolute;
+  right: 0;
+  width: 1.1111111111em;
+  height: 100%;
+  border-radius: 0.2222222222em;
+  background-color: green;
+  cursor: ew-resize;
+}
+
+.note__handle:hover {
+  background-color: rgba(0, 128, 0, 0.5);
+}
+
+/* Markers */
+
+.flex-wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  width: 100%;
+  pointer-events: none;
+}
+
+.bar-marker {
+  border: 0.0277777778em solid rgba(0, 0, 139, 0.3);
+  flex: 1 0 auto;
+  z-index: 99;
+  display: flex;
+}
+
+.beat-marker {
+  border: 0.0277777778em solid rgba(112, 128, 144, 0.4);
+  flex: 1 0 auto;
+}
+
+.position-marker {
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0.2777777778em;
+  height: 100%;
+  background-color: crimson;
+  will-change: left;
+}
+
 .sidebar {
-  flex: 0 0 15.5555555556em;
+  flex: 0 0 18.8888888889em;
   padding: 0.5555555556em;
   background-color: grey;
 }

@@ -77,6 +77,13 @@
 	}
 }
 
+@for $i from 0 to 26 {
+	.row:nth-child(#{$i}) {
+		// because 100% caused gaps
+		top: ((99.9999% / 24) * ($i - 2));
+	}
+}
+
 .note {
 	position: absolute;
 	z-index: 100;
@@ -107,6 +114,8 @@
 	}
 }
 
+/* Markers */
+
 .flex-wrap {
 	position: absolute;
 	top: 0;
@@ -135,16 +144,11 @@
 .position-marker {
 	position: absolute;
 	z-index: 1000;
-	top: 0; bottom: 0;
+	top: 0;
+	bottom: 0;
 	left: 0;
 	width: em(5);
 	height: 100%;
 	background-color: crimson;
-}
-
-@for $i from 0 to 26 {
-	.row:nth-child(#{$i}) {
-		// because 100% caused gaps
-		top: ((99.9999% / 24) * ($i - 2));
-	}
+	will-change: left; // TODO: change to a transform
 }

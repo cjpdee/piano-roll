@@ -109,6 +109,16 @@ export default {
 			}
 		}
 		scheduler();
+
+		let time = durationFromPercentage(100);
+		let posMarker = document.querySelector("[data-js=position-marker]");
+
+		posMarker.setAttribute("style", "");
+
+		posMarker.setAttribute(
+			"style",
+			`transition: left linear ${time}s; left: 99.9%;`
+		);
 	},
 
 	stop() {

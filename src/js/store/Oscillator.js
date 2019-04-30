@@ -2,7 +2,8 @@ import {
 	store
 } from "./store";
 import {
-	durationFromPercentage
+	durationFromPercentage,
+	animatePositionMarker
 } from "./helper";
 
 export default class Oscillator {
@@ -31,7 +32,7 @@ export default class Oscillator {
 		return freq;
 	}
 
-	static playNote(oscillator, note, startTime) {
+	static playNote(oscillator, note, startTime) { // TODO: obsolete, ensure this isn't used
 
 		// oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
 
@@ -46,7 +47,9 @@ export default class Oscillator {
 		oscillator.oscillatorNode.connect(oscillator.filter.filterNode);
 
 		// Connect filter to audio output
-		oscillator.filter.filterNode.connect(store.state.audioContext.destination);
+		oscillator.filter.filterNode.connect(store.state.masterGain);
+
+		store.state.masterGain.connect(store.state.audioContext.destination);
 
 		// Start the oscillator
 		oscillator.oscillatorNode.frequency.setValueAtTime(frequency, store.state.audioContext.currentTime);
@@ -58,6 +61,7 @@ export default class Oscillator {
 		oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
 	}
 
+	// Used for notes playback
 	static playForDuration(oscillator, note, startTime, duration) {
 		let frequency = Oscillator.noteFrequency(note);
 
@@ -67,14 +71,21 @@ export default class Oscillator {
 
 		// Setup filter
 		oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
+		oscillator.oscillatorNode.connect(oscillator.gainNode);
+		oscillator.gainNode.connect(oscillator.oscillatorNode);
 		oscillator.oscillatorNode.connect(oscillator.filter.filterNode);
 
 		// Connect filter to audio output
-		oscillator.filter.filterNode.connect(store.state.audioContext.destination);
+		// TODO: function which loops through set filters goes here
+		// Make it reusable
+		oscillator.filter.filterNode.connect(store.state.masterGain);
+
+		store.state.masterGain.connect(store.state.audioContext.destination);
 
 		// Start the oscillator
 		oscillator.oscillatorNode.frequency.setValueAtTime(frequency, store.state.audioContext.currentTime);
 		oscillator.oscillatorNode.start(startTime);
+		animatePositionMarker();
 
 		// console.log("playForDuration() - current time:", store.state.audioContext.currentTime);
 		oscillator.oscillatorNode.stop(startTime + duration);
@@ -98,5 +109,7 @@ export default class Oscillator {
 		};
 		this.notes = [];
 		this.filter.filterNode.type = this.filter.type;
+		this.filters = [];
+		this.gainNode = store.state.audioContext.createGainNode();
 	}
 }

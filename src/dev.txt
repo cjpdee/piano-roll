@@ -3,9 +3,16 @@ Development Notes:
 Todo:
 - designs
 
+- get dragging and resizing working + commits to store
+
+- Need to define the end of playback and then do stuff (loop or stop, but always reset the position marker)
+
+- refactor osc filters into a 'filter' or 'processing' component that contains it's type, commits changes etc.
+- because oscillatorUI is getting quite large & we only want to include osc basics in it, everything else is pretty optional
+
 - make it possible to either lock or unlock the roll:
-    lock would fix 24 or 12 notes & the length of the loop to the screen
-    unlocked would be free movement, choose either x or y unlock or both
+	lock would fix 24 or 12 notes & the length of the loop to the screen
+	unlocked would be free movement, choose either x or y unlock or both
 
 - reduce master volume to around 60%
 - by running the output through a gain node
@@ -13,7 +20,7 @@ Todo:
 - although I think oscillators might have their own gain attribute
 
 - make it easier to work with beats/timing - renaming variables for clarity, figure out something that makes more sense.
-    there should be functions to get timings, like an array of times when a sound should play based on a pattern, or if we want a metronome or sound to play every 1 beats or half beats etc.
+	there should be functions to get timings, like an array of times when a sound should play based on a pattern, or if we want a metronome or sound to play every 1 beats or half beats etc.
 
 - refactor grid snap calculation - make it a helper function (can also be used in playback)
 
@@ -22,9 +29,21 @@ Oscillator.vue
 - should be able to expand + minimise instruments
 - or pop out to an extended view - using vertical range sliders
 
+- The range of filters should be computed - rather than most of the slider making no audible difference
+	( at the moment, only 5-10% of the slider makes any difference )
+
 In piano roll:
 - 'onion skin' effect for scales - in notes
 
 Drum machine tab - new tab or just bottom part of screen ( can be minimised )
 
 - Implement swing (modify notes array so if beats occur within certain ranges, they are snapped to different %s of each beat (negative from if is early, positive to if is late)
+
+- Create a system wherein routing can be better managed - ideally the user should not have any input to routing
+- Each source might have a filter or several and then a 'wet' and a 'dry' channel
+- Oscillators can have a number of filters / shapers and perhaps this can be reordered
+- Eventually want to attach attack / decay which will need to be visually modelled properly
+- Then a function connects the oscillators to each filter in order, then to the wet/ dry, then to master
+- The wet and dry channels should have their own gain controls - or a simple slider between the two
+
+- Then perhaps output to a dynamics compressor

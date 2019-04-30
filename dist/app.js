@@ -710,6 +710,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 // Custom wavetables : OscillatorNode.setPeriodicWave()
 // Make filter values relative to the base octave
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1006,6 +1014,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1088,6 +1101,22 @@ __webpack_require__.r(__webpack_exports__);
           numBars: value
         });
       }
+    },
+    masterGain: {
+      get: function get() {
+        if (this.$store.state.masterGain) {
+          return this.$store.state.masterGain.gain.value;
+        }
+      },
+      set: function set(value) {
+        console.log(parseFloat(value));
+
+        if (this.$store.state.masterGain) {
+          this.$store.commit("setMasterGain", {
+            masterGain: parseFloat(value)
+          });
+        }
+      }
     }
   },
   methods: {
@@ -1095,24 +1124,26 @@ __webpack_require__.r(__webpack_exports__);
       _store_Player__WEBPACK_IMPORTED_MODULE_0__["default"].play();
       this.animatePositionMarker();
     },
-    animatePositionMarker: function animatePositionMarker() {
-      var time = Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["durationFromPercentage"])(100);
-      console.log(time);
-      var posMarker = document.querySelector("[data-js=position-marker]");
-      posMarker.setAttribute('style', '');
-      posMarker.setAttribute('style', "transition: left linear ".concat(time, "s; left: 99%;"));
+    animatePositionMarker: function animatePositionMarker() {// let time = durationFromPercentage(100);
+      // console.log(time);
+      // let posMarker = document.querySelector("[data-js=position-marker]");
+      // posMarker.setAttribute("style", "");
+      // posMarker.setAttribute(
+      // 	"style",
+      // 	`transition: left linear ${time}s; left: 99.9%;`
+      // );
     },
     stop: function stop() {
       _store_Player__WEBPACK_IMPORTED_MODULE_0__["default"].stop();
       var posMarker = document.querySelector("[data-js=position-marker]");
-      posMarker.setAttribute('style', '');
+      posMarker.setAttribute("style", "");
       console.log(posMarker);
     },
     save: function save() {
       var data = JSON.stringify(this.$store.state);
       console.log(data);
-      window.localStorage.setItem('project', data);
-      console.log(JSON.parse(window.localStorage.getItem('arr')));
+      window.localStorage.setItem("project", data);
+      console.log(JSON.parse(window.localStorage.getItem("arr")));
     }
   }
 });
@@ -1267,10 +1298,10 @@ Create a keypress handler that maps 2 octaves to the keyboard
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/TheControls.vue?vue&type=style&index=0&id=2da0f010&lang=scss&scoped=true&":
-/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/lib/loader.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./src/js/Components/Sidebar/TheControls.vue?vue&type=style&index=0&id=2da0f010&lang=scss&scoped=true& ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/TheControls.vue?vue&type=style&index=0&id=2da0f010&lang=scss&scoped=true&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/lib/loader.js??ref--7-2!./node_modules/vue-loader/lib??vue-loader-options!./src/js/Components/Sidebar/TheControls.vue?vue&type=style&index=0&id=2da0f010&lang=scss&scoped=true& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1766,15 +1797,15 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/TheControls.vue?vue&type=style&index=0&id=2da0f010&lang=scss&scoped=true&":
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/lib/loader.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./src/js/Components/Sidebar/TheControls.vue?vue&type=style&index=0&id=2da0f010&lang=scss&scoped=true& ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/TheControls.vue?vue&type=style&index=0&id=2da0f010&lang=scss&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/lib/loader.js??ref--7-2!./node_modules/vue-loader/lib??vue-loader-options!./src/js/Components/Sidebar/TheControls.vue?vue&type=style&index=0&id=2da0f010&lang=scss&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/lib/loader.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./TheControls.vue?vue&type=style&index=0&id=2da0f010&lang=scss&scoped=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/TheControls.vue?vue&type=style&index=0&id=2da0f010&lang=scss&scoped=true&");
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/sass-loader/lib/loader.js??ref--7-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./TheControls.vue?vue&type=style&index=0&id=2da0f010&lang=scss&scoped=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/TheControls.vue?vue&type=style&index=0&id=2da0f010&lang=scss&scoped=true&");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -2630,44 +2661,10 @@ var render = function() {
           ])
         }),
         0
-      ),
-      _vm._v(" "),
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.filter_type,
-              expression: "filter_type"
-            }
-          ],
-          staticClass: "oscillator__select",
-          on: {
-            change: function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.filter_type = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
-            }
-          }
-        },
-        _vm._l(this.$store.state.data.filters, function(filter) {
-          return _c("option", { key: filter, domProps: { value: filter } }, [
-            _vm._v(_vm._s(filter))
-          ])
-        }),
-        0
       )
     ]),
+    _vm._v(" "),
+    _vm._m(0),
     _vm._v(" "),
     _c("span", { staticClass: "oscillator__property-wrap" }, [
       _c(
@@ -2864,7 +2861,33 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "oscillator__filter-wrap" }, [
+      _vm._v("\n\t\tFilters & Shapers\n\t\t"),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", [
+        _c("select", [
+          _c("option", { attrs: { value: "lowpass" } }, [_vm._v("Lowpass")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "highpass" } }, [_vm._v("Highpass")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "" } }, [_vm._v("Waveshaper")])
+        ]),
+        _vm._v(" "),
+        _c("select", [
+          _c("option", { attrs: { value: "env" } }, [_vm._v("Envelope")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "lfo" } }, [_vm._v("LFO")])
+        ])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -2912,6 +2935,27 @@ var render = function() {
               return
             }
             _vm.bpm = $event.target.value
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("label", [
+      _vm._v("\n\t\tMaster\n\t\t"),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.masterGain,
+            expression: "masterGain"
+          }
+        ],
+        attrs: { type: "range", min: "0", max: "1", step: "0.1" },
+        domProps: { value: _vm.masterGain },
+        on: {
+          __r: function($event) {
+            _vm.masterGain = $event.target.value
           }
         }
       })
@@ -16027,10 +16071,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_TheControls_vue_vue_type_style_index_0_id_2da0f010_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/lib/loader.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./TheControls.vue?vue&type=style&index=0&id=2da0f010&lang=scss&scoped=true& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/TheControls.vue?vue&type=style&index=0&id=2da0f010&lang=scss&scoped=true&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_TheControls_vue_vue_type_style_index_0_id_2da0f010_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_TheControls_vue_vue_type_style_index_0_id_2da0f010_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_TheControls_vue_vue_type_style_index_0_id_2da0f010_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_TheControls_vue_vue_type_style_index_0_id_2da0f010_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_lib_loader_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_TheControls_vue_vue_type_style_index_0_id_2da0f010_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_ref_7_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TheControls_vue_vue_type_style_index_0_id_2da0f010_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/sass-loader/lib/loader.js??ref--7-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./TheControls.vue?vue&type=style&index=0&id=2da0f010&lang=scss&scoped=true& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/TheControls.vue?vue&type=style&index=0&id=2da0f010&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_ref_7_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TheControls_vue_vue_type_style_index_0_id_2da0f010_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_ref_7_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TheControls_vue_vue_type_style_index_0_id_2da0f010_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_ref_7_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TheControls_vue_vue_type_style_index_0_id_2da0f010_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_ref_7_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TheControls_vue_vue_type_style_index_0_id_2da0f010_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_ref_7_2_node_modules_vue_loader_lib_index_js_vue_loader_options_TheControls_vue_vue_type_style_index_0_id_2da0f010_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -16342,6 +16386,7 @@ function () {
   }, {
     key: "playNote",
     value: function playNote(oscillator, note, startTime) {
+      // TODO: obsolete, ensure this isn't used
       // oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
       var frequency = Oscillator.noteFrequency(note); // create & setup oscillatorNode to play the note
 
@@ -16351,7 +16396,8 @@ function () {
       oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
       oscillator.oscillatorNode.connect(oscillator.filter.filterNode); // Connect filter to audio output
 
-      oscillator.filter.filterNode.connect(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.destination); // Start the oscillator
+      oscillator.filter.filterNode.connect(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain);
+      _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain.connect(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.destination); // Start the oscillator
 
       oscillator.oscillatorNode.frequency.setValueAtTime(frequency, _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
       oscillator.oscillatorNode.start(startTime);
@@ -16360,7 +16406,8 @@ function () {
     key: "stopNote",
     value: function stopNote(oscillator) {
       oscillator.oscillatorNode && oscillator.oscillatorNode.stop(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
-    }
+    } // Used for notes playback
+
   }, {
     key: "playForDuration",
     value: function playForDuration(oscillator, note, startTime, duration) {
@@ -16370,12 +16417,18 @@ function () {
       oscillator.oscillatorNode.type = oscillator.waveform; // Setup filter
 
       oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
+      oscillator.oscillatorNode.connect(oscillator.gainNode);
+      oscillator.gainNode.connect(oscillator.oscillatorNode);
       oscillator.oscillatorNode.connect(oscillator.filter.filterNode); // Connect filter to audio output
+      // TODO: function which loops through set filters goes here
+      // Make it reusable
 
-      oscillator.filter.filterNode.connect(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.destination); // Start the oscillator
+      oscillator.filter.filterNode.connect(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain);
+      _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain.connect(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.destination); // Start the oscillator
 
       oscillator.oscillatorNode.frequency.setValueAtTime(frequency, _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
-      oscillator.oscillatorNode.start(startTime); // console.log("playForDuration() - current time:", store.state.audioContext.currentTime);
+      oscillator.oscillatorNode.start(startTime);
+      Object(_helper__WEBPACK_IMPORTED_MODULE_1__["animatePositionMarker"])(); // console.log("playForDuration() - current time:", store.state.audioContext.currentTime);
 
       oscillator.oscillatorNode.stop(startTime + duration);
     }
@@ -16401,6 +16454,8 @@ function () {
     };
     this.notes = [];
     this.filter.filterNode.type = this.filter.type;
+    this.filters = [];
+    this.gainNode = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createGainNode();
   }
 
   return Oscillator;
@@ -16516,6 +16571,10 @@ __webpack_require__.r(__webpack_exports__);
     }
 
     scheduler();
+    var time = Object(_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(100);
+    var posMarker = document.querySelector("[data-js=position-marker]");
+    posMarker.setAttribute("style", "");
+    posMarker.setAttribute("style", "transition: left linear ".concat(time, "s; left: 99.9%;"));
   },
   stop: function stop() {
     window.clearTimeout(this.timeout);
@@ -16530,7 +16589,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!********************************!*\
   !*** ./src/js/store/helper.js ***!
   \********************************/
-/*! exports provided: getKeysArray, secondsPerBeat, loopTimeframe, durationFromPercentage */
+/*! exports provided: getKeysArray, secondsPerBeat, loopTimeframe, durationFromPercentage, animatePositionMarker, getOscillator */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16539,6 +16598,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "secondsPerBeat", function() { return secondsPerBeat; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loopTimeframe", function() { return loopTimeframe; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "durationFromPercentage", function() { return durationFromPercentage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "animatePositionMarker", function() { return animatePositionMarker; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getOscillator", function() { return getOscillator; });
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./src/js/store/store.js");
 
 /**
@@ -16661,6 +16722,19 @@ function durationFromPercentage(lengthAsPercentage) {
   var noteLengthInSeconds = loopTime / 100 * lengthAsPercentage;
   return noteLengthInSeconds;
 }
+function animatePositionMarker() {
+  var time = durationFromPercentage(100);
+  console.log(time);
+  var posMarker = document.querySelector("[data-js=position-marker]");
+  posMarker.setAttribute("style", "");
+  posMarker.setAttribute("style", "transition: left linear ".concat(time, "s; left: calc(100% - (5/18*1em));"));
+}
+function getOscillator(id) {
+  var oscIndex = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.oscillators.findIndex(function (oscillator) {
+    return oscillator.id == id;
+  });
+  return _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.oscillators[oscIndex];
+}
 
 /***/ }),
 
@@ -16679,6 +16753,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _Oscillator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Oscillator */ "./src/js/store/Oscillator.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Oscillator", function() { return _Oscillator__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+
+/* harmony import */ var _helper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./helper */ "./src/js/store/helper.js");
 
 
 
@@ -16707,7 +16783,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     data: {
       notes: ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"],
       keys: {
-        // unnecessary
+        // TODO: unnecessary
         C: 81,
         Csh: 50,
         D: 87,
@@ -16724,7 +16800,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       waveforms: ["sine", "square", "sawtooth", "triangle"],
       filters: ["lowpass", "highpass", "bandpass"]
     },
-    audioContext: null
+    audioContext: null,
+    masterGain: null
   },
   mutations: {
     /*
@@ -16733,7 +16810,11 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     createAudioContext: function createAudioContext(state) {
       var audioCtx;
       audioCtx = window.AudioContext || window.webkitAudioContext;
-      state.audioContext = new audioCtx();
+      state.audioContext = new audioCtx(); // Create the master volume control
+
+      state.masterGain = state.audioContext.createGain();
+      state.masterGain.gain.value = 0.6;
+      console.log(state.masterGain);
     },
     setMouseActiveState: function setMouseActiveState(state, payload) {
       this.state.mouseActive = payload;
@@ -16770,6 +16851,11 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     setNoteLengthInBeats: function setNoteLengthInBeats(state, payload) {
       this.state.project.noteLength = payload.length;
     },
+    setMasterGain: function setMasterGain(state, payload) {
+      if (this.state.masterGain) {
+        this.state.masterGain.gain.value = payload.masterGain;
+      }
+    },
 
     /*
     	Adding / removing oscillators
@@ -16784,10 +16870,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       index > -1 && this.state.oscillators.splice(index, 1);
     },
     setCurrentOscillator: function setCurrentOscillator(state, payload) {
-      var oscIndex = this.state.oscillators.findIndex(function (oscillator) {
-        return oscillator.id == payload.oscillator_id;
-      });
-      var osc = this.state.oscillators[oscIndex];
+      var osc = Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
       this.state.activeOscillator = osc;
     },
 
@@ -16795,17 +16878,12 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     	Oscillator Mutations
     */
     waveform: function waveform(state, payload) {
-      var oscIndex = this.state.oscillators.findIndex(function (oscillator) {
-        return oscillator.id == payload.oscillator_id;
-      });
-      var osc = this.state.oscillators[oscIndex];
+      var osc = Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
       osc.waveform = payload.waveform;
     },
     volume: function volume(state, payload) {
-      var oscIndex = this.state.oscillators.findIndex(function (oscillator) {
-        return oscillator.id == payload.oscillator_id;
-      });
-      var property = this.state.oscillators[oscIndex].volume;
+      var osc = Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
+      var property = osc.volume;
 
       switch (payload.property) {
         case "amplitude":
@@ -16822,10 +16900,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       }
     },
     biquadFilter: function biquadFilter(state, payload) {
-      var oscIndex = this.state.oscillators.findIndex(function (oscillator) {
-        return oscillator.id == payload.oscillator_id;
-      });
-      var property = this.state.oscillators[oscIndex].filter;
+      var osc = Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
+      var property = osc.filter;
 
       switch (payload.property) {
         case "type":
@@ -16846,15 +16922,13 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       }
     },
     lpHpFilter: function lpHpFilter(state, payload) {
-      var oscIndex = this.state.oscillators.findIndex(function (oscillator) {
-        return oscillator.id == payload.oscillator_id;
-      });
+      var osc = Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
       var property;
 
       if (payload.filter) {
-        property = this.state.oscillators[oscIndex].lowpass;
+        property = osc.lowpass;
       } else {
-        property = this.state.oscillators[oscIndex].highpass;
+        property = osc.highpass;
       }
 
       switch (payload.property) {
@@ -16916,8 +16990,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/charlie/Code/piano-roll/src/js/main.js */"./src/js/main.js");
-module.exports = __webpack_require__(/*! /home/charlie/Code/piano-roll/src/scss/app.scss */"./src/scss/app.scss");
+__webpack_require__(/*! /Users/Charlie/Code/piano-roll/src/js/main.js */"./src/js/main.js");
+module.exports = __webpack_require__(/*! /Users/Charlie/Code/piano-roll/src/scss/app.scss */"./src/scss/app.scss");
 
 
 /***/ })

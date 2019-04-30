@@ -127,3 +127,21 @@ export function durationFromPercentage(lengthAsPercentage) {
 
 	return noteLengthInSeconds
 }
+
+export function animatePositionMarker() {
+	let time = durationFromPercentage(100);
+	console.log(time);
+	let posMarker = document.querySelector("[data-js=position-marker]");
+
+	posMarker.setAttribute("style", "");
+
+	posMarker.setAttribute(
+		"style",
+		`transition: left linear ${time}s; left: calc(100% - (5/18*1em));`
+	);
+}
+
+export function getOscillator(id) {
+	let oscIndex = store.state.oscillators.findIndex(oscillator => oscillator.id == id);
+	return store.state.oscillators[oscIndex];
+}

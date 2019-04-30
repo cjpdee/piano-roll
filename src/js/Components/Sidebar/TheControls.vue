@@ -5,6 +5,11 @@
 			<input data-js-project="bpm" type="number" v-model="bpm" name="bpm" step="5" id="bpm">
 		</label>
 
+		<label>
+			Master
+			<input type="range" v-model="masterGain" min="0" max="1" step="0.1">
+		</label>
+
 		<div>
 			<h4>Piano Roll Setup</h4>
 			<label>
@@ -106,7 +111,7 @@ input[type="number"] {
 
 <script>
 import Player from "../../store/Player";
-import {durationFromPercentage} from "../../store/helper";
+import { durationFromPercentage } from "../../store/helper";
 
 export default {
 	name: "TheControls",
@@ -176,7 +181,7 @@ export default {
 			set(value) {
 				this.$store.commit("setNoteSize", {
 					noteSize: value
-				})
+				});
 			}
 		},
 		numBars: {
@@ -189,6 +194,21 @@ export default {
 				});
 			}
 		},
+		masterGain: {
+			get() {
+				if (this.$store.state.masterGain) {
+					return this.$store.state.masterGain.gain.value;
+				}
+			},
+			set(value) {
+				console.log(parseFloat(value));
+				if (this.$store.state.masterGain) {
+					this.$store.commit("setMasterGain", {
+						masterGain: parseFloat(value)
+					});
+				}
+			}
+		}
 	},
 	methods: {
 		play() {
@@ -197,27 +217,28 @@ export default {
 		},
 
 		animatePositionMarker() {
-			let time = durationFromPercentage(100);
-			console.log(time)
-			let posMarker = document.querySelector("[data-js=position-marker]");
-
-			posMarker.setAttribute('style','');
-
-			posMarker.setAttribute('style',`transition: left linear ${time}s; left: 99%;`);
+			// let time = durationFromPercentage(100);
+			// console.log(time);
+			// let posMarker = document.querySelector("[data-js=position-marker]");
+			// posMarker.setAttribute("style", "");
+			// posMarker.setAttribute(
+			// 	"style",
+			// 	`transition: left linear ${time}s; left: 99.9%;`
+			// );
 		},
-		
+
 		stop() {
 			Player.stop();
 
 			let posMarker = document.querySelector("[data-js=position-marker]");
-			posMarker.setAttribute('style','');
-			console.log(posMarker)
+			posMarker.setAttribute("style", "");
+			console.log(posMarker);
 		},
 		save() {
 			const data = JSON.stringify(this.$store.state);
 			console.log(data);
-			window.localStorage.setItem('project', data);
-			console.log(JSON.parse(window.localStorage.getItem('arr')))
+			window.localStorage.setItem("project", data);
+			console.log(JSON.parse(window.localStorage.getItem("arr")));
 		}
 	}
 };
