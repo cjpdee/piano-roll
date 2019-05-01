@@ -47,7 +47,6 @@ export function getKeysArray() {
 	for (let j = 0; j < notes.length; j++) {
 		let pointer = (j + offset) % notes.length;
 		orderedNotes.push(notes[pointer]);
-		// console.log(notes[pointer]);
 	}
 
 	// final array to store the order as well as
@@ -131,7 +130,6 @@ export function pixelsFromPercentage(percentage) {
 
 export function animatePositionMarker() {
 	const time = durationFromPercentage(100);
-	console.log(time);
 	let posMarker = document.querySelector("[data-js=position-marker]");
 
 	posMarker.setAttribute("style", "");
@@ -151,6 +149,24 @@ export function getNote(id) {
 	return store.state.activeOscillator.notes.find(note => note.id == id)
 }
 
-export function oscIdExists(id) {}
+function generateId() {
+	return Math.floor((Math.random() * 10000000)).toString(16);
+}
 
-export function noteIdExists(id) {}
+export function generateOscId() {
+	let id = generateId();
+	if (store.state.oscillators.find(oscillator => oscillator.id == id)) {
+		return generateOscId()
+	} else {
+		return id;
+	}
+}
+
+export function generateNoteId() {
+	let id = generateId();
+	if (store.state.activeOscillator.notes.find(note => note.id == id)) {
+		return generateNoteId()
+	} else {
+		return id;
+	}
+}

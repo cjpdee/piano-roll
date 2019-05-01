@@ -38,6 +38,9 @@
 				type="range"
 				class="oscillator__property"
 				id="volume_amplitude"
+				min="0"
+				max="1"
+				step="0.1"
 			>
 
 			<input
@@ -171,9 +174,10 @@ export default {
 			set(value) {
 				this.$store.commit("volume", {
 					property: "amplitude",
-					value: parseInt(value),
+					value: parseFloat(value),
 					oscillator_id: this.id
 				});
+				getOscillator(this.id).gainNode.gain.value = parseFloat(value);
 			}
 		},
 		volume_attack: {
@@ -186,7 +190,7 @@ export default {
 			set(value) {
 				this.$store.commit("volume", {
 					property: "attack",
-					value: parseInt(value),
+					value: parseFloat(value),
 					oscillator_id: this.id
 				});
 			}
@@ -201,7 +205,7 @@ export default {
 			set(value) {
 				this.$store.commit("volume", {
 					property: "decay",
-					value: parseInt(value),
+					value: parseFloat(value),
 					oscillator_id: this.id
 				});
 			}

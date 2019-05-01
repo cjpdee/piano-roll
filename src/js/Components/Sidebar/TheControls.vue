@@ -154,14 +154,8 @@ export default {
 				this.$store.commit("setRootNote", {
 					rootNote: value
 				});
-				/*
-					TODO: this is the new source of truth for the project's key system.
-					Remember to implement this into the store properly and have it not
-					affect notes already in the project if you change the root note etc.
-				*/
 				let notes = this.$store.state.data.notes;
 				let rootNote = this.$store.state.project.rootNote;
-				// console.log('aav',notes.slice(notes.indexOf(rootNote)),notes.slice(0,notes.indexOf(rootNote)));
 			}
 		},
 		timeSignature: {
@@ -201,7 +195,6 @@ export default {
 				}
 			},
 			set(value) {
-				console.log(parseFloat(value));
 				if (this.$store.state.masterGain) {
 					this.$store.commit("setMasterGain", {
 						masterGain: parseFloat(value)
@@ -216,29 +209,16 @@ export default {
 			this.animatePositionMarker();
 		},
 
-		animatePositionMarker() {
-			// let time = durationFromPercentage(100);
-			// console.log(time);
-			// let posMarker = document.querySelector("[data-js=position-marker]");
-			// posMarker.setAttribute("style", "");
-			// posMarker.setAttribute(
-			// 	"style",
-			// 	`transition: left linear ${time}s; left: 99.9%;`
-			// );
-		},
-
 		stop() {
 			Player.stop();
 
 			let posMarker = document.querySelector("[data-js=position-marker]");
 			posMarker.setAttribute("style", "");
-			console.log(posMarker);
 		},
 		save() {
 			const data = JSON.stringify(this.$store.state);
-			console.log(data);
 			window.localStorage.setItem("project", data);
-			console.log(JSON.parse(window.localStorage.getItem("arr")));
+			console.log(JSON.parse(window.localStorage.getItem("project")));
 		}
 	}
 };

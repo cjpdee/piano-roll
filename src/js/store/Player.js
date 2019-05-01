@@ -31,7 +31,7 @@ export default {
 			notes = notes.concat(notesArrayWithOscId);
 		});
 
-		// sort the notes by their position in the roll
+		// function to sort the notes by their position in the roll
 		function compare(a, b) {
 			const positionA = a.position;
 			const positionB = b.position;
@@ -45,11 +45,7 @@ export default {
 			return comparison;
 		}
 
-		// console.log('unsorted notes', notes.map((x) => x.position));
-
 		notes.sort(compare);
-
-		// console.log('sorted notes', notes.map((x) => x.position));
 
 		return notes;
 	},

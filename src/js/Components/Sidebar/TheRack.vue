@@ -8,35 +8,25 @@
 </template>
 
 <script>
-
-import OscillatorUI from './OscillatorUI';
-import {mapState} from 'vuex';
+import OscillatorUI from "./OscillatorUI";
+import { mapState } from "vuex";
 
 export default {
 	name: "TheRack",
 	components: { OscillatorUI },
-	props: {
-
-	},
-	computed: mapState([
-		'oscillators'
-	]),
+	props: {},
+	computed: mapState(["oscillators"]),
 
 	watched: {
-		'audioContext': function() {
-			console.log('audio context created');
+		audioContext: function() {
 			this.createOscillator();
 		}
 	},
 
 	methods: {
 		createOscillator() {
-			this.$store.commit('addOscillator');
-		},
+			this.$store.commit("addOscillator");
+		}
 	}
-}
-
-
-
-
+};
 </script>

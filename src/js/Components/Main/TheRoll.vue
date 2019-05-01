@@ -62,7 +62,6 @@ export default {
 		theNotes() {
 			let notes = this.$store.state.data.notes;
 			let rootNote = this.$store.state.project.rootNote;
-			console.log("aav", notes.slice(notes.indexOf(rootNote)));
 		}
 	},
 	methods: {
@@ -77,6 +76,37 @@ export default {
 			// }
 			return id;
 		},
+
+		// Handlers
+		mousedownHandler(e) {
+			if (e.button === 0) {
+				// TODO: use data attrs instead of class
+				if (e.target.classList.contains("row")) {
+					// Add Note
+					this.$refs[e.target.getAttribute("data-note")][0].addNote(
+						e
+					);
+				} else if (e.target.classList.contains("note")) {
+					// Drag Notes
+					this.dragStart(e);
+				} else if (e.target.classList.contains("handle")) {
+					this.resize(e);
+				}
+			} else if (e.button === 2) {
+				// Delete notes hovered hover
+			}
+		},
+		mouseupHandler(e) {
+			if (isDragging) {
+				this.dragEnd();
+			}
+		},
+		mousemoveHandler(e) {
+			if (isDragging) {
+				this.drag(e);
+			}
+		},
+		contextmenuHandler(e) {},
 
 		// Dragging methods
 		dragStart(e) {
@@ -109,14 +139,14 @@ export default {
 				if (newDragElPos < 0) newDragElPos = 0;
 				if (newDragElPos > rollWidth - noteLength)
 					newDragElPos = rollWidth - noteLength;
-				this.setTranslate(newDragElPos, dragElement);
+				this.setDraggingStyle(newDragElPos, dragElement);
 			}
 		},
 
 		// TODO: stop dragging process if mouse leaves the piano roll
 		mouseExit(e) {},
 
-		setTranslate(xPos, el) {
+		setDraggingStyle(xPos, el) {
 			const style = el.getAttribute("style");
 			const xPosPercentage = percentageFromPixels(xPos);
 
@@ -134,27 +164,67 @@ export default {
 			);
 		},
 
-		// Handlers
-		mousedownHandler(e) {
-			if (e.target.classList.contains("row")) {
-				// Add Note
-				this.$refs[e.target.getAttribute("data-note")][0].addNote(e);
-			} else if (e.target.classList.contains("note")) {
-				// Drag Notes
-				this.dragStart(e);
-			}
+		resize(e) {
+			console.log("resizing");
 		},
-		mouseupHandler(e) {
-			if (isDragging) {
-				this.dragEnd();
-			}
-		},
-		mousemoveHandler(e) {
-			if (isDragging) {
-				this.drag(e);
-			}
-		},
-		contextmenuHandler(e) {}
+
+		setResizeStyle() {}
 	}
 };
+
+/*
+Resize script I made before :
+
+if (isResizing) {
+	let $object = $(e.target);
+	if ($object.is($resizeHandle)) {
+		$object = $(e.target).parent($handle);
+	}
+
+	console.log("w", $object);
+
+	let currentPosX = e.pageX - parseInt($object.offset().left);
+	console.log("currentPosX", currentPosX);
+	let currentSize = parseInt($object.css("width"));
+	console.log("currentSize", currentSize);
+	let resizeStartPosXInsideDiv = currentSize - resizeStartPosX;
+	let spaceRightOfMouse =
+		startSize - (e.pageX - $object.offset().left);
+	let spaceLeftOfMouse = e.pageX - $object.offset().left;
+	console.log("space left of mouse", spaceLeftOfMouse);
+	console.log("space right of mouse", spaceRightOfMouse);
+
+	console.log(
+		"resizeStartPosXInsideDiv",
+		resizeStartPosXInsideDiv
+	);
+
+	let mousePosXDifference = resizeStartPosX - currentPosX;
+
+	console.log(
+		"new size calc",
+		`${startSize} - ${mousePosXDifference}px`
+	);
+
+	console.log(
+		"new size: ",
+		startSize - mousePosXDifference + "px"
+	);
+	$object.css(
+		"width",
+		startSize - mousePosXDifference - startSize / 1.3 + "px"
+	);
+
+	console.log(
+		"Different between start/current pos",
+		mousePosXDifference
+	);
+
+	// $object.css('width') =
+}
+
+
+
+
+*/
 </script>

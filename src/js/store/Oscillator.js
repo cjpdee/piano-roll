@@ -3,18 +3,11 @@ import {
 } from "./store";
 import {
 	durationFromPercentage,
-	animatePositionMarker
+	animatePositionMarker,
+	generateOscId
 } from "./helper";
 
 export default class Oscillator {
-	static generateId() {
-		let id = Math.floor((Math.random() * 10000000)).toString(16);
-		if (store.state.oscillators.filter(oscillator => oscillator.id == id)) {
-			return Math.floor((Math.random() * 10000000)).toString(16);
-		} else {
-			return id;
-		}
-	}
 
 	// TODO: move to new helper file
 	static noteFrequency(note) {
@@ -56,14 +49,15 @@ export default class Oscillator {
 	static playForDuration(oscillator, note, startTime, duration) {
 		let frequency = Oscillator.noteFrequency(note);
 
-		// create & setup oscillatorNode to play the note
+		// Create & setup oscillatorNode to play the note
 		oscillator.oscillatorNode = store.state.audioContext.createOscillator();
 		oscillator.oscillatorNode.type = oscillator.waveform;
 
 		// Setup filter
 		oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
+
+		// Chain it all together
 		oscillator.oscillatorNode.connect(oscillator.gainNode);
-		// oscillator.gainNode.connect(oscillator.oscillatorNode);
 		oscillator.gainNode.connect(oscillator.filter.filterNode);
 
 		// Connect filter to audio output
@@ -76,9 +70,11 @@ export default class Oscillator {
 		// Start the oscillator
 		oscillator.oscillatorNode.frequency.setValueAtTime(frequency, store.state.audioContext.currentTime);
 		oscillator.oscillatorNode.start(startTime);
+
+		// TODO: change how the position marker works
+		// resetPositionMarker() needs to exist also
 		animatePositionMarker();
 
-		// console.log("playForDuration() - current time:", store.state.audioContext.currentTime);
 		oscillator.oscillatorNode.stop(startTime + duration);
 	}
 
@@ -87,9 +83,9 @@ export default class Oscillator {
 	}
 
 	constructor() {
-		this.id = Oscillator.generateId();
+		this.id = generateOscId();
 		this.env = {
-			amplitude: 50,
+			amplitude: 0.6,
 			attack: 0,
 			hold: 0,
 			decay: 0,
@@ -108,6 +104,8 @@ export default class Oscillator {
 		this.filter.filterNode.type = this.filter.type;
 		this.filters = [];
 		this.gainNode = store.state.audioContext.createGain();
+
+		console.log('aaa', this.gainNode)
 	}
 }
 // TODO: worry about the processing stack

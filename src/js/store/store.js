@@ -64,7 +64,6 @@ const store = new Vuex.Store({
 			// Create the master volume control
 			state.masterGain = state.audioContext.createGain();
 			state.masterGain.gain.value = 0.6;
-			console.log(state.masterGain)
 		},
 
 		setMouseActiveState(state, payload) {
@@ -148,9 +147,10 @@ const store = new Vuex.Store({
 			getOscillator(payload.oscillator_id).filters = payload.filters
 		},
 
+		// TODO: should have a function for applying any kind of envelope
 		volume(state, payload) {
 			let osc = getOscillator(payload.oscillator_id);
-			let property = osc.volume;
+			let property = osc.env;
 			switch (payload.property) {
 				case "amplitude":
 					property.amplitude = payload.value;
@@ -219,7 +219,6 @@ const store = new Vuex.Store({
 		removeNote(state, id) {
 			// splice the Note object out of the notes array
 			if (state.activeOscillator.notes.length > -1) {
-				console.log(state.activeOscillator.notes.findIndex(note => note.id === id))
 				state.activeOscillator.notes.splice(
 					state.activeOscillator.notes.findIndex(note => note.id === id),
 					1
@@ -228,8 +227,7 @@ const store = new Vuex.Store({
 		},
 
 		updateNotePos(state, payload) {
-			console.log('got here')
-			getNote(payload.note_id).position = payload.pos; // when u get back: continue committing new pos to store
+			getNote(payload.note_id).position = payload.pos;
 		}
 	},
 });

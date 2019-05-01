@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { generateNoteId } from "../../store/helper";
+
 export default {
 	props: {
 		musicKey: {
@@ -33,16 +35,6 @@ export default {
 	},
 
 	methods: {
-		generateId() {
-			let id = Math.floor(Math.random() * 10000000).toString(16);
-			// TODO: Make a check for other existing note ids
-			// if ( store.state.oscillators.filter(oscillator => oscillator.id == id) ) {
-			// 	return Math.floor((Math.random() * 10000000)).toString(16);
-			// } else {
-			// 	return id;
-			// }
-			return id;
-		},
 		// NOTE: Mouse event handling is done in theRoll, this method is called from there
 		addNote(e) {
 			if (this.$store.state.activeOscillator) {
@@ -64,7 +56,7 @@ export default {
 					pitch: this.musicKey,
 					position: snappedPos,
 					lengthAsPercentage: lengthPercentage,
-					id: this.generateId()
+					id: generateNoteId()
 				};
 
 				this.$store.commit("addNote", note);
