@@ -3,13 +3,12 @@ import Vuex from "vuex";
 
 import Oscillator from "./Oscillator";
 import {
-	getOscillator
+	getOscillator,
+	getNote
 } from "./helper";
 
 Vue.use(Vuex);
 
-// TODO: Think about storing this data in localhost in case
-// the user accidentally exits?
 const store = new Vuex.Store({
 	state: {
 		project: {
@@ -136,9 +135,17 @@ const store = new Vuex.Store({
 			Oscillator Mutations
 		*/
 
-		waveform(state, payload) {
+		setOscillatorWaveform(state, payload) {
 			let osc = getOscillator(payload.oscillator_id);
 			osc.waveform = payload.waveform;
+		},
+
+		setOscillatorGain(state, payload) {
+			getOscillator(payload.oscillator_id).gain = payload.gain
+		},
+
+		updateOscillatorFiltersList(state, payload) {
+			getOscillator(payload.oscillator_id).filters = payload.filters
 		},
 
 		volume(state, payload) {
@@ -202,14 +209,14 @@ const store = new Vuex.Store({
 			}
 		},
 
-		addNoteForActiveOsc(state, note) {
+		addNote(state, note) {
 			// add note object to notes array
 			if (state.activeOscillator.notes.length < 32) {
 				state.activeOscillator.notes.push(note);
 			}
 		},
 
-		removeNoteFromActiveOsc(state, id) {
+		removeNote(state, id) {
 			// splice the Note object out of the notes array
 			if (state.activeOscillator.notes.length > -1) {
 				console.log(state.activeOscillator.notes.findIndex(note => note.id === id))
@@ -218,6 +225,11 @@ const store = new Vuex.Store({
 					1
 				);
 			}
+		},
+
+		updateNotePos(state, payload) {
+			console.log('got here')
+			getNote(payload.note_id).position = payload.pos; // when u get back: continue committing new pos to store
 		}
 	},
 });

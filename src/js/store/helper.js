@@ -3,14 +3,7 @@ import {
 } from './store';
 
 /**
- * KEY
- * 
- * Note order functions:
- * > getKeysArray()
- * 
- * Timing functions:
- * > getSecondsPerBeat()
- * > getLoopTimeFrame()
+ * TODO: this should be split into several parts
  */
 
 // rounding function to snap notes to nearest bar
@@ -29,10 +22,10 @@ export function getKeysArray() {
 	 * as the new piano roll order for the whole app
 	 */
 
-	let chosenRootOctave = store.state.project.baseOctave;
-	let numOctaves = store.state.project.numOctaves;
-	let rootNote = store.state.project.rootNote;
-	let notes = store.state.data.notes;
+	const chosenRootOctave = store.state.project.baseOctave;
+	const numOctaves = store.state.project.numOctaves;
+	const rootNote = store.state.project.rootNote;
+	const notes = store.state.data.notes;
 
 	let octaveNotes = (function() {
 		let array = [];
@@ -121,15 +114,23 @@ export function loopTimeframe() {
 
 // get duration from a percentage of the loop
 export function durationFromPercentage(lengthAsPercentage) {
-	let loopTime = getLoopTimeframe();
+	const loopTime = getLoopTimeframe();
 
-	let noteLengthInSeconds = (loopTime / 100) * lengthAsPercentage;
+	return (loopTime / 100) * lengthAsPercentage;
+}
 
-	return noteLengthInSeconds
+export function percentageFromPixels(pixels) {
+	const rollWidth = document.querySelector("[data-js=piano-roll]").getBoundingClientRect().width;
+	return (pixels / rollWidth) * 100;
+}
+
+export function pixelsFromPercentage(percentage) {
+	const rollWidth = document.querySelector("[data-js=piano-roll]").getBoundingClientRect().width;
+	return ((percentage / 100) * rollWidth)
 }
 
 export function animatePositionMarker() {
-	let time = durationFromPercentage(100);
+	const time = durationFromPercentage(100);
 	console.log(time);
 	let posMarker = document.querySelector("[data-js=position-marker]");
 
@@ -142,6 +143,14 @@ export function animatePositionMarker() {
 }
 
 export function getOscillator(id) {
-	let oscIndex = store.state.oscillators.findIndex(oscillator => oscillator.id == id);
+	const oscIndex = store.state.oscillators.findIndex(oscillator => oscillator.id == id);
 	return store.state.oscillators[oscIndex];
 }
+
+export function getNote(id) {
+	return store.state.activeOscillator.notes.find(note => note.id == id)
+}
+
+export function oscIdExists(id) {}
+
+export function noteIdExists(id) {}

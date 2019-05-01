@@ -1,6 +1,7 @@
 <template>
 	<div
 		class="piano-roll"
+		data-js="piano-roll"
 		v-if="notes.length"
 		@mousedown="mousedownHandler"
 		@mousemove="mousemoveHandler"
@@ -13,17 +14,25 @@
 				<div class="beat-marker" v-for="division in divisionsPerBar" :key="division"></div>
 			</div>
 		</div>
-		<PitchRow v-for="(note,index) in notes" :key="note" :index="index" :musicKey="note"></PitchRow>
+		<PitchRow v-for="(note,index) in notes" :key="note" :index="index" :musicKey="note" :ref="note"></PitchRow>
 	</div>
 </template>
 
 <script>
 import PitchRow from "./PitchRow";
-import { getKeysArray, durationFromPercentage } from "../../store/helper";
+import {
+	getKeysArray,
+	durationFromPercentage,
+	percentageFromPixels,
+	getNote,
+	pixelsFromPercentage
+} from "../../store/helper";
 
 // Dragging / resizing variables
 var isDragging = false;
 var dragElement = null;
+var dragElMousePos;
+var newDragElPos;
 var isResizing = false;
 let currentX;
 let initialX;
@@ -71,45 +80,47 @@ export default {
 
 		// Dragging methods
 		dragStart(e) {
-			// console.log(this.$el);
-			// console.log(e.target);
 			dragElement = e.target;
+			dragElMousePos = e.offsetX;
 			initialX = e.clientX - xOffset;
-			// if (this.$el === e.target) {
+
 			isDragging = true;
-			console.log("isDragging = ", isDragging);
-			// }
 		},
 
 		dragEnd(e) {
-			initialX = currentX;
-
 			isDragging = false;
-			dragElement = null;
-
-			// set the note's new position in the store
-
-			console.error("dragging stopped");
+			this.$store.commit("updateNotePos", {
+				pos: percentageFromPixels(newDragElPos),
+				note_id: dragElement.getAttribute("id")
+			});
 		},
 
 		drag(e) {
-			// this.resize(e);
 			if (isDragging) {
-				currentX = e.clientX - initialX;
+				const rollWidth = this.$el.getBoundingClientRect().width;
+				const rollPosInPage = this.$el.getBoundingClientRect().left;
+				var mousePosInPage = e.clientX;
+				var mousePosInRoll = mousePosInPage - rollPosInPage;
+				const noteLength = pixelsFromPercentage(
+					getNote(dragElement.getAttribute("id")).lengthAsPercentage
+				);
 
-				xOffset = currentX;
-
-				this.setTranslate(currentX, dragElement);
+				newDragElPos = mousePosInRoll - dragElMousePos;
+				if (newDragElPos < 0) newDragElPos = 0;
+				if (newDragElPos > rollWidth - noteLength)
+					newDragElPos = rollWidth - noteLength;
+				this.setTranslate(newDragElPos, dragElement);
 			}
 		},
 
-		setTranslate(xPos, el) {
-			console.log("xpos: ", xPos);
-			let style = el.getAttribute("style");
-			let xPosPercentage = durationFromPercentage(xPos);
-			console.log(style.split(";"));
+		// TODO: stop dragging process if mouse leaves the piano roll
+		mouseExit(e) {},
 
-			let attributes = style.split(";").filter(el => {
+		setTranslate(xPos, el) {
+			const style = el.getAttribute("style");
+			const xPosPercentage = percentageFromPixels(xPos);
+
+			var attributes = style.split(";").filter(el => {
 				// get rid of the position attribute
 				if (el.includes("left")) {
 					return;
@@ -121,24 +132,21 @@ export default {
 				"style",
 				attributes.join(";") + "; left:" + xPosPercentage + "%"
 			);
-
-			console.log(attributes);
 		},
 
 		// Handlers
 		mousedownHandler(e) {
 			if (e.target.classList.contains("row")) {
 				// Add Note
-				console.log("clicked pitch row");
+				this.$refs[e.target.getAttribute("data-note")][0].addNote(e);
 			} else if (e.target.classList.contains("note")) {
 				// Drag Notes
-				console.log("clicked note");
 				this.dragStart(e);
 			}
 		},
 		mouseupHandler(e) {
 			if (isDragging) {
-				isDragging = false;
+				this.dragEnd();
 			}
 		},
 		mousemoveHandler(e) {
@@ -146,7 +154,7 @@ export default {
 				this.drag(e);
 			}
 		},
-		contextmenuHandler(e) {},
+		contextmenuHandler(e) {}
 	}
 };
 </script>

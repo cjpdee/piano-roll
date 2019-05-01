@@ -1,5 +1,5 @@
 <template>
-	<div :class="rowClass" @click="addNote" @contextmenu.prevent :data-note="musicKey">
+	<div :class="rowClass" @contextmenu.prevent :data-note="musicKey">
 		<Note v-for="note in notes" :key="note.id" :data="note" :musicKey="musicKey"></Note>
 	</div>
 </template>
@@ -43,26 +43,8 @@ export default {
 			// }
 			return id;
 		},
+		// NOTE: Mouse event handling is done in theRoll, this method is called from there
 		addNote(e) {
-			/*
-				TODO: change this system a bit so the user can choose
-				their settings for grid snapping / time signature.
-				By default is 4, but they should be able to place
-				1/3 and 1/6 notes also
-
-				default 4,
-				8, 16
-
-				default 3,
-				6, 12
-
-				The note size also needs to reflect this
-
-				And for the number keys to work nicely, change the placement
-				settings to also make use of this system
-				e.g 1 = 1 beat, a 1/3rd note in 4:3 and a 1/4th note in 4:4
-			*/
-
 			if (this.$store.state.activeOscillator) {
 				let pos =
 					(e.offsetX / e.target.parentElement.clientWidth) * 100;
@@ -81,12 +63,11 @@ export default {
 				let note = {
 					pitch: this.musicKey,
 					position: snappedPos,
-					position: snappedPos,
 					lengthAsPercentage: lengthPercentage,
 					id: this.generateId()
 				};
 
-				this.$store.commit("addNoteForActiveOsc", note);
+				this.$store.commit("addNote", note);
 			} else {
 				console.error("There is no oscillator to create notes for");
 			}

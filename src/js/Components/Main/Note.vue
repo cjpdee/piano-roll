@@ -37,71 +37,14 @@ export default {
 		}
 	},
 	mounted() {
-		// console.log(this.$el);
 		let activeOscillator = this.$store.state.oscillators.find(item => {
 			return item.id === this.$store.state.activeOscillator.id;
 		});
-		// console.log(activeOscillator);
-		// activeOscillator.notes.push(this.data);
-
-		// this.$store.commit("addNoteForActiveOsc", note);
 	},
 	methods: {
 		removeNote(e) {
-			this.$store.commit("removeNoteFromActiveOsc", e.currentTarget.id);
+			this.$store.commit("removeNote", e.currentTarget.id);
 		},
-
-		// Moving
-
-		// dragStart(e) {
-		// 	console.log(this.$el);
-		// 	initialX = e.clientX - xOffset;
-		// 	if (this.$el === e.target) {
-		// 		isDragging = true;
-		// 		console.log("isDragging = ", isDragging);
-		// 	}
-		// },
-
-		// dragEnd(e) {
-		// 	initialX = currentX;
-
-		// 	isDragging = false;
-
-		// 	console.error("dragging stopped");
-		// },
-
-		// drag(e) {
-		// 	this.resize(e);
-		// 	if (isDragging) {
-		// 		currentX = e.clientX - initialX;
-
-		// 		xOffset = currentX;
-
-		// 		this.setTranslate(currentX, this.$el);
-		// 	}
-		// },
-
-		// setTranslate(xPos, el) {
-		// 	console.log("xpos: ", xPos);
-		// 	let style = el.getAttribute("style");
-		// 	let xPosPercentage = durationFromPercentage(xPos);
-		// 	console.log(style.split(";"));
-
-		// 	let attributes = style.split(";").filter(el => {
-		// 		// get rid of the position attribute
-		// 		if (el.includes("left")) {
-		// 			return;
-		// 		}
-		// 		return el;
-		// 	});
-
-		// 	el.setAttribute(
-		// 		"style",
-		// 		attributes.join(";") + "; left:" + xPosPercentage + "%"
-		// 	);
-
-		// 	console.log(attributes);
-		// },
 
 		// resizing
 		resize(e) {

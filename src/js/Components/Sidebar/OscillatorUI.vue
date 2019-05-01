@@ -14,7 +14,7 @@
 				<option v-for="wave in this.$store.state.data.waveforms" :key="wave" :value="wave">{{ wave }}</option>
 			</select>
 		</div>
-		<div class="oscillator__filter-wrap">
+		<div class="oscillator__filter-wrap" v-for="filter in filters" :key="filter">
 			Filters &amp; Shapers
 			<br>
 			<label>
@@ -91,6 +91,7 @@
 <script>
 // Custom wavetables : OscillatorNode.setPeriodicWave()
 // Make filter values relative to the base octave
+import { getOscillator } from "../../store/helper";
 
 export default {
 	name: "Oscillator",
@@ -123,9 +124,33 @@ export default {
 				return this.$store.state.oscillators[index].waveform;
 			},
 			set(value) {
-				this.$store.commit("waveform", {
+				this.$store.commit("setOscillatorWaveform", {
 					oscillator_id: this.id,
 					waveform: value
+				});
+			}
+		},
+
+		gain: {
+			get() {
+				return getOscillator(this.id).gain;
+			},
+			set(value) {
+				this.$store.commit("setOscillatorGain", {
+					value: parseInt(value),
+					oscillator_id: this.id
+				});
+			}
+		},
+
+		filters: {
+			get() {
+				return getOscillator(this.id).filters;
+			},
+			set(value) {
+				this.$store.commit("updateOscillatorFiltersList", {
+					value: value,
+					oscillator_id: this.id
 				});
 			}
 		},
@@ -133,12 +158,15 @@ export default {
 		/*
 			Volume
 		*/
+
+		// TODO: this is long. instead, just update the volume_env object in the store.
+
 		volume_amplitude: {
 			get() {
 				let index = this.$store.state.oscillators.findIndex(
 					oscillator => oscillator.id == this.id
 				);
-				return this.$store.state.oscillators[index].volume.amplitude;
+				return this.$store.state.oscillators[index].env.amplitude;
 			},
 			set(value) {
 				this.$store.commit("volume", {
@@ -153,7 +181,7 @@ export default {
 				let index = this.$store.state.oscillators.findIndex(
 					oscillator => oscillator.id == this.id
 				);
-				return this.$store.state.oscillators[index].volume.attack;
+				return this.$store.state.oscillators[index].env.attack;
 			},
 			set(value) {
 				this.$store.commit("volume", {
@@ -168,7 +196,7 @@ export default {
 				let index = this.$store.state.oscillators.findIndex(
 					oscillator => oscillator.id == this.id
 				);
-				return this.$store.state.oscillators[index].volume.decay;
+				return this.$store.state.oscillators[index].env.decay;
 			},
 			set(value) {
 				this.$store.commit("volume", {

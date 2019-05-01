@@ -177,56 +177,46 @@ var lastOscillator;
 
         switch (e.keyCode) {
           case 81:
-            console.log("registered");
             _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "C" + this.$store.state.project.baseOctave);
             this.currentNote = "C" + this.$store.state.project.baseOctave;
             break;
 
           case 50:
-            console.log("registered");
             _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "C#" + this.$store.state.project.baseOctave);
             this.currentNote = "C#" + this.$store.state.project.baseOctave;
             break;
 
           case 87:
-            console.log("registered");
             _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "D" + this.$store.state.project.baseOctave);
             this.currentNote = "D" + this.$store.state.project.baseOctave;
             break;
 
           case 51:
-            console.log("registered");
             _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "D#" + this.$store.state.project.baseOctave);
             this.currentNote = "D#" + this.$store.state.project.baseOctave;
             break;
 
           case 69:
-            console.log("registered");
             _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "E" + this.$store.state.project.baseOctave);
             break;
 
           case 82:
-            console.log("registered");
             _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "F" + this.$store.state.project.baseOctave);
             break;
 
           case 53:
-            console.log("registered");
             _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "F#" + this.$store.state.project.baseOctave);
             break;
 
           case 84:
-            console.log("registered");
             _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "G" + this.$store.state.project.baseOctave);
             break;
 
           case 54:
-            console.log("registered");
             _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "G#" + this.$store.state.project.baseOctave);
             break;
 
           case 89:
-            console.log("registered");
             _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "A" + this.$store.state.project.baseOctave);
             break;
 
@@ -299,57 +289,14 @@ var xOffset = 0;
   mounted: function mounted() {
     var _this = this;
 
-    // console.log(this.$el);
     var activeOscillator = this.$store.state.oscillators.find(function (item) {
       return item.id === _this.$store.state.activeOscillator.id;
-    }); // console.log(activeOscillator);
-    // activeOscillator.notes.push(this.data);
-    // this.$store.commit("addNoteForActiveOsc", note);
+    });
   },
   methods: {
     removeNote: function removeNote(e) {
-      this.$store.commit("removeNoteFromActiveOsc", e.currentTarget.id);
+      this.$store.commit("removeNote", e.currentTarget.id);
     },
-    // Moving
-    // dragStart(e) {
-    // 	console.log(this.$el);
-    // 	initialX = e.clientX - xOffset;
-    // 	if (this.$el === e.target) {
-    // 		isDragging = true;
-    // 		console.log("isDragging = ", isDragging);
-    // 	}
-    // },
-    // dragEnd(e) {
-    // 	initialX = currentX;
-    // 	isDragging = false;
-    // 	console.error("dragging stopped");
-    // },
-    // drag(e) {
-    // 	this.resize(e);
-    // 	if (isDragging) {
-    // 		currentX = e.clientX - initialX;
-    // 		xOffset = currentX;
-    // 		this.setTranslate(currentX, this.$el);
-    // 	}
-    // },
-    // setTranslate(xPos, el) {
-    // 	console.log("xpos: ", xPos);
-    // 	let style = el.getAttribute("style");
-    // 	let xPosPercentage = durationFromPercentage(xPos);
-    // 	console.log(style.split(";"));
-    // 	let attributes = style.split(";").filter(el => {
-    // 		// get rid of the position attribute
-    // 		if (el.includes("left")) {
-    // 			return;
-    // 		}
-    // 		return el;
-    // 	});
-    // 	el.setAttribute(
-    // 		"style",
-    // 		attributes.join(";") + "; left:" + xPosPercentage + "%"
-    // 	);
-    // 	console.log(attributes);
-    // },
     // resizing
     resize: function resize(e) {
       if (isResizing) {
@@ -391,8 +338,6 @@ var xOffset = 0;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -437,33 +382,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       return id;
     },
+    // NOTE: Mouse event handling is done in theRoll, this method is called from there
     addNote: function addNote(e) {
-      /*
-      	TODO: change this system a bit so the user can choose
-      	their settings for grid snapping / time signature.
-      	By default is 4, but they should be able to place
-      	1/3 and 1/6 notes also
-      		default 4,
-      	8, 16
-      		default 3,
-      	6, 12
-      		The note size also needs to reflect this
-      		And for the number keys to work nicely, change the placement
-      	settings to also make use of this system
-      	e.g 1 = 1 beat, a 1/3rd note in 4:3 and a 1/4th note in 4:4
-      */
       if (this.$store.state.activeOscillator) {
-        var _note;
-
         var pos = e.offsetX / e.target.parentElement.clientWidth * 100;
         var division = 100 / (this.$store.state.project.numBars * this.$store.state.project.timeSignature);
         var snappedPos = pos.floorTo(division);
         var lengthPercentage = 100 / this.$store.state.project.numBars / this.$store.state.project.noteSize;
-        var note = (_note = {
+        var note = {
           pitch: this.musicKey,
-          position: snappedPos
-        }, _defineProperty(_note, "position", snappedPos), _defineProperty(_note, "lengthAsPercentage", lengthPercentage), _defineProperty(_note, "id", this.generateId()), _note);
-        this.$store.commit("addNoteForActiveOsc", note);
+          position: snappedPos,
+          lengthAsPercentage: lengthPercentage,
+          id: this.generateId()
+        };
+        this.$store.commit("addNote", note);
       } else {
         console.error("There is no oscillator to create notes for");
       }
@@ -503,11 +435,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
  // Dragging / resizing variables
 
 var isDragging = false;
 var dragElement = null;
+var dragElMousePos;
+var newDragElPos;
 var isResizing = false;
 var currentX;
 var initialX;
@@ -553,34 +488,36 @@ var xOffset = 0;
     },
     // Dragging methods
     dragStart: function dragStart(e) {
-      // console.log(this.$el);
-      // console.log(e.target);
       dragElement = e.target;
-      initialX = e.clientX - xOffset; // if (this.$el === e.target) {
-
+      dragElMousePos = e.offsetX;
+      initialX = e.clientX - xOffset;
       isDragging = true;
-      console.log("isDragging = ", isDragging); // }
     },
     dragEnd: function dragEnd(e) {
-      initialX = currentX;
       isDragging = false;
-      dragElement = null; // set the note's new position in the store
-
-      console.error("dragging stopped");
+      this.$store.commit("updateNotePos", {
+        pos: Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["percentageFromPixels"])(newDragElPos),
+        note_id: dragElement.getAttribute("id")
+      });
     },
     drag: function drag(e) {
-      // this.resize(e);
       if (isDragging) {
-        currentX = e.clientX - initialX;
-        xOffset = currentX;
-        this.setTranslate(currentX, dragElement);
+        var rollWidth = this.$el.getBoundingClientRect().width;
+        var rollPosInPage = this.$el.getBoundingClientRect().left;
+        var mousePosInPage = e.clientX;
+        var mousePosInRoll = mousePosInPage - rollPosInPage;
+        var noteLength = Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["pixelsFromPercentage"])(Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["getNote"])(dragElement.getAttribute("id")).lengthAsPercentage);
+        newDragElPos = mousePosInRoll - dragElMousePos;
+        if (newDragElPos < 0) newDragElPos = 0;
+        if (newDragElPos > rollWidth - noteLength) newDragElPos = rollWidth - noteLength;
+        this.setTranslate(newDragElPos, dragElement);
       }
     },
+    // TODO: stop dragging process if mouse leaves the piano roll
+    mouseExit: function mouseExit(e) {},
     setTranslate: function setTranslate(xPos, el) {
-      console.log("xpos: ", xPos);
       var style = el.getAttribute("style");
-      var xPosPercentage = Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["durationFromPercentage"])(xPos);
-      console.log(style.split(";"));
+      var xPosPercentage = Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["percentageFromPixels"])(xPos);
       var attributes = style.split(";").filter(function (el) {
         // get rid of the position attribute
         if (el.includes("left")) {
@@ -590,22 +527,20 @@ var xOffset = 0;
         return el;
       });
       el.setAttribute("style", attributes.join(";") + "; left:" + xPosPercentage + "%");
-      console.log(attributes);
     },
     // Handlers
     mousedownHandler: function mousedownHandler(e) {
       if (e.target.classList.contains("row")) {
         // Add Note
-        console.log("clicked pitch row");
+        this.$refs[e.target.getAttribute("data-note")][0].addNote(e);
       } else if (e.target.classList.contains("note")) {
         // Drag Notes
-        console.log("clicked note");
         this.dragStart(e);
       }
     },
     mouseupHandler: function mouseupHandler(e) {
       if (isDragging) {
-        isDragging = false;
+        this.dragEnd();
       }
     },
     mousemoveHandler: function mousemoveHandler(e) {
@@ -628,6 +563,7 @@ var xOffset = 0;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _store_helper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../store/helper */ "./src/js/store/helper.js");
 //
 //
 //
@@ -720,6 +656,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 // Custom wavetables : OscillatorNode.setPeriodicWave()
 // Make filter values relative to the base octave
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Oscillator",
   props: {
@@ -752,9 +689,31 @@ __webpack_require__.r(__webpack_exports__);
         return this.$store.state.oscillators[index].waveform;
       },
       set: function set(value) {
-        this.$store.commit("waveform", {
+        this.$store.commit("setOscillatorWaveform", {
           oscillator_id: this.id,
           waveform: value
+        });
+      }
+    },
+    gain: {
+      get: function get() {
+        return Object(_store_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(this.id).gain;
+      },
+      set: function set(value) {
+        this.$store.commit("setOscillatorGain", {
+          value: parseInt(value),
+          oscillator_id: this.id
+        });
+      }
+    },
+    filters: {
+      get: function get() {
+        return Object(_store_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(this.id).filters;
+      },
+      set: function set(value) {
+        this.$store.commit("updateOscillatorFiltersList", {
+          value: value,
+          oscillator_id: this.id
         });
       }
     },
@@ -762,6 +721,7 @@ __webpack_require__.r(__webpack_exports__);
     /*
     	Volume
     */
+    // TODO: this is long. instead, just update the volume_env object in the store.
     volume_amplitude: {
       get: function get() {
         var _this3 = this;
@@ -769,7 +729,7 @@ __webpack_require__.r(__webpack_exports__);
         var index = this.$store.state.oscillators.findIndex(function (oscillator) {
           return oscillator.id == _this3.id;
         });
-        return this.$store.state.oscillators[index].volume.amplitude;
+        return this.$store.state.oscillators[index].env.amplitude;
       },
       set: function set(value) {
         this.$store.commit("volume", {
@@ -786,7 +746,7 @@ __webpack_require__.r(__webpack_exports__);
         var index = this.$store.state.oscillators.findIndex(function (oscillator) {
           return oscillator.id == _this4.id;
         });
-        return this.$store.state.oscillators[index].volume.attack;
+        return this.$store.state.oscillators[index].env.attack;
       },
       set: function set(value) {
         this.$store.commit("volume", {
@@ -803,7 +763,7 @@ __webpack_require__.r(__webpack_exports__);
         var index = this.$store.state.oscillators.findIndex(function (oscillator) {
           return oscillator.id == _this5.id;
         });
-        return this.$store.state.oscillators[index].volume.decay;
+        return this.$store.state.oscillators[index].env.decay;
       },
       set: function set(value) {
         this.$store.commit("volume", {
@@ -2505,7 +2465,6 @@ var render = function() {
       class: _vm.rowClass,
       attrs: { "data-note": _vm.musicKey },
       on: {
-        click: _vm.addNote,
         contextmenu: function($event) {
           $event.preventDefault()
         }
@@ -2547,6 +2506,7 @@ var render = function() {
         "div",
         {
           staticClass: "piano-roll",
+          attrs: { "data-js": "piano-roll" },
           on: {
             mousedown: _vm.mousedownHandler,
             mousemove: _vm.mousemoveHandler,
@@ -2587,6 +2547,8 @@ var render = function() {
           _vm._l(_vm.notes, function(note, index) {
             return _c("PitchRow", {
               key: note,
+              ref: note,
+              refInFor: true,
               attrs: { index: index, musicKey: note }
             })
           })
@@ -2617,101 +2579,77 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("label", { staticClass: "oscillator", attrs: { for: _vm.id } }, [
-    _c("h2", [_vm._v("Osc " + _vm._s(_vm.id))]),
-    _vm._v(" "),
-    _c("input", {
-      attrs: { type: "radio", name: "current_oscillator", id: _vm.id },
-      domProps: { checked: _vm.isOscillatorActive },
-      on: { click: _vm.setCurrentOscillator }
-    }),
-    _vm._v(" "),
-    _c("div", { staticClass: "oscillator__setup-wrap" }, [
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.waveform,
-              expression: "waveform"
-            }
-          ],
-          staticClass: "oscillator__select",
-          on: {
-            change: function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.waveform = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
-            }
-          }
-        },
-        _vm._l(this.$store.state.data.waveforms, function(wave) {
-          return _c("option", { key: wave, domProps: { value: wave } }, [
-            _vm._v(_vm._s(wave))
-          ])
-        }),
-        0
-      )
-    ]),
-    _vm._v(" "),
-    _vm._m(0),
-    _vm._v(" "),
-    _c("span", { staticClass: "oscillator__property-wrap" }, [
-      _c(
-        "label",
-        {
-          staticClass: "oscillator__property-label",
-          attrs: { for: "volume_amplitude" }
-        },
-        [_vm._v("Vol")]
-      ),
+  return _c(
+    "label",
+    { staticClass: "oscillator", attrs: { for: _vm.id } },
+    [
+      _c("h2", [_vm._v("Osc " + _vm._s(_vm.id))]),
       _vm._v(" "),
       _c("input", {
-        directives: [
+        attrs: { type: "radio", name: "current_oscillator", id: _vm.id },
+        domProps: { checked: _vm.isOscillatorActive },
+        on: { click: _vm.setCurrentOscillator }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "oscillator__setup-wrap" }, [
+        _c(
+          "select",
           {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.volume_amplitude,
-            expression: "volume_amplitude"
-          }
-        ],
-        staticClass: "oscillator__property",
-        attrs: { type: "range", id: "volume_amplitude" },
-        domProps: { value: _vm.volume_amplitude },
-        on: {
-          __r: function($event) {
-            _vm.volume_amplitude = $event.target.value
-          }
-        }
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.waveform,
+                expression: "waveform"
+              }
+            ],
+            staticClass: "oscillator__select",
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.waveform = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          _vm._l(this.$store.state.data.waveforms, function(wave) {
+            return _c("option", { key: wave, domProps: { value: wave } }, [
+              _vm._v(_vm._s(wave))
+            ])
+          }),
+          0
+        )
+      ]),
+      _vm._v(" "),
+      _vm._l(_vm.filters, function(filter) {
+        return _c(
+          "div",
+          { key: filter, staticClass: "oscillator__filter-wrap" },
+          [
+            _vm._v("\n\t\tFilters & Shapers\n\t\t"),
+            _c("br"),
+            _vm._v(" "),
+            _vm._m(0, true)
+          ]
+        )
       }),
       _vm._v(" "),
-      _c("input", {
-        staticClass: "oscillator__property__dropdown-toggle",
-        attrs: {
-          type: "checkbox",
-          name: "volume_properties",
-          id: "volume_properties_toggle"
-        }
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "oscillator__property__dropdown" }, [
+      _c("span", { staticClass: "oscillator__property-wrap" }, [
         _c(
           "label",
           {
             staticClass: "oscillator__property-label",
-            attrs: { for: "volume_attack" }
+            attrs: { for: "volume_amplitude" }
           },
-          [_vm._v("Att")]
+          [_vm._v("Vol")]
         ),
         _vm._v(" "),
         _c("input", {
@@ -2719,27 +2657,96 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.volume_attack,
-              expression: "volume_attack"
+              value: _vm.volume_amplitude,
+              expression: "volume_amplitude"
             }
           ],
           staticClass: "oscillator__property",
-          attrs: { type: "range", id: "volume_attack" },
-          domProps: { value: _vm.volume_attack },
+          attrs: { type: "range", id: "volume_amplitude" },
+          domProps: { value: _vm.volume_amplitude },
           on: {
             __r: function($event) {
-              _vm.volume_attack = $event.target.value
+              _vm.volume_amplitude = $event.target.value
             }
           }
         }),
         _vm._v(" "),
+        _c("input", {
+          staticClass: "oscillator__property__dropdown-toggle",
+          attrs: {
+            type: "checkbox",
+            name: "volume_properties",
+            id: "volume_properties_toggle"
+          }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "oscillator__property__dropdown" }, [
+          _c(
+            "label",
+            {
+              staticClass: "oscillator__property-label",
+              attrs: { for: "volume_attack" }
+            },
+            [_vm._v("Att")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.volume_attack,
+                expression: "volume_attack"
+              }
+            ],
+            staticClass: "oscillator__property",
+            attrs: { type: "range", id: "volume_attack" },
+            domProps: { value: _vm.volume_attack },
+            on: {
+              __r: function($event) {
+                _vm.volume_attack = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "label",
+            {
+              staticClass: "oscillator__property-label",
+              attrs: { for: "volume_decay" }
+            },
+            [_vm._v("Dec")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.volume_decay,
+                expression: "volume_decay"
+              }
+            ],
+            staticClass: "oscillator__property",
+            attrs: { type: "range", id: "volume_decay" },
+            domProps: { value: _vm.volume_decay },
+            on: {
+              __r: function($event) {
+                _vm.volume_decay = $event.target.value
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("span", { staticClass: "oscillator__property-wrap" }, [
         _c(
           "label",
           {
             staticClass: "oscillator__property-label",
-            attrs: { for: "volume_decay" }
+            attrs: { for: "filter_cutoff" }
           },
-          [_vm._v("Dec")]
+          [_vm._v("Flt")]
         ),
         _vm._v(" "),
         _c("input", {
@@ -2747,143 +2754,109 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.volume_decay,
-              expression: "volume_decay"
+              value: _vm.filter_cutoff,
+              expression: "filter_cutoff"
             }
           ],
           staticClass: "oscillator__property",
-          attrs: { type: "range", id: "volume_decay" },
-          domProps: { value: _vm.volume_decay },
+          attrs: { type: "range", id: "filter_cutoff", min: "0", max: "4000" },
+          domProps: { value: _vm.filter_cutoff },
           on: {
             __r: function($event) {
-              _vm.volume_decay = $event.target.value
+              _vm.filter_cutoff = $event.target.value
             }
           }
-        })
+        }),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "oscillator__property__dropdown-toggle",
+          attrs: {
+            type: "checkbox",
+            name: "volume_properties",
+            id: "volume_properties_toggle"
+          }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "oscillator__property__dropdown" }, [
+          _c(
+            "label",
+            {
+              staticClass: "oscillator__property-label",
+              attrs: { for: "filter_attack" }
+            },
+            [_vm._v("Att")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.filter_attack,
+                expression: "filter_attack"
+              }
+            ],
+            staticClass: "oscillator__property",
+            attrs: { type: "range", id: "filter_attack" },
+            domProps: { value: _vm.filter_attack },
+            on: {
+              __r: function($event) {
+                _vm.filter_attack = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "label",
+            {
+              staticClass: "oscillator__property-label",
+              attrs: { for: "filter_decay" }
+            },
+            [_vm._v("Dec")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.filter_decay,
+                expression: "filter_decay"
+              }
+            ],
+            staticClass: "oscillator__property",
+            attrs: { type: "range", id: "filter_decay" },
+            domProps: { value: _vm.filter_decay },
+            on: {
+              __r: function($event) {
+                _vm.filter_decay = $event.target.value
+              }
+            }
+          })
+        ])
       ])
-    ]),
-    _vm._v(" "),
-    _c("span", { staticClass: "oscillator__property-wrap" }, [
-      _c(
-        "label",
-        {
-          staticClass: "oscillator__property-label",
-          attrs: { for: "filter_cutoff" }
-        },
-        [_vm._v("Flt")]
-      ),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.filter_cutoff,
-            expression: "filter_cutoff"
-          }
-        ],
-        staticClass: "oscillator__property",
-        attrs: { type: "range", id: "filter_cutoff", min: "0", max: "4000" },
-        domProps: { value: _vm.filter_cutoff },
-        on: {
-          __r: function($event) {
-            _vm.filter_cutoff = $event.target.value
-          }
-        }
-      }),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "oscillator__property__dropdown-toggle",
-        attrs: {
-          type: "checkbox",
-          name: "volume_properties",
-          id: "volume_properties_toggle"
-        }
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "oscillator__property__dropdown" }, [
-        _c(
-          "label",
-          {
-            staticClass: "oscillator__property-label",
-            attrs: { for: "filter_attack" }
-          },
-          [_vm._v("Att")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.filter_attack,
-              expression: "filter_attack"
-            }
-          ],
-          staticClass: "oscillator__property",
-          attrs: { type: "range", id: "filter_attack" },
-          domProps: { value: _vm.filter_attack },
-          on: {
-            __r: function($event) {
-              _vm.filter_attack = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c(
-          "label",
-          {
-            staticClass: "oscillator__property-label",
-            attrs: { for: "filter_decay" }
-          },
-          [_vm._v("Dec")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.filter_decay,
-              expression: "filter_decay"
-            }
-          ],
-          staticClass: "oscillator__property",
-          attrs: { type: "range", id: "filter_decay" },
-          domProps: { value: _vm.filter_decay },
-          on: {
-            __r: function($event) {
-              _vm.filter_decay = $event.target.value
-            }
-          }
-        })
-      ])
-    ])
-  ])
+    ],
+    2
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "oscillator__filter-wrap" }, [
-      _vm._v("\n\t\tFilters & Shapers\n\t\t"),
-      _c("br"),
-      _vm._v(" "),
-      _c("label", [
-        _c("select", [
-          _c("option", { attrs: { value: "lowpass" } }, [_vm._v("Lowpass")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "highpass" } }, [_vm._v("Highpass")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "" } }, [_vm._v("Waveshaper")])
-        ]),
+    return _c("label", [
+      _c("select", [
+        _c("option", { attrs: { value: "lowpass" } }, [_vm._v("Lowpass")]),
         _vm._v(" "),
-        _c("select", [
-          _c("option", { attrs: { value: "env" } }, [_vm._v("Envelope")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "lfo" } }, [_vm._v("LFO")])
-        ])
+        _c("option", { attrs: { value: "highpass" } }, [_vm._v("Highpass")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "" } }, [_vm._v("Waveshaper")])
+      ]),
+      _vm._v(" "),
+      _c("select", [
+        _c("option", { attrs: { value: "env" } }, [_vm._v("Envelope")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "lfo" } }, [_vm._v("LFO")])
       ])
     ])
   }
@@ -16334,12 +16307,13 @@ new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /*!************************************!*\
   !*** ./src/js/store/Oscillator.js ***!
   \************************************/
-/*! exports provided: default */
+/*! exports provided: default, Filter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Oscillator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Filter", function() { return Filter; });
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./src/js/store/store.js");
 /* harmony import */ var _helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helper */ "./src/js/store/helper.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -16366,28 +16340,25 @@ function () {
       } else {
         return id;
       }
-    }
+    } // TODO: move to new helper file
+
   }, {
     key: "noteFrequency",
     value: function noteFrequency(note) {
       var tone = note.slice(0, note.length - 1);
-      var octave = note.slice(-1); // console.log(tone, octave);
-      // (octave num * keys in octave) + index of note in the notes array
+      var octave = note.slice(-1); // (octave num * keys in octave) + index of note in the notes array
 
       var keyNumber = octave * 12 + (_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.data.notes.indexOf(tone) + 1); // key is a pretty bad name
-      // The algorithm to get the frequency of a note
+
+      return 440 * Math.pow(2, keyNumber / 12 - 49 / 12); // The algorithm to get the frequency of a note
       // from its key number (A0 - C8)
       // can adjust the tuning - 440 is A4 tuning
-
-      var freq = 440 * Math.pow(2, keyNumber / 12 - 49 / 12); // console.log("frequency", freq);
-
-      return freq;
+      // So maybe this 440 is controlled from the store
     }
   }, {
     key: "playNote",
     value: function playNote(oscillator, note, startTime) {
       // TODO: obsolete, ensure this isn't used
-      // oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
       var frequency = Oscillator.noteFrequency(note); // create & setup oscillatorNode to play the note
 
       oscillator.oscillatorNode = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createOscillator();
@@ -16401,11 +16372,6 @@ function () {
 
       oscillator.oscillatorNode.frequency.setValueAtTime(frequency, _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
       oscillator.oscillatorNode.start(startTime);
-    }
-  }, {
-    key: "stopNote",
-    value: function stopNote(oscillator) {
-      oscillator.oscillatorNode && oscillator.oscillatorNode.stop(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
     } // Used for notes playback
 
   }, {
@@ -16417,9 +16383,9 @@ function () {
       oscillator.oscillatorNode.type = oscillator.waveform; // Setup filter
 
       oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
-      oscillator.oscillatorNode.connect(oscillator.gainNode);
-      oscillator.gainNode.connect(oscillator.oscillatorNode);
-      oscillator.oscillatorNode.connect(oscillator.filter.filterNode); // Connect filter to audio output
+      oscillator.oscillatorNode.connect(oscillator.gainNode); // oscillator.gainNode.connect(oscillator.oscillatorNode);
+
+      oscillator.gainNode.connect(oscillator.filter.filterNode); // Connect filter to audio output
       // TODO: function which loops through set filters goes here
       // Make it reusable
 
@@ -16432,16 +16398,23 @@ function () {
 
       oscillator.oscillatorNode.stop(startTime + duration);
     }
+  }, {
+    key: "stopNote",
+    value: function stopNote(oscillator) {
+      oscillator.oscillatorNode && oscillator.oscillatorNode.stop(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
+    }
   }]);
 
   function Oscillator() {
     _classCallCheck(this, Oscillator);
 
     this.id = Oscillator.generateId();
-    this.volume = {
+    this.env = {
       amplitude: 50,
       attack: 0,
-      decay: 0
+      hold: 0,
+      decay: 0,
+      release: 0
     };
     this.waveform = "sine";
     this.filter = {
@@ -16455,13 +16428,35 @@ function () {
     this.notes = [];
     this.filter.filterNode.type = this.filter.type;
     this.filters = [];
-    this.gainNode = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createGainNode();
+    this.gainNode = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createGain();
   }
 
   return Oscillator;
-}();
+}(); // TODO: worry about the processing stack
 
 
+
+var Filter = function Filter() {
+  _classCallCheck(this, Filter);
+
+  this.id = Filter.generateId();
+  this.env = {
+    amplitude: 50,
+    attack: 0,
+    hold: 0,
+    decay: 0,
+    release: 0
+  }, this.type = '';
+};
+/**
+ * types
+ * 
+ * biquad filter
+ * convolver (reverb)
+ * dynamicsCompressor
+ * WaveShaper
+ * 
+ */
 
 /***/ }),
 
@@ -16589,7 +16584,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!********************************!*\
   !*** ./src/js/store/helper.js ***!
   \********************************/
-/*! exports provided: getKeysArray, secondsPerBeat, loopTimeframe, durationFromPercentage, animatePositionMarker, getOscillator */
+/*! exports provided: getKeysArray, secondsPerBeat, loopTimeframe, durationFromPercentage, percentageFromPixels, pixelsFromPercentage, animatePositionMarker, getOscillator, getNote, oscIdExists, noteIdExists */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16598,19 +16593,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "secondsPerBeat", function() { return secondsPerBeat; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loopTimeframe", function() { return loopTimeframe; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "durationFromPercentage", function() { return durationFromPercentage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "percentageFromPixels", function() { return percentageFromPixels; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pixelsFromPercentage", function() { return pixelsFromPercentage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "animatePositionMarker", function() { return animatePositionMarker; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getOscillator", function() { return getOscillator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNote", function() { return getNote; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "oscIdExists", function() { return oscIdExists; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "noteIdExists", function() { return noteIdExists; });
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./src/js/store/store.js");
 
 /**
- * KEY
- * 
- * Note order functions:
- * > getKeysArray()
- * 
- * Timing functions:
- * > getSecondsPerBeat()
- * > getLoopTimeFrame()
+ * TODO: this should be split into several parts
  */
 // rounding function to snap notes to nearest bar
 
@@ -16719,8 +16712,15 @@ function loopTimeframe() {
 
 function durationFromPercentage(lengthAsPercentage) {
   var loopTime = getLoopTimeframe();
-  var noteLengthInSeconds = loopTime / 100 * lengthAsPercentage;
-  return noteLengthInSeconds;
+  return loopTime / 100 * lengthAsPercentage;
+}
+function percentageFromPixels(pixels) {
+  var rollWidth = document.querySelector("[data-js=piano-roll]").getBoundingClientRect().width;
+  return pixels / rollWidth * 100;
+}
+function pixelsFromPercentage(percentage) {
+  var rollWidth = document.querySelector("[data-js=piano-roll]").getBoundingClientRect().width;
+  return percentage / 100 * rollWidth;
 }
 function animatePositionMarker() {
   var time = durationFromPercentage(100);
@@ -16735,6 +16735,13 @@ function getOscillator(id) {
   });
   return _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.oscillators[oscIndex];
 }
+function getNote(id) {
+  return _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.activeOscillator.notes.find(function (note) {
+    return note.id == id;
+  });
+}
+function oscIdExists(id) {}
+function noteIdExists(id) {}
 
 /***/ }),
 
@@ -16759,9 +16766,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]); // TODO: Think about storing this data in localhost in case
-// the user accidentally exits?
-
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
     project: {
@@ -16877,9 +16882,15 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     /*
     	Oscillator Mutations
     */
-    waveform: function waveform(state, payload) {
+    setOscillatorWaveform: function setOscillatorWaveform(state, payload) {
       var osc = Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
       osc.waveform = payload.waveform;
+    },
+    setOscillatorGain: function setOscillatorGain(state, payload) {
+      Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id).gain = payload.gain;
+    },
+    updateOscillatorFiltersList: function updateOscillatorFiltersList(state, payload) {
+      Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id).filters = payload.filters;
     },
     volume: function volume(state, payload) {
       var osc = Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
@@ -16949,13 +16960,13 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
           break;
       }
     },
-    addNoteForActiveOsc: function addNoteForActiveOsc(state, note) {
+    addNote: function addNote(state, note) {
       // add note object to notes array
       if (state.activeOscillator.notes.length < 32) {
         state.activeOscillator.notes.push(note);
       }
     },
-    removeNoteFromActiveOsc: function removeNoteFromActiveOsc(state, id) {
+    removeNote: function removeNote(state, id) {
       // splice the Note object out of the notes array
       if (state.activeOscillator.notes.length > -1) {
         console.log(state.activeOscillator.notes.findIndex(function (note) {
@@ -16965,6 +16976,10 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
           return note.id === id;
         }), 1);
       }
+    },
+    updateNotePos: function updateNotePos(state, payload) {
+      console.log('got here');
+      Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getNote"])(payload.note_id).position = payload.pos; // when u get back: continue committing new pos to store
     }
   }
 });

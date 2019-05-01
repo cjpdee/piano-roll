@@ -79,7 +79,6 @@ export default {
 				 */
 				switch (e.keyCode) {
 					case 81:
-						console.log("registered");
 						Oscillator.playNote(
 							store.state.activeOscillator,
 							"C" + this.$store.state.project.baseOctave
@@ -88,7 +87,6 @@ export default {
 							"C" + this.$store.state.project.baseOctave;
 						break;
 					case 50:
-						console.log("registered");
 						Oscillator.playNote(
 							store.state.activeOscillator,
 							"C#" + this.$store.state.project.baseOctave
@@ -97,7 +95,6 @@ export default {
 							"C#" + this.$store.state.project.baseOctave;
 						break;
 					case 87:
-						console.log("registered");
 						Oscillator.playNote(
 							store.state.activeOscillator,
 							"D" + this.$store.state.project.baseOctave
@@ -106,7 +103,6 @@ export default {
 							"D" + this.$store.state.project.baseOctave;
 						break;
 					case 51:
-						console.log("registered");
 						Oscillator.playNote(
 							store.state.activeOscillator,
 							"D#" + this.$store.state.project.baseOctave
@@ -115,42 +111,36 @@ export default {
 							"D#" + this.$store.state.project.baseOctave;
 						break;
 					case 69:
-						console.log("registered");
 						Oscillator.playNote(
 							store.state.activeOscillator,
 							"E" + this.$store.state.project.baseOctave
 						);
 						break;
 					case 82:
-						console.log("registered");
 						Oscillator.playNote(
 							store.state.activeOscillator,
 							"F" + this.$store.state.project.baseOctave
 						);
 						break;
 					case 53:
-						console.log("registered");
 						Oscillator.playNote(
 							store.state.activeOscillator,
 							"F#" + this.$store.state.project.baseOctave
 						);
 						break;
 					case 84:
-						console.log("registered");
 						Oscillator.playNote(
 							store.state.activeOscillator,
 							"G" + this.$store.state.project.baseOctave
 						);
 						break;
 					case 54:
-						console.log("registered");
 						Oscillator.playNote(
 							store.state.activeOscillator,
 							"G#" + this.$store.state.project.baseOctave
 						);
 						break;
 					case 89:
-						console.log("registered");
 						Oscillator.playNote(
 							store.state.activeOscillator,
 							"A" + this.$store.state.project.baseOctave

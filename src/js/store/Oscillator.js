@@ -16,27 +16,23 @@ export default class Oscillator {
 		}
 	}
 
+	// TODO: move to new helper file
 	static noteFrequency(note) {
-		let tone = note.slice(0, note.length - 1);
-		let octave = note.slice(-1);
-		// console.log(tone, octave);
+		const tone = note.slice(0, note.length - 1);
+		const octave = note.slice(-1);
 
 		// (octave num * keys in octave) + index of note in the notes array
-		let keyNumber = ((octave * 12) + (store.state.data.notes.indexOf(tone) + 1)); // key is a pretty bad name
+		const keyNumber = ((octave * 12) + (store.state.data.notes.indexOf(tone) + 1)); // key is a pretty bad name
+
+		return 440 * Math.pow(2, ((keyNumber / 12) - 49 / 12));
 		// The algorithm to get the frequency of a note
 		// from its key number (A0 - C8)
 		// can adjust the tuning - 440 is A4 tuning
-		let freq = 440 * Math.pow(2, ((keyNumber / 12) - 49 / 12));
-
-		// console.log("frequency", freq);
-		return freq;
+		// So maybe this 440 is controlled from the store
 	}
 
 	static playNote(oscillator, note, startTime) { // TODO: obsolete, ensure this isn't used
-
-		// oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
-
-		let frequency = Oscillator.noteFrequency(note);
+		const frequency = Oscillator.noteFrequency(note);
 
 		// create & setup oscillatorNode to play the note
 		oscillator.oscillatorNode = store.state.audioContext.createOscillator();
@@ -56,11 +52,6 @@ export default class Oscillator {
 		oscillator.oscillatorNode.start(startTime);
 	}
 
-
-	static stopNote(oscillator) {
-		oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
-	}
-
 	// Used for notes playback
 	static playForDuration(oscillator, note, startTime, duration) {
 		let frequency = Oscillator.noteFrequency(note);
@@ -72,8 +63,8 @@ export default class Oscillator {
 		// Setup filter
 		oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
 		oscillator.oscillatorNode.connect(oscillator.gainNode);
-		oscillator.gainNode.connect(oscillator.oscillatorNode);
-		oscillator.oscillatorNode.connect(oscillator.filter.filterNode);
+		// oscillator.gainNode.connect(oscillator.oscillatorNode);
+		oscillator.gainNode.connect(oscillator.filter.filterNode);
 
 		// Connect filter to audio output
 		// TODO: function which loops through set filters goes here
@@ -91,12 +82,18 @@ export default class Oscillator {
 		oscillator.oscillatorNode.stop(startTime + duration);
 	}
 
+	static stopNote(oscillator) {
+		oscillator.oscillatorNode && oscillator.oscillatorNode.stop(store.state.audioContext.currentTime);
+	}
+
 	constructor() {
 		this.id = Oscillator.generateId();
-		this.volume = {
+		this.env = {
 			amplitude: 50,
 			attack: 0,
-			decay: 0
+			hold: 0,
+			decay: 0,
+			release: 0
 		};
 		this.waveform = "sine";
 		this.filter = {
@@ -110,6 +107,30 @@ export default class Oscillator {
 		this.notes = [];
 		this.filter.filterNode.type = this.filter.type;
 		this.filters = [];
-		this.gainNode = store.state.audioContext.createGainNode();
+		this.gainNode = store.state.audioContext.createGain();
 	}
 }
+// TODO: worry about the processing stack
+export class Filter {
+	constructor() {
+		this.id = Filter.generateId();
+		this.env = {
+				amplitude: 50,
+				attack: 0,
+				hold: 0,
+				decay: 0,
+				release: 0
+			},
+			this.type = ''
+	}
+}
+
+/**
+ * types
+ * 
+ * biquad filter
+ * convolver (reverb)
+ * dynamicsCompressor
+ * WaveShaper
+ * 
+ */
