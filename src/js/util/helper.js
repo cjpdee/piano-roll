@@ -1,6 +1,6 @@
 import {
 	store
-} from './store';
+} from '../store/store';
 
 /**
  * TODO: this should be split into several parts
@@ -149,24 +149,13 @@ export function getNote(id) {
 	return store.state.activeOscillator.notes.find(note => note.id == id)
 }
 
-function generateId() {
-	return Math.floor((Math.random() * 10000000)).toString(16);
-}
-
-export function generateOscId() {
-	let id = generateId();
-	if (store.state.oscillators.find(oscillator => oscillator.id == id)) {
-		return generateOscId()
-	} else {
-		return id;
-	}
-}
-
-export function generateNoteId() {
-	let id = generateId();
-	if (store.state.activeOscillator.notes.find(note => note.id == id)) {
-		return generateNoteId()
-	} else {
-		return id;
-	}
+export function getFilter(id) {
+	var output;
+	store.state.oscillators.find(oscillator => oscillator.filters.find(filter => {
+		if (filter.id == id) {
+			output = filter
+			return
+		}
+	}))
+	return output || null
 }

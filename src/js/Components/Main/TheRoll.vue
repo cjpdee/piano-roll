@@ -26,7 +26,7 @@ import {
 	percentageFromPixels,
 	getNote,
 	pixelsFromPercentage
-} from "../../store/helper";
+} from "../../util/helper";
 
 // Dragging / resizing variables
 var isDragging = false;
@@ -65,18 +65,6 @@ export default {
 		}
 	},
 	methods: {
-		// create unique ids
-		generateId() {
-			let id = Math.floor(Math.random() * 10000000).toString(16);
-			// TODO: Make a check for other existing note ids
-			// if ( store.state.oscillators.filter(oscillator => oscillator.id == id) ) {
-			// 	return Math.floor((Math.random() * 10000000)).toString(16);
-			// } else {
-			// 	return id;
-			// }
-			return id;
-		},
-
 		// Handlers
 		mousedownHandler(e) {
 			if (e.button === 0) {

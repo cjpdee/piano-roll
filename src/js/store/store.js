@@ -1,14 +1,18 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import Oscillator from "./Oscillator";
+import Oscillator from "../Objects/Oscillator";
 import {
 	getOscillator,
-	getNote
-} from "./helper";
+	getNote,
+	getFilter
+} from "../util/helper";
+import {
+	Filter
+} from "../Objects/Oscillator";
 
 Vue.use(Vuex);
-
+// TODO: break store into multiple files
 const store = new Vuex.Store({
 	state: {
 		project: {
@@ -71,7 +75,7 @@ const store = new Vuex.Store({
 		},
 
 		/*
-			Project Mutations
+			Project Mutations - needs organising
 		*/
 
 		setName(name) {
@@ -143,8 +147,25 @@ const store = new Vuex.Store({
 			getOscillator(payload.oscillator_id).gain = payload.gain
 		},
 
-		updateOscillatorFiltersList(state, payload) {
-			getOscillator(payload.oscillator_id).filters = payload.filters
+		/*
+			Filters
+		 */
+
+		createFilter(state, payload) {
+			getOscillator(payload.oscillator_id).filters.push(new Filter())
+		},
+
+		deleteFilter(state, payload) {
+			const index = getOscillator(payload.oscillatorId).filters.findIndex(filter => filter.id == payload.filterId);
+			getOscillator(payload.oscillatorId).filters.splice(index, 1);
+		},
+
+		setFilterType(state, payload) {
+			getFilter(payload.filterId).type = payload.type
+		},
+
+		setFilterModType(state, payload) {
+			getFilter(payload.filterId).modulationType = payload.modType
 		},
 
 		// TODO: should have a function for applying any kind of envelope

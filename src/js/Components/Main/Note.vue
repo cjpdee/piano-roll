@@ -1,6 +1,6 @@
 <template>
 	<div :style="style" class="note" :id="data.id" @contextmenu.prevent="removeNote">
-		<div class="note__handle" @click="resize"></div>
+		<div class="note__handle"></div>
 	</div>
 </template>
 
@@ -14,7 +14,7 @@
 	@mouseup.stop="dragEnd"
  */
 
-import { durationFromPercentage } from "../../store/helper";
+import { durationFromPercentage } from "../../util/helper";
 var isDragging = false;
 var isResizing = false;
 let currentX;

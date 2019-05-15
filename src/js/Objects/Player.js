@@ -4,12 +4,12 @@
 import Oscillator from './Oscillator';
 import {
 	store
-} from './store';
+} from '../store/store';
 import {
 	secondsPerBeat,
 	loopTimeFrame,
 	durationFromPercentage
-} from "./helper";
+} from "../util/helper";
 export default {
 
 	/**

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { generateNoteId } from "../../store/helper";
+import { generateNoteId } from "../../util/generateId";
 
 export default {
 	props: {

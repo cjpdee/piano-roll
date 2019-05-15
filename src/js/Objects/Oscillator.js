@@ -1,11 +1,14 @@
 import {
 	store
-} from "./store";
+} from "../store/store";
 import {
 	durationFromPercentage,
 	animatePositionMarker,
-	generateOscId
-} from "./helper";
+} from "../util/helper";
+import {
+	generateOscId,
+	generateFilterId
+} from "../util/generateId";
 
 export default class Oscillator {
 
@@ -104,22 +107,23 @@ export default class Oscillator {
 		this.filter.filterNode.type = this.filter.type;
 		this.filters = [];
 		this.gainNode = store.state.audioContext.createGain();
-
-		console.log('aaa', this.gainNode)
 	}
 }
 // TODO: worry about the processing stack
 export class Filter {
 	constructor() {
-		this.id = Filter.generateId();
+		this.id = generateFilterId();
+		this.modulationType = "env";
 		this.env = {
-				amplitude: 50,
-				attack: 0,
-				hold: 0,
-				decay: 0,
-				release: 0
-			},
-			this.type = ''
+			amplitude: 50,
+			attack: 0,
+			hold: 0,
+			decay: 0,
+			release: 0
+		};
+		this.type = 'lowpass';
+		this.cutoff = 2000;
+		this.filterNode = store.state.audioContext.createBiquadFilter();
 	}
 }
 

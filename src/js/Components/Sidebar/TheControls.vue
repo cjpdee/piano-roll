@@ -98,7 +98,7 @@
 </template>
 
 <style lang="scss" scoped>
-// TODO: remove
+// TODO: move
 label {
 	display: block;
 }
@@ -110,8 +110,8 @@ input[type="number"] {
 
 
 <script>
-import Player from "../../store/Player";
-import { durationFromPercentage } from "../../store/helper";
+import Player from "../../Objects/Player";
+import { durationFromPercentage } from "../../util/helper";
 
 export default {
 	name: "TheControls",

@@ -99,16 +99,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./store/store */ "./src/js/store/store.js");
-/* harmony import */ var _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store/Oscillator */ "./src/js/store/Oscillator.js");
-/* harmony import */ var _store_helper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./store/helper */ "./src/js/store/helper.js");
+/* harmony import */ var _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Objects/Oscillator */ "./src/js/Objects/Oscillator.js");
+/* harmony import */ var _util_helper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./util/helper */ "./src/js/util/helper.js");
 /* harmony import */ var _Components_Sidebar_TheSidebar_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Components/Sidebar/TheSidebar.vue */ "./src/js/Components/Sidebar/TheSidebar.vue");
 /* harmony import */ var _Components_Sidebar_TheControls_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Components/Sidebar/TheControls.vue */ "./src/js/Components/Sidebar/TheControls.vue");
 /* harmony import */ var _Components_Sidebar_TheRack_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Components/Sidebar/TheRack.vue */ "./src/js/Components/Sidebar/TheRack.vue");
 /* harmony import */ var _Components_Sidebar_OscillatorUI_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Components/Sidebar/OscillatorUI.vue */ "./src/js/Components/Sidebar/OscillatorUI.vue");
-/* harmony import */ var _Components_ThePianoKeys_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Components/ThePianoKeys.vue */ "./src/js/Components/ThePianoKeys.vue");
-/* harmony import */ var _Components_Main_TheRoll_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Components/Main/TheRoll.vue */ "./src/js/Components/Main/TheRoll.vue");
-/* harmony import */ var _Components_Main_PitchRow_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Components/Main/PitchRow.vue */ "./src/js/Components/Main/PitchRow.vue");
-/* harmony import */ var _Components_Main_Note_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./Components/Main/Note.vue */ "./src/js/Components/Main/Note.vue");
+/* harmony import */ var _Components_Sidebar_Includes_Filter_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Components/Sidebar/Includes/Filter.vue */ "./src/js/Components/Sidebar/Includes/Filter.vue");
+/* harmony import */ var _Components_ThePianoKeys_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Components/ThePianoKeys.vue */ "./src/js/Components/ThePianoKeys.vue");
+/* harmony import */ var _Components_Main_TheRoll_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Components/Main/TheRoll.vue */ "./src/js/Components/Main/TheRoll.vue");
+/* harmony import */ var _Components_Main_PitchRow_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./Components/Main/PitchRow.vue */ "./src/js/Components/Main/PitchRow.vue");
+/* harmony import */ var _Components_Main_Note_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./Components/Main/Note.vue */ "./src/js/Components/Main/Note.vue");
 //
 //
 //
@@ -127,19 +128,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
  // Piano roll components
 
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("Note", _Components_Main_Note_vue__WEBPACK_IMPORTED_MODULE_12__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
-var lastOscillator;
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("Note", _Components_Main_Note_vue__WEBPACK_IMPORTED_MODULE_13__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("FilterUI", _Components_Sidebar_Includes_Filter_vue__WEBPACK_IMPORTED_MODULE_9__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]); // var lastOscillator;
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     TheSidebar: _Components_Sidebar_TheSidebar_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
-    ThePianoKeys: _Components_ThePianoKeys_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
-    TheRoll: _Components_Main_TheRoll_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
+    ThePianoKeys: _Components_ThePianoKeys_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
+    TheRoll: _Components_Main_TheRoll_vue__WEBPACK_IMPORTED_MODULE_11__["default"]
   },
   store: _store_store__WEBPACK_IMPORTED_MODULE_2__["store"],
   data: function data() {
@@ -158,7 +161,7 @@ var lastOscillator;
   },
   computed: {
     pianoKeys: function pianoKeys() {
-      return Object(_store_helper__WEBPACK_IMPORTED_MODULE_4__["getKeysArray"])();
+      return Object(_util_helper__WEBPACK_IMPORTED_MODULE_4__["getKeysArray"])();
     }
   },
   methods: {
@@ -169,7 +172,7 @@ var lastOscillator;
         this.previousKeyCode = e.keyCode;
         this.lastOscillator = _store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator;
         this.$store.state.keypressActive = true;
-        this.$store.state.activeOscillator.oscillatorNode && _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].stopNote(this.$store.state.activeOscillator);
+        this.$store.state.activeOscillator.oscillatorNode && _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].stopNote(this.$store.state.activeOscillator);
         /**
          * TODO: This whole section can be done with vue directives
          * on the pianoKeys component
@@ -177,66 +180,66 @@ var lastOscillator;
 
         switch (e.keyCode) {
           case 81:
-            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "C" + this.$store.state.project.baseOctave);
+            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "C" + this.$store.state.project.baseOctave);
             this.currentNote = "C" + this.$store.state.project.baseOctave;
             break;
 
           case 50:
-            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "C#" + this.$store.state.project.baseOctave);
+            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "C#" + this.$store.state.project.baseOctave);
             this.currentNote = "C#" + this.$store.state.project.baseOctave;
             break;
 
           case 87:
-            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "D" + this.$store.state.project.baseOctave);
+            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "D" + this.$store.state.project.baseOctave);
             this.currentNote = "D" + this.$store.state.project.baseOctave;
             break;
 
           case 51:
-            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "D#" + this.$store.state.project.baseOctave);
+            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "D#" + this.$store.state.project.baseOctave);
             this.currentNote = "D#" + this.$store.state.project.baseOctave;
             break;
 
           case 69:
-            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "E" + this.$store.state.project.baseOctave);
+            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "E" + this.$store.state.project.baseOctave);
             break;
 
           case 82:
-            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "F" + this.$store.state.project.baseOctave);
+            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "F" + this.$store.state.project.baseOctave);
             break;
 
           case 53:
-            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "F#" + this.$store.state.project.baseOctave);
+            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "F#" + this.$store.state.project.baseOctave);
             break;
 
           case 84:
-            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "G" + this.$store.state.project.baseOctave);
+            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "G" + this.$store.state.project.baseOctave);
             break;
 
           case 54:
-            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "G#" + this.$store.state.project.baseOctave);
+            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "G#" + this.$store.state.project.baseOctave);
             break;
 
           case 89:
-            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "A" + this.$store.state.project.baseOctave);
+            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "A" + this.$store.state.project.baseOctave);
             break;
 
           case 55:
-            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "A#" + this.$store.state.project.baseOctave);
+            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "A#" + this.$store.state.project.baseOctave);
             break;
 
           case 85:
-            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "B" + this.$store.state.project.baseOctave);
+            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "B" + this.$store.state.project.baseOctave);
             break;
 
           case 32:
             //TODO: remove
-            _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playForDuration(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "B" + this.$store.state.project.baseOctave, 1);
+            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playForDuration(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "B" + this.$store.state.project.baseOctave, 1);
         }
       }
     },
     keyupHandler: function keyupHandler(e) {
       if (this.$store.state.activeOscillator && e.keyCode == this.previousKeyCode) {
-        _store_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].stopNote(this.$store.state.activeOscillator);
+        _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].stopNote(this.$store.state.activeOscillator);
         this.$store.state.keypressActive = false;
       }
     }
@@ -254,7 +257,7 @@ var lastOscillator;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _store_helper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../store/helper */ "./src/js/store/helper.js");
+/* harmony import */ var _util_helper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../util/helper */ "./src/js/util/helper.js");
 //
 //
 //
@@ -311,7 +314,7 @@ var xOffset = 0;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _store_helper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../store/helper */ "./src/js/store/helper.js");
+/* harmony import */ var _util_generateId__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../util/generateId */ "./src/js/util/generateId.js");
 //
 //
 //
@@ -358,7 +361,7 @@ __webpack_require__.r(__webpack_exports__);
           pitch: this.musicKey,
           position: snappedPos,
           lengthAsPercentage: lengthPercentage,
-          id: Object(_store_helper__WEBPACK_IMPORTED_MODULE_0__["generateNoteId"])()
+          id: Object(_util_generateId__WEBPACK_IMPORTED_MODULE_0__["generateNoteId"])()
         };
         this.$store.commit("addNote", note);
       } else {
@@ -380,7 +383,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PitchRow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PitchRow */ "./src/js/Components/Main/PitchRow.vue");
-/* harmony import */ var _store_helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../store/helper */ "./src/js/store/helper.js");
+/* harmony import */ var _util_helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../util/helper */ "./src/js/util/helper.js");
 //
 //
 //
@@ -422,7 +425,7 @@ var xOffset = 0;
   mounted: function mounted() {},
   computed: {
     notes: function notes() {
-      return Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["getKeysArray"])();
+      return Object(_util_helper__WEBPACK_IMPORTED_MODULE_1__["getKeysArray"])();
     },
     numberOfBars: function numberOfBars() {
       return this.$store.state.project.numBars;
@@ -439,17 +442,6 @@ var xOffset = 0;
     }
   },
   methods: {
-    // create unique ids
-    generateId: function generateId() {
-      var id = Math.floor(Math.random() * 10000000).toString(16); // TODO: Make a check for other existing note ids
-      // if ( store.state.oscillators.filter(oscillator => oscillator.id == id) ) {
-      // 	return Math.floor((Math.random() * 10000000)).toString(16);
-      // } else {
-      // 	return id;
-      // }
-
-      return id;
-    },
     // Handlers
     mousedownHandler: function mousedownHandler(e) {
       if (e.button === 0) {
@@ -487,7 +479,7 @@ var xOffset = 0;
     dragEnd: function dragEnd(e) {
       isDragging = false;
       this.$store.commit("updateNotePos", {
-        pos: Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["percentageFromPixels"])(newDragElPos),
+        pos: Object(_util_helper__WEBPACK_IMPORTED_MODULE_1__["percentageFromPixels"])(newDragElPos),
         note_id: dragElement.getAttribute("id")
       });
     },
@@ -497,7 +489,7 @@ var xOffset = 0;
         var rollPosInPage = this.$el.getBoundingClientRect().left;
         var mousePosInPage = e.clientX;
         var mousePosInRoll = mousePosInPage - rollPosInPage;
-        var noteLength = Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["pixelsFromPercentage"])(Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["getNote"])(dragElement.getAttribute("id")).lengthAsPercentage);
+        var noteLength = Object(_util_helper__WEBPACK_IMPORTED_MODULE_1__["pixelsFromPercentage"])(Object(_util_helper__WEBPACK_IMPORTED_MODULE_1__["getNote"])(dragElement.getAttribute("id")).lengthAsPercentage);
         newDragElPos = mousePosInRoll - dragElMousePos;
         if (newDragElPos < 0) newDragElPos = 0;
         if (newDragElPos > rollWidth - noteLength) newDragElPos = rollWidth - noteLength;
@@ -508,7 +500,7 @@ var xOffset = 0;
     mouseExit: function mouseExit(e) {},
     setDraggingStyle: function setDraggingStyle(xPos, el) {
       var style = el.getAttribute("style");
-      var xPosPercentage = Object(_store_helper__WEBPACK_IMPORTED_MODULE_1__["percentageFromPixels"])(xPos);
+      var xPosPercentage = Object(_util_helper__WEBPACK_IMPORTED_MODULE_1__["percentageFromPixels"])(xPos);
       var attributes = style.split(";").filter(function (el) {
         // get rid of the position attribute
         if (el.includes("left")) {
@@ -583,6 +575,171 @@ if (isResizing) {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/Includes/Filter.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./src/js/Components/Sidebar/Includes/Filter.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _util_helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../util/helper */ "./src/js/util/helper.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "FilterUI",
+  props: {
+    oscillatorId: {},
+    filterId: {
+      type: String,
+      required: true
+    }
+  },
+  data: function data() {
+    return {};
+  },
+  computed: {
+    filterType: {
+      get: function get() {
+        return this.getThisFilter().type;
+      },
+      set: function set(value) {
+        this.$store.commit("setFilterType", {
+          oscillatorId: this.oscillatorId,
+          filterId: this.filterId,
+          type: value
+        });
+      }
+    },
+    modulationType: {
+      get: function get() {
+        return this.getThisFilter().modulationType;
+      },
+      set: function set(value) {
+        this.$store.commit("setFilterModType", {
+          filterId: this.filterId,
+          modType: value
+        });
+      }
+    },
+    filterAmplitude: {
+      get: function get() {
+        return this.getThisFilter().env.amplitude;
+      },
+      set: function set(value) {
+        this.$store.commit("setFilterAmplitude", {
+          filterId: this.filterId,
+          amount: value
+        });
+      }
+    },
+    filterCutoff: {
+      get: function get() {
+        return this.getThisFilter().cutoff;
+      },
+      set: function set(value) {
+        this.$store.commit("setFilterCutoff", {
+          filterId: this.filterId,
+          cutoff: value
+        });
+      }
+    }
+  },
+  methods: {
+    getThisFilter: function getThisFilter() {
+      var _this = this;
+
+      return Object(_util_helper__WEBPACK_IMPORTED_MODULE_1__["getOscillator"])(this.oscillatorId).filters.find(function (filter) {
+        return filter.id == _this.filterId;
+      });
+    },
+    deleteThisFilter: function deleteThisFilter() {
+      this.$store.commit("deleteFilter", {
+        oscillatorId: this.oscillatorId,
+        filterId: this.filterId
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/OscillatorUI.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./src/js/Components/Sidebar/OscillatorUI.vue?vue&type=script&lang=js& ***!
@@ -592,45 +749,8 @@ if (isResizing) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _store_helper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../store/helper */ "./src/js/store/helper.js");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _util_helper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../util/helper */ "./src/js/util/helper.js");
+/* harmony import */ var _Includes_Filter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Includes/Filter */ "./src/js/Components/Sidebar/Includes/Filter.vue");
 //
 //
 //
@@ -689,8 +809,12 @@ __webpack_require__.r(__webpack_exports__);
 // Custom wavetables : OscillatorNode.setPeriodicWave()
 // Make filter values relative to the base octave
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Oscillator",
+  components: {
+    FilterUI: _Includes_Filter__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
   props: {
     id: {
       type: String,
@@ -729,7 +853,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     gain: {
       get: function get() {
-        return Object(_store_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(this.id).gain;
+        return Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(this.id).gain;
       },
       set: function set(value) {
         this.$store.commit("setOscillatorGain", {
@@ -740,12 +864,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     filters: {
       get: function get() {
-        return Object(_store_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(this.id).filters;
+        console.log(Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(this.id).filters);
+        return Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(this.id).filters;
       },
       set: function set(value) {
-        this.$store.commit("updateOscillatorFiltersList", {
+        this.$store.commit("updateFilter", {
           value: value,
-          oscillator_id: this.id
+          filter_id: this.id
         });
       }
     },
@@ -769,7 +894,7 @@ __webpack_require__.r(__webpack_exports__);
           value: parseFloat(value),
           oscillator_id: this.id
         });
-        Object(_store_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(this.id).gainNode.gain.value = parseFloat(value);
+        Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(this.id).gainNode.gain.value = parseFloat(value);
       }
     },
     volume_attack: {
@@ -805,83 +930,80 @@ __webpack_require__.r(__webpack_exports__);
           oscillator_id: this.id
         });
       }
-    },
-
+    }
     /*
     	Lowpass
     */
-    filter_type: {
-      get: function get() {
-        var _this6 = this;
+    // filter_type: {
+    // 	get() {
+    // 		let index = this.$store.state.oscillators.findIndex(
+    // 			oscillator => oscillator.id == this.id
+    // 		);
+    // 		return this.$store.state.oscillators[index].filter.type;
+    // 	},
+    // 	set(value) {
+    // 		this.$store.commit("biquadFilter", {
+    // 			oscillator_id: this.id,
+    // 			property: "type",
+    // 			value: value
+    // 		});
+    // 	}
+    // },
+    // filter_cutoff: {
+    // 	get() {
+    // 		let index = this.$store.state.oscillators.findIndex(
+    // 			oscillator => oscillator.id == this.id
+    // 		);
+    // 		return this.$store.state.oscillators[index].filter.cutoff;
+    // 	},
+    // 	set(value) {
+    // 		this.$store.commit("biquadFilter", {
+    // 			property: "cutoff",
+    // 			value: parseInt(value),
+    // 			oscillator_id: this.id
+    // 		});
+    // 	}
+    // },
+    // filter_attack: {
+    // 	get() {
+    // 		let index = this.$store.state.oscillators.findIndex(
+    // 			oscillator => oscillator.id == this.id
+    // 		);
+    // 		return this.$store.state.oscillators[index].filter.attack;
+    // 	},
+    // 	set(value) {
+    // 		this.$store.commit("biquadFilter", {
+    // 			property: "attack",
+    // 			value: parseInt(value),
+    // 			oscillator_id: this.id
+    // 		});
+    // 	}
+    // },
+    // filter_decay: {
+    // 	get() {
+    // 		let index = this.$store.state.oscillators.findIndex(
+    // 			oscillator => oscillator.id == this.id
+    // 		);
+    // 		return this.$store.state.oscillators[index].filter.decay;
+    // 	},
+    // 	set(value) {
+    // 		this.$store.commit("biquadFilter", {
+    // 			property: "decay",
+    // 			value: parseInt(value),
+    // 			oscillator_id: this.id
+    // 		});
+    // 	}
+    // }
 
-        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
-          return oscillator.id == _this6.id;
-        });
-        return this.$store.state.oscillators[index].filter.type;
-      },
-      set: function set(value) {
-        this.$store.commit("biquadFilter", {
-          oscillator_id: this.id,
-          property: "type",
-          value: value
-        });
-      }
-    },
-    filter_cutoff: {
-      get: function get() {
-        var _this7 = this;
-
-        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
-          return oscillator.id == _this7.id;
-        });
-        return this.$store.state.oscillators[index].filter.cutoff;
-      },
-      set: function set(value) {
-        this.$store.commit("biquadFilter", {
-          property: "cutoff",
-          value: parseInt(value),
-          oscillator_id: this.id
-        });
-      }
-    },
-    filter_attack: {
-      get: function get() {
-        var _this8 = this;
-
-        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
-          return oscillator.id == _this8.id;
-        });
-        return this.$store.state.oscillators[index].filter.attack;
-      },
-      set: function set(value) {
-        this.$store.commit("biquadFilter", {
-          property: "attack",
-          value: parseInt(value),
-          oscillator_id: this.id
-        });
-      }
-    },
-    filter_decay: {
-      get: function get() {
-        var _this9 = this;
-
-        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
-          return oscillator.id == _this9.id;
-        });
-        return this.$store.state.oscillators[index].filter.decay;
-      },
-      set: function set(value) {
-        this.$store.commit("biquadFilter", {
-          property: "decay",
-          value: parseInt(value),
-          oscillator_id: this.id
-        });
-      }
-    }
   },
   methods: {
     setCurrentOscillator: function setCurrentOscillator() {
       this.$store.commit("setCurrentOscillator", {
+        oscillator_id: this.id
+      });
+    },
+    createFilter: function createFilter() {
+      this.$store.commit("createFilter", {
         oscillator_id: this.id
       });
     }
@@ -899,8 +1021,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _store_Player__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../store/Player */ "./src/js/store/Player.js");
-/* harmony import */ var _store_helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../store/helper */ "./src/js/store/helper.js");
+/* harmony import */ var _Objects_Player__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../Objects/Player */ "./src/js/Objects/Player.js");
+/* harmony import */ var _util_helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../util/helper */ "./src/js/util/helper.js");
 //
 //
 //
@@ -1106,11 +1228,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     play: function play() {
-      _store_Player__WEBPACK_IMPORTED_MODULE_0__["default"].play();
+      _Objects_Player__WEBPACK_IMPORTED_MODULE_0__["default"].play();
       this.animatePositionMarker();
     },
     stop: function stop() {
-      _store_Player__WEBPACK_IMPORTED_MODULE_0__["default"].stop();
+      _Objects_Player__WEBPACK_IMPORTED_MODULE_0__["default"].stop();
       var posMarker = document.querySelector("[data-js=position-marker]");
       posMarker.setAttribute("style", "");
     },
@@ -1208,7 +1330,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _store_Oscillator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store/Oscillator */ "./src/js/store/Oscillator.js");
+/* harmony import */ var _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Objects/Oscillator */ "./src/js/Objects/Oscillator.js");
 //
 //
 //
@@ -1248,7 +1370,7 @@ __webpack_require__.r(__webpack_exports__);
       if (this.$store.state.activeOscillator) {
         var osc = this.$store.state.activeOscillator;
         var note = e.target.getAttribute("data-key");
-        _store_Oscillator__WEBPACK_IMPORTED_MODULE_0__["default"].playNote(osc, note);
+        _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_0__["default"].playNote(osc, note);
       } else {
         console.error("There is currently no active oscillator to play");
       } // this.playOscForInterval
@@ -1257,7 +1379,7 @@ __webpack_require__.r(__webpack_exports__);
     stopKey: function stopKey(e) {
       if (this.$store.state.activeOscillator) {
         var osc = this.$store.state.activeOscillator;
-        _store_Oscillator__WEBPACK_IMPORTED_MODULE_0__["default"].stopNote(osc);
+        _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_0__["default"].stopNote(osc);
       }
     }
   }
@@ -2447,7 +2569,7 @@ var render = function() {
         }
       }
     },
-    [_c("div", { staticClass: "note__handle", on: { click: _vm.resize } })]
+    [_c("div", { staticClass: "note__handle" })]
   )
 }
 var staticRenderFns = []
@@ -2577,6 +2699,230 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/Includes/Filter.vue?vue&type=template&id=2dd8840d&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/js/Components/Sidebar/Includes/Filter.vue?vue&type=template&id=2dd8840d& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "button",
+      {
+        on: {
+          click: function($event) {
+            _vm.deleteThisFilter()
+          }
+        }
+      },
+      [_vm._v("X")]
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "oscillator__filter-wrap" }, [
+      _vm._v("\n\t\tFilters & Shapers\n\t\t"),
+      _c("br"),
+      _vm._v(" "),
+      _c("label", [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.filterType,
+                expression: "filterType"
+              }
+            ],
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.filterType = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          _vm._l(this.$store.state.data.filters, function(type, index) {
+            return _c("option", { key: index, domProps: { value: type } }, [
+              _vm._v(_vm._s(type))
+            ])
+          }),
+          0
+        ),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.modulationType,
+                expression: "modulationType"
+              }
+            ],
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.modulationType = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          [
+            _c("option", { attrs: { value: "env" } }, [_vm._v("Envelope")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "lfo" } }, [_vm._v("LFO")])
+          ]
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _vm.modulationType == "env"
+      ? _c("div", { staticClass: "oscillator__property-wrap" }, [
+          _c(
+            "label",
+            {
+              staticClass: "oscillator__property-label",
+              attrs: { for: "filter_amplitude" }
+            },
+            [_vm._v("Amt")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.filterAmplitude,
+                expression: "filterAmplitude"
+              }
+            ],
+            staticClass: "oscillator__property",
+            attrs: {
+              type: "range",
+              id: "filter_amplitude",
+              min: "0",
+              max: "4000"
+            },
+            domProps: { value: _vm.filterAmplitude },
+            on: {
+              __r: function($event) {
+                _vm.filterAmplitude = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "label",
+            {
+              staticClass: "oscillator__property-label",
+              attrs: { for: "filter_cutoff" }
+            },
+            [_vm._v("Cut")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.filterCutoff,
+                expression: "filterCutoff"
+              }
+            ],
+            staticClass: "oscillator__property",
+            attrs: {
+              type: "range",
+              id: "filter_cutoff",
+              min: "0",
+              max: "4000"
+            },
+            domProps: { value: _vm.filterCutoff },
+            on: {
+              __r: function($event) {
+                _vm.filterCutoff = $event.target.value
+              }
+            }
+          })
+        ])
+      : _c("div", { staticClass: "oscillator__property-wrap" }, [
+          _c(
+            "label",
+            {
+              staticClass: "oscillator__property-label",
+              attrs: { for: "filter_cutoff" }
+            },
+            [_vm._v("Amt")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "oscillator__property",
+            attrs: { type: "range", id: "filter_cutoff", min: "0", max: "4000" }
+          }),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "oscillator__property__dropdown-toggle",
+            attrs: { type: "checkbox", id: "volume_properties_toggle" }
+          }),
+          _vm._v(" "),
+          _vm._m(0)
+        ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "oscillator__property__dropdown" }, [
+      _c(
+        "label",
+        {
+          staticClass: "oscillator__property-label",
+          attrs: { for: "filter_attack" }
+        },
+        [_vm._v("Speed")]
+      ),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "oscillator__property",
+        attrs: { type: "range", id: "filter_attack" }
+      })
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/OscillatorUI.vue?vue&type=template&id=26d40053&":
 /*!*****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/js/Components/Sidebar/OscillatorUI.vue?vue&type=template&id=26d40053& ***!
@@ -2641,19 +2987,6 @@ var render = function() {
           0
         )
       ]),
-      _vm._v(" "),
-      _vm._l(_vm.filters, function(filter) {
-        return _c(
-          "div",
-          { key: filter, staticClass: "oscillator__filter-wrap" },
-          [
-            _vm._v("\n\t\tFilters & Shapers\n\t\t"),
-            _c("br"),
-            _vm._v(" "),
-            _vm._m(0, true)
-          ]
-        )
-      }),
       _vm._v(" "),
       _c("span", { staticClass: "oscillator__property-wrap" }, [
         _c(
@@ -2758,128 +3091,31 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("span", { staticClass: "oscillator__property-wrap" }, [
-        _c(
-          "label",
-          {
-            staticClass: "oscillator__property-label",
-            attrs: { for: "filter_cutoff" }
-          },
-          [_vm._v("Flt")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.filter_cutoff,
-              expression: "filter_cutoff"
-            }
-          ],
-          staticClass: "oscillator__property",
-          attrs: { type: "range", id: "filter_cutoff", min: "0", max: "4000" },
-          domProps: { value: _vm.filter_cutoff },
+      _c(
+        "button",
+        {
           on: {
-            __r: function($event) {
-              _vm.filter_cutoff = $event.target.value
+            click: function($event) {
+              _vm.createFilter()
             }
           }
-        }),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "oscillator__property__dropdown-toggle",
-          attrs: {
-            type: "checkbox",
-            name: "volume_properties",
-            id: "volume_properties_toggle"
-          }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "oscillator__property__dropdown" }, [
-          _c(
-            "label",
-            {
-              staticClass: "oscillator__property-label",
-              attrs: { for: "filter_attack" }
-            },
-            [_vm._v("Att")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.filter_attack,
-                expression: "filter_attack"
-              }
-            ],
-            staticClass: "oscillator__property",
-            attrs: { type: "range", id: "filter_attack" },
-            domProps: { value: _vm.filter_attack },
-            on: {
-              __r: function($event) {
-                _vm.filter_attack = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "oscillator__property-label",
-              attrs: { for: "filter_decay" }
-            },
-            [_vm._v("Dec")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.filter_decay,
-                expression: "filter_decay"
-              }
-            ],
-            staticClass: "oscillator__property",
-            attrs: { type: "range", id: "filter_decay" },
-            domProps: { value: _vm.filter_decay },
-            on: {
-              __r: function($event) {
-                _vm.filter_decay = $event.target.value
-              }
-            }
-          })
-        ])
-      ])
+        },
+        [_vm._v("Add Filter")]
+      ),
+      _vm._v(" "),
+      _vm._l(_vm.filters, function(filter) {
+        return _c("FilterUI", {
+          key: filter.id,
+          attrs: { filterId: filter.id, oscillatorId: _vm.id }
+        })
+      }),
+      _vm._v(" "),
+      _c("button", [_vm._v("Add Effect")])
     ],
     2
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("label", [
-      _c("select", [
-        _c("option", { attrs: { value: "lowpass" } }, [_vm._v("Lowpass")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "highpass" } }, [_vm._v("Highpass")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "" } }, [_vm._v("Waveshaper")])
-      ]),
-      _vm._v(" "),
-      _c("select", [
-        _c("option", { attrs: { value: "env" } }, [_vm._v("Envelope")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "lfo" } }, [_vm._v("LFO")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -15932,6 +16168,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/js/Components/Sidebar/Includes/Filter.vue":
+/*!*******************************************************!*\
+  !*** ./src/js/Components/Sidebar/Includes/Filter.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Filter_vue_vue_type_template_id_2dd8840d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Filter.vue?vue&type=template&id=2dd8840d& */ "./src/js/Components/Sidebar/Includes/Filter.vue?vue&type=template&id=2dd8840d&");
+/* harmony import */ var _Filter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Filter.vue?vue&type=script&lang=js& */ "./src/js/Components/Sidebar/Includes/Filter.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Filter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Filter_vue_vue_type_template_id_2dd8840d___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Filter_vue_vue_type_template_id_2dd8840d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "src/js/Components/Sidebar/Includes/Filter.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./src/js/Components/Sidebar/Includes/Filter.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./src/js/Components/Sidebar/Includes/Filter.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Filter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Filter.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/Includes/Filter.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Filter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./src/js/Components/Sidebar/Includes/Filter.vue?vue&type=template&id=2dd8840d&":
+/*!**************************************************************************************!*\
+  !*** ./src/js/Components/Sidebar/Includes/Filter.vue?vue&type=template&id=2dd8840d& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filter_vue_vue_type_template_id_2dd8840d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Filter.vue?vue&type=template&id=2dd8840d& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/js/Components/Sidebar/Includes/Filter.vue?vue&type=template&id=2dd8840d&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filter_vue_vue_type_template_id_2dd8840d___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Filter_vue_vue_type_template_id_2dd8840d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./src/js/Components/Sidebar/OscillatorUI.vue":
 /*!****************************************************!*\
   !*** ./src/js/Components/Sidebar/OscillatorUI.vue ***!
@@ -16295,37 +16600,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/js/main.js":
-/*!************************!*\
-  !*** ./src/js/main.js ***!
-  \************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App */ "./src/js/App.vue");
-
-
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
-
-new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  el: "#app",
-  components: {
-    App: _App__WEBPACK_IMPORTED_MODULE_2__["default"]
-  },
-  template: "<App/>"
-});
-
-/***/ }),
-
-/***/ "./src/js/store/Oscillator.js":
-/*!************************************!*\
-  !*** ./src/js/store/Oscillator.js ***!
-  \************************************/
+/***/ "./src/js/Objects/Oscillator.js":
+/*!**************************************!*\
+  !*** ./src/js/Objects/Oscillator.js ***!
+  \**************************************/
 /*! exports provided: default, Filter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -16333,13 +16611,15 @@ new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Oscillator; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Filter", function() { return Filter; });
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./src/js/store/store.js");
-/* harmony import */ var _helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helper */ "./src/js/store/helper.js");
+/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store/store */ "./src/js/store/store.js");
+/* harmony import */ var _util_helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/helper */ "./src/js/util/helper.js");
+/* harmony import */ var _util_generateId__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/generateId */ "./src/js/util/generateId.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -16354,7 +16634,7 @@ function () {
       var tone = note.slice(0, note.length - 1);
       var octave = note.slice(-1); // (octave num * keys in octave) + index of note in the notes array
 
-      var keyNumber = octave * 12 + (_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.data.notes.indexOf(tone) + 1); // key is a pretty bad name
+      var keyNumber = octave * 12 + (_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.data.notes.indexOf(tone) + 1); // key is a pretty bad name
 
       return 440 * Math.pow(2, keyNumber / 12 - 49 / 12); // The algorithm to get the frequency of a note
       // from its key number (A0 - C8)
@@ -16367,16 +16647,16 @@ function () {
       // TODO: obsolete, ensure this isn't used
       var frequency = Oscillator.noteFrequency(note); // create & setup oscillatorNode to play the note
 
-      oscillator.oscillatorNode = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createOscillator();
+      oscillator.oscillatorNode = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createOscillator();
       oscillator.oscillatorNode.type = oscillator.waveform; // Setup filter
 
       oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
       oscillator.oscillatorNode.connect(oscillator.filter.filterNode); // Connect filter to audio output
 
-      oscillator.filter.filterNode.connect(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain);
-      _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain.connect(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.destination); // Start the oscillator
+      oscillator.filter.filterNode.connect(_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain);
+      _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain.connect(_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.destination); // Start the oscillator
 
-      oscillator.oscillatorNode.frequency.setValueAtTime(frequency, _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
+      oscillator.oscillatorNode.frequency.setValueAtTime(frequency, _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
       oscillator.oscillatorNode.start(startTime);
     } // Used for notes playback
 
@@ -16385,7 +16665,7 @@ function () {
     value: function playForDuration(oscillator, note, startTime, duration) {
       var frequency = Oscillator.noteFrequency(note); // Create & setup oscillatorNode to play the note
 
-      oscillator.oscillatorNode = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createOscillator();
+      oscillator.oscillatorNode = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createOscillator();
       oscillator.oscillatorNode.type = oscillator.waveform; // Setup filter
 
       oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff; // Chain it all together
@@ -16395,27 +16675,27 @@ function () {
       // TODO: function which loops through set filters goes here
       // Make it reusable
 
-      oscillator.filter.filterNode.connect(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain);
-      _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain.connect(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.destination); // Start the oscillator
+      oscillator.filter.filterNode.connect(_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain);
+      _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain.connect(_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.destination); // Start the oscillator
 
-      oscillator.oscillatorNode.frequency.setValueAtTime(frequency, _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
+      oscillator.oscillatorNode.frequency.setValueAtTime(frequency, _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
       oscillator.oscillatorNode.start(startTime); // TODO: change how the position marker works
       // resetPositionMarker() needs to exist also
 
-      Object(_helper__WEBPACK_IMPORTED_MODULE_1__["animatePositionMarker"])();
+      Object(_util_helper__WEBPACK_IMPORTED_MODULE_1__["animatePositionMarker"])();
       oscillator.oscillatorNode.stop(startTime + duration);
     }
   }, {
     key: "stopNote",
     value: function stopNote(oscillator) {
-      oscillator.oscillatorNode && oscillator.oscillatorNode.stop(_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
+      oscillator.oscillatorNode && oscillator.oscillatorNode.stop(_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
     }
   }]);
 
   function Oscillator() {
     _classCallCheck(this, Oscillator);
 
-    this.id = Object(_helper__WEBPACK_IMPORTED_MODULE_1__["generateOscId"])();
+    this.id = Object(_util_generateId__WEBPACK_IMPORTED_MODULE_2__["generateOscId"])();
     this.env = {
       amplitude: 0.6,
       attack: 0,
@@ -16430,13 +16710,12 @@ function () {
       attack: 0,
       decay: 0,
       resonance: 0,
-      filterNode: _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createBiquadFilter()
+      filterNode: _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createBiquadFilter()
     };
     this.notes = [];
     this.filter.filterNode.type = this.filter.type;
     this.filters = [];
-    this.gainNode = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createGain();
-    console.log('aaa', this.gainNode);
+    this.gainNode = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createGain();
   }
 
   return Oscillator;
@@ -16447,14 +16726,18 @@ function () {
 var Filter = function Filter() {
   _classCallCheck(this, Filter);
 
-  this.id = Filter.generateId();
+  this.id = Object(_util_generateId__WEBPACK_IMPORTED_MODULE_2__["generateFilterId"])();
+  this.modulationType = "env";
   this.env = {
     amplitude: 50,
     attack: 0,
     hold: 0,
     decay: 0,
     release: 0
-  }, this.type = '';
+  };
+  this.type = 'lowpass';
+  this.cutoff = 2000;
+  this.filterNode = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createBiquadFilter();
 };
 /**
  * types
@@ -16468,18 +16751,18 @@ var Filter = function Filter() {
 
 /***/ }),
 
-/***/ "./src/js/store/Player.js":
-/*!********************************!*\
-  !*** ./src/js/store/Player.js ***!
-  \********************************/
+/***/ "./src/js/Objects/Player.js":
+/*!**********************************!*\
+  !*** ./src/js/Objects/Player.js ***!
+  \**********************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Oscillator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Oscillator */ "./src/js/store/Oscillator.js");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./store */ "./src/js/store/store.js");
-/* harmony import */ var _helper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helper */ "./src/js/store/helper.js");
+/* harmony import */ var _Oscillator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Oscillator */ "./src/js/Objects/Oscillator.js");
+/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../store/store */ "./src/js/store/store.js");
+/* harmony import */ var _util_helper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/helper */ "./src/js/util/helper.js");
 // a class with all the play + timing methods inside.
 // neccessary? I'm not sure
 
@@ -16493,7 +16776,7 @@ __webpack_require__.r(__webpack_exports__);
   createQueue: function createQueue() {
     // create an array which contains all notes from the project
     var notes = [];
-    _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.oscillators.forEach(function (item) {
+    _store_store__WEBPACK_IMPORTED_MODULE_1__["store"].state.oscillators.forEach(function (item) {
       var notesArrayWithOscId = []; // Add the oscillator id to each note
 
       item.notes.forEach(function (noteObj) {
@@ -16527,14 +16810,14 @@ __webpack_require__.r(__webpack_exports__);
     var notes = this.createQueue();
     var scheduleAheadTime = 0.1;
     var currentNote = 0;
-    var nextNoteStartTime = _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + Object(_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote].position);
-    var startTime = _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime;
-    var finishTime = _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + Object(_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(100);
+    var nextNoteStartTime = _store_store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + Object(_util_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote].position);
+    var startTime = _store_store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime;
+    var finishTime = _store_store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + Object(_util_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(100);
 
     var _this = this;
 
     function scheduler() {
-      while (nextNoteStartTime < _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + scheduleAheadTime && notes[currentNote]) {
+      while (nextNoteStartTime < _store_store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + scheduleAheadTime && notes[currentNote]) {
         scheduleNote(notes[currentNote], nextNoteStartTime);
         nextNote();
       }
@@ -16549,10 +16832,10 @@ __webpack_require__.r(__webpack_exports__);
 
     function scheduleNote(note, nextNoteStartTime) {
       if (note) {
-        var oscillator = _store__WEBPACK_IMPORTED_MODULE_1__["store"].state.oscillators.find(function (item) {
+        var oscillator = _store_store__WEBPACK_IMPORTED_MODULE_1__["store"].state.oscillators.find(function (item) {
           return item.id === note.oscId;
         });
-        _Oscillator__WEBPACK_IMPORTED_MODULE_0__["default"].playForDuration(oscillator, note.pitch, nextNoteStartTime, Object(_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(note.lengthAsPercentage));
+        _Oscillator__WEBPACK_IMPORTED_MODULE_0__["default"].playForDuration(oscillator, note.pitch, nextNoteStartTime, Object(_util_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(note.lengthAsPercentage));
       } else {
         // TODO: this isn't getting used anymore
         _this.playing = false;
@@ -16562,7 +16845,7 @@ __webpack_require__.r(__webpack_exports__);
 
     function nextNote() {
       if (notes[currentNote]) {
-        notes[currentNote + 1] ? nextNoteStartTime = startTime + Object(_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote + 1].position) : function () {
+        notes[currentNote + 1] ? nextNoteStartTime = startTime + Object(_util_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote + 1].position) : function () {
           nextNoteStartTime = 0;
           currentNote = 0;
         }; // add the distance between the (next note - start time)
@@ -16572,7 +16855,7 @@ __webpack_require__.r(__webpack_exports__);
     }
 
     scheduler();
-    var time = Object(_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(100);
+    var time = Object(_util_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(100);
     var posMarker = document.querySelector("[data-js=position-marker]");
     posMarker.setAttribute("style", "");
     posMarker.setAttribute("style", "transition: left linear ".concat(time, "s; left: 99.9%;"));
@@ -16586,11 +16869,349 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/js/store/helper.js":
-/*!********************************!*\
-  !*** ./src/js/store/helper.js ***!
-  \********************************/
-/*! exports provided: getKeysArray, secondsPerBeat, loopTimeframe, durationFromPercentage, percentageFromPixels, pixelsFromPercentage, animatePositionMarker, getOscillator, getNote, generateOscId, generateNoteId */
+/***/ "./src/js/main.js":
+/*!************************!*\
+  !*** ./src/js/main.js ***!
+  \************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App */ "./src/js/App.vue");
+
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+
+new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: "#app",
+  components: {
+    App: _App__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  template: "<App/>"
+});
+
+/***/ }),
+
+/***/ "./src/js/store/store.js":
+/*!*******************************!*\
+  !*** ./src/js/store/store.js ***!
+  \*******************************/
+/*! exports provided: Oscillator, store */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "store", function() { return store; });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Objects/Oscillator */ "./src/js/Objects/Oscillator.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Oscillator", function() { return _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+
+/* harmony import */ var _util_helper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../util/helper */ "./src/js/util/helper.js");
+
+
+
+
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]); // TODO: break store into multiple files
+
+var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
+  state: {
+    project: {
+      name: "myProject",
+      bpm: 120,
+      timeSignature: 4,
+      noteSize: 4,
+      numBars: 4,
+      baseOctave: 2,
+      numOctaves: 2,
+      rootNote: "C",
+      noteLength: 1
+    },
+    oscillators: [],
+    activeOscillator: null,
+    // saves reference only
+    mouseActive: false,
+    keypressActive: false,
+    data: {
+      notes: ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"],
+      keys: {
+        // TODO: unnecessary
+        C: 81,
+        Csh: 50,
+        D: 87,
+        Dsh: 51,
+        E: 69,
+        F: 82,
+        Fsh: 53,
+        G: 84,
+        Gsh: 54,
+        A: 89,
+        Ash: 55,
+        B: 85
+      },
+      waveforms: ["sine", "square", "sawtooth", "triangle"],
+      filters: ["lowpass", "highpass", "bandpass"]
+    },
+    audioContext: null,
+    masterGain: null
+  },
+  mutations: {
+    /*
+    	General / Misc
+    */
+    createAudioContext: function createAudioContext(state) {
+      var audioCtx;
+      audioCtx = window.AudioContext || window.webkitAudioContext;
+      state.audioContext = new audioCtx(); // Create the master volume control
+
+      state.masterGain = state.audioContext.createGain();
+      state.masterGain.gain.value = 0.6;
+    },
+    setMouseActiveState: function setMouseActiveState(state, payload) {
+      this.state.mouseActive = payload;
+    },
+
+    /*
+    	Project Mutations - needs organising
+    */
+    setName: function setName(name) {
+      this.state.project.name = name;
+    },
+    setBPM: function setBPM(state, payload) {
+      this.state.project.bpm = payload.bpm;
+    },
+    setNumBars: function setNumBars(state, payload) {
+      this.state.project.numBars = payload.numBars;
+    },
+    // Piano roll setup
+    setBaseOctave: function setBaseOctave(state, payload) {
+      this.state.project.baseOctave = payload.baseOctave;
+    },
+    setTimeSignature: function setTimeSignature(state, payload) {
+      this.state.project.timeSignature = payload.timeSignature;
+    },
+    setNoteSize: function setNoteSize(state, payload) {
+      this.state.project.noteSize = payload.noteSize;
+    },
+    setNumOctaves: function setNumOctaves(state, payload) {
+      this.state.project.numOctaves = payload.numOctaves;
+    },
+    setRootNote: function setRootNote(state, payload) {
+      this.state.project.rootNote = payload.rootNote;
+    },
+    setNoteLengthInBeats: function setNoteLengthInBeats(state, payload) {
+      this.state.project.noteLength = payload.length;
+    },
+    setMasterGain: function setMasterGain(state, payload) {
+      if (this.state.masterGain) {
+        this.state.masterGain.gain.value = payload.masterGain;
+      }
+    },
+
+    /*
+    	Adding / removing oscillators
+    */
+    addOscillator: function addOscillator() {
+      var osc = new _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_2__["default"]();
+      this.state.oscillators.push(osc);
+      this.state.activeOscillator = osc;
+    },
+    removeOscillator: function removeOscillator(oscillator_id) {
+      var index = this.state.oscillators.indexOf(oscillator_id);
+      index > -1 && this.state.oscillators.splice(index, 1);
+    },
+    setCurrentOscillator: function setCurrentOscillator(state, payload) {
+      var osc = Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
+      this.state.activeOscillator = osc;
+    },
+
+    /*
+    	Oscillator Mutations
+    */
+    setOscillatorWaveform: function setOscillatorWaveform(state, payload) {
+      var osc = Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
+      osc.waveform = payload.waveform;
+    },
+    setOscillatorGain: function setOscillatorGain(state, payload) {
+      Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id).gain = payload.gain;
+    },
+
+    /*
+    	Filters
+     */
+    createFilter: function createFilter(state, payload) {
+      Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id).filters.push(new _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_2__["Filter"]());
+    },
+    deleteFilter: function deleteFilter(state, payload) {
+      var index = Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillatorId).filters.findIndex(function (filter) {
+        return filter.id == payload.filterId;
+      });
+      Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillatorId).filters.splice(index, 1);
+    },
+    setFilterType: function setFilterType(state, payload) {
+      Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getFilter"])(payload.filterId).type = payload.type;
+    },
+    setFilterModType: function setFilterModType(state, payload) {
+      Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getFilter"])(payload.filterId).modulationType = payload.modType;
+    },
+    // TODO: should have a function for applying any kind of envelope
+    volume: function volume(state, payload) {
+      var osc = Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
+      var property = osc.env;
+
+      switch (payload.property) {
+        case "amplitude":
+          property.amplitude = payload.value;
+          break;
+
+        case "attack":
+          property.attack = payload.value;
+          break;
+
+        case "decay":
+          property.decay = payload.value;
+          break;
+      }
+    },
+    biquadFilter: function biquadFilter(state, payload) {
+      var osc = Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
+      var property = osc.filter;
+
+      switch (payload.property) {
+        case "type":
+          property.type = payload.value;
+          break;
+
+        case "cutoff":
+          property.cutoff = payload.value;
+          break;
+
+        case "attack":
+          property.attack = payload.value;
+          break;
+
+        case "decay":
+          property.decay = payload.value;
+          break;
+      }
+    },
+    lpHpFilter: function lpHpFilter(state, payload) {
+      var osc = Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
+      var property;
+
+      if (payload.filter) {
+        property = osc.lowpass;
+      } else {
+        property = osc.highpass;
+      }
+
+      switch (payload.property) {
+        case "cutoff":
+          property.cutoff = payload.value;
+          break;
+
+        case "attack":
+          property.attack = payload.value;
+          break;
+
+        case "decay":
+          property.decay = payload.value;
+          break;
+
+        case "resonance":
+          property.resonance = payload.value;
+          break;
+      }
+    },
+    addNote: function addNote(state, note) {
+      // add note object to notes array
+      if (state.activeOscillator.notes.length < 32) {
+        state.activeOscillator.notes.push(note);
+      }
+    },
+    removeNote: function removeNote(state, id) {
+      // splice the Note object out of the notes array
+      if (state.activeOscillator.notes.length > -1) {
+        state.activeOscillator.notes.splice(state.activeOscillator.notes.findIndex(function (note) {
+          return note.id === id;
+        }), 1);
+      }
+    },
+    updateNotePos: function updateNotePos(state, payload) {
+      Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getNote"])(payload.note_id).position = payload.pos;
+    }
+  }
+});
+
+
+/***/ }),
+
+/***/ "./src/js/util/generateId.js":
+/*!***********************************!*\
+  !*** ./src/js/util/generateId.js ***!
+  \***********************************/
+/*! exports provided: generateOscId, generateFilterId, generateNoteId */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "generateOscId", function() { return generateOscId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "generateFilterId", function() { return generateFilterId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "generateNoteId", function() { return generateNoteId; });
+/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store/store */ "./src/js/store/store.js");
+/* harmony import */ var _helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helper */ "./src/js/util/helper.js");
+
+
+
+function generateId() {
+  return Math.floor(Math.random() * 10000000).toString(16);
+}
+
+function generateOscId() {
+  var id = generateId();
+
+  if (_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.oscillators.find(function (oscillator) {
+    return oscillator.id == id;
+  })) {
+    return generateOscId();
+  } else {
+    return id;
+  }
+}
+function generateFilterId() {
+  var id = generateId();
+
+  if (Object(_helper__WEBPACK_IMPORTED_MODULE_1__["getFilter"])(id)) {
+    return generateFilterId();
+  } else {
+    return id;
+  }
+}
+function generateNoteId() {
+  var id = generateId();
+
+  if (_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.activeOscillator.notes.find(function (note) {
+    return note.id == id;
+  })) {
+    return generateNoteId();
+  } else {
+    return id;
+  }
+}
+
+/***/ }),
+
+/***/ "./src/js/util/helper.js":
+/*!*******************************!*\
+  !*** ./src/js/util/helper.js ***!
+  \*******************************/
+/*! exports provided: getKeysArray, secondsPerBeat, loopTimeframe, durationFromPercentage, percentageFromPixels, pixelsFromPercentage, animatePositionMarker, getOscillator, getNote, getFilter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16604,9 +17225,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "animatePositionMarker", function() { return animatePositionMarker; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getOscillator", function() { return getOscillator; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNote", function() { return getNote; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "generateOscId", function() { return generateOscId; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "generateNoteId", function() { return generateNoteId; });
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./src/js/store/store.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFilter", function() { return getFilter; });
+/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store/store */ "./src/js/store/store.js");
 
 /**
  * TODO: this should be split into several parts
@@ -16626,10 +17246,10 @@ function getKeysArray() {
    * chosen root note, and then sets this
    * as the new piano roll order for the whole app
    */
-  var chosenRootOctave = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.baseOctave;
-  var numOctaves = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.numOctaves;
-  var rootNote = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.rootNote;
-  var notes = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.data.notes;
+  var chosenRootOctave = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.baseOctave;
+  var numOctaves = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.numOctaves;
+  var rootNote = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.rootNote;
+  var notes = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.data.notes;
 
   var octaveNotes = function () {
     var array = [];
@@ -16697,12 +17317,12 @@ function getKeysArray() {
 // These two aren't 
 
 function getSecondsPerBeat() {
-  var bpm = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.bpm;
+  var bpm = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.bpm;
   return 60 / bpm;
 }
 
 function getLoopTimeframe() {
-  var numBars = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.numBars;
+  var numBars = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.numBars;
   var secondsPerBeat = getSecondsPerBeat();
   var oneBar = secondsPerBeat * 4; // 4 can be changed if we want to support 3/4 or other time signatures
 
@@ -16735,281 +17355,28 @@ function animatePositionMarker() {
   posMarker.setAttribute("style", "transition: left linear ".concat(time, "s; left: calc(100% - (5/18*1em));"));
 }
 function getOscillator(id) {
-  var oscIndex = _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.oscillators.findIndex(function (oscillator) {
+  var oscIndex = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.oscillators.findIndex(function (oscillator) {
     return oscillator.id == id;
   });
-  return _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.oscillators[oscIndex];
+  return _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.oscillators[oscIndex];
 }
 function getNote(id) {
-  return _store__WEBPACK_IMPORTED_MODULE_0__["store"].state.activeOscillator.notes.find(function (note) {
+  return _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.activeOscillator.notes.find(function (note) {
     return note.id == id;
   });
 }
-
-function generateId() {
-  return Math.floor(Math.random() * 10000000).toString(16);
+function getFilter(id) {
+  var output;
+  _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.oscillators.find(function (oscillator) {
+    return oscillator.filters.find(function (filter) {
+      if (filter.id == id) {
+        output = filter;
+        return;
+      }
+    });
+  });
+  return output || null;
 }
-
-function generateOscId() {
-  var id = generateId();
-
-  if (_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.oscillators.find(function (oscillator) {
-    return oscillator.id == id;
-  })) {
-    return generateOscId();
-  } else {
-    return id;
-  }
-}
-function generateNoteId() {
-  var id = generateId();
-
-  if (_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.activeOscillator.notes.find(function (note) {
-    return note.id == id;
-  })) {
-    return generateNoteId();
-  } else {
-    return id;
-  }
-}
-
-/***/ }),
-
-/***/ "./src/js/store/store.js":
-/*!*******************************!*\
-  !*** ./src/js/store/store.js ***!
-  \*******************************/
-/*! exports provided: Oscillator, store */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "store", function() { return store; });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _Oscillator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Oscillator */ "./src/js/store/Oscillator.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Oscillator", function() { return _Oscillator__WEBPACK_IMPORTED_MODULE_2__["default"]; });
-
-/* harmony import */ var _helper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./helper */ "./src/js/store/helper.js");
-
-
-
-
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
-var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
-  state: {
-    project: {
-      name: "myProject",
-      bpm: 120,
-      timeSignature: 4,
-      noteSize: 4,
-      numBars: 4,
-      baseOctave: 2,
-      numOctaves: 2,
-      rootNote: "C",
-      noteLength: 1
-    },
-    oscillators: [],
-    activeOscillator: null,
-    // saves reference only
-    mouseActive: false,
-    keypressActive: false,
-    data: {
-      notes: ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"],
-      keys: {
-        // TODO: unnecessary
-        C: 81,
-        Csh: 50,
-        D: 87,
-        Dsh: 51,
-        E: 69,
-        F: 82,
-        Fsh: 53,
-        G: 84,
-        Gsh: 54,
-        A: 89,
-        Ash: 55,
-        B: 85
-      },
-      waveforms: ["sine", "square", "sawtooth", "triangle"],
-      filters: ["lowpass", "highpass", "bandpass"]
-    },
-    audioContext: null,
-    masterGain: null
-  },
-  mutations: {
-    /*
-    	General / Misc
-    */
-    createAudioContext: function createAudioContext(state) {
-      var audioCtx;
-      audioCtx = window.AudioContext || window.webkitAudioContext;
-      state.audioContext = new audioCtx(); // Create the master volume control
-
-      state.masterGain = state.audioContext.createGain();
-      state.masterGain.gain.value = 0.6;
-    },
-    setMouseActiveState: function setMouseActiveState(state, payload) {
-      this.state.mouseActive = payload;
-    },
-
-    /*
-    	Project Mutations
-    */
-    setName: function setName(name) {
-      this.state.project.name = name;
-    },
-    setBPM: function setBPM(state, payload) {
-      this.state.project.bpm = payload.bpm;
-    },
-    setNumBars: function setNumBars(state, payload) {
-      this.state.project.numBars = payload.numBars;
-    },
-    // Piano roll setup
-    setBaseOctave: function setBaseOctave(state, payload) {
-      this.state.project.baseOctave = payload.baseOctave;
-    },
-    setTimeSignature: function setTimeSignature(state, payload) {
-      this.state.project.timeSignature = payload.timeSignature;
-    },
-    setNoteSize: function setNoteSize(state, payload) {
-      this.state.project.noteSize = payload.noteSize;
-    },
-    setNumOctaves: function setNumOctaves(state, payload) {
-      this.state.project.numOctaves = payload.numOctaves;
-    },
-    setRootNote: function setRootNote(state, payload) {
-      this.state.project.rootNote = payload.rootNote;
-    },
-    setNoteLengthInBeats: function setNoteLengthInBeats(state, payload) {
-      this.state.project.noteLength = payload.length;
-    },
-    setMasterGain: function setMasterGain(state, payload) {
-      if (this.state.masterGain) {
-        this.state.masterGain.gain.value = payload.masterGain;
-      }
-    },
-
-    /*
-    	Adding / removing oscillators
-    */
-    addOscillator: function addOscillator() {
-      var osc = new _Oscillator__WEBPACK_IMPORTED_MODULE_2__["default"]();
-      this.state.oscillators.push(osc);
-      this.state.activeOscillator = osc;
-    },
-    removeOscillator: function removeOscillator(oscillator_id) {
-      var index = this.state.oscillators.indexOf(oscillator_id);
-      index > -1 && this.state.oscillators.splice(index, 1);
-    },
-    setCurrentOscillator: function setCurrentOscillator(state, payload) {
-      var osc = Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
-      this.state.activeOscillator = osc;
-    },
-
-    /*
-    	Oscillator Mutations
-    */
-    setOscillatorWaveform: function setOscillatorWaveform(state, payload) {
-      var osc = Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
-      osc.waveform = payload.waveform;
-    },
-    setOscillatorGain: function setOscillatorGain(state, payload) {
-      Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id).gain = payload.gain;
-    },
-    updateOscillatorFiltersList: function updateOscillatorFiltersList(state, payload) {
-      Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id).filters = payload.filters;
-    },
-    // TODO: should have a function for applying any kind of envelope
-    volume: function volume(state, payload) {
-      var osc = Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
-      var property = osc.env;
-
-      switch (payload.property) {
-        case "amplitude":
-          property.amplitude = payload.value;
-          break;
-
-        case "attack":
-          property.attack = payload.value;
-          break;
-
-        case "decay":
-          property.decay = payload.value;
-          break;
-      }
-    },
-    biquadFilter: function biquadFilter(state, payload) {
-      var osc = Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
-      var property = osc.filter;
-
-      switch (payload.property) {
-        case "type":
-          property.type = payload.value;
-          break;
-
-        case "cutoff":
-          property.cutoff = payload.value;
-          break;
-
-        case "attack":
-          property.attack = payload.value;
-          break;
-
-        case "decay":
-          property.decay = payload.value;
-          break;
-      }
-    },
-    lpHpFilter: function lpHpFilter(state, payload) {
-      var osc = Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
-      var property;
-
-      if (payload.filter) {
-        property = osc.lowpass;
-      } else {
-        property = osc.highpass;
-      }
-
-      switch (payload.property) {
-        case "cutoff":
-          property.cutoff = payload.value;
-          break;
-
-        case "attack":
-          property.attack = payload.value;
-          break;
-
-        case "decay":
-          property.decay = payload.value;
-          break;
-
-        case "resonance":
-          property.resonance = payload.value;
-          break;
-      }
-    },
-    addNote: function addNote(state, note) {
-      // add note object to notes array
-      if (state.activeOscillator.notes.length < 32) {
-        state.activeOscillator.notes.push(note);
-      }
-    },
-    removeNote: function removeNote(state, id) {
-      // splice the Note object out of the notes array
-      if (state.activeOscillator.notes.length > -1) {
-        state.activeOscillator.notes.splice(state.activeOscillator.notes.findIndex(function (note) {
-          return note.id === id;
-        }), 1);
-      }
-    },
-    updateNotePos: function updateNotePos(state, payload) {
-      Object(_helper__WEBPACK_IMPORTED_MODULE_3__["getNote"])(payload.note_id).position = payload.pos;
-    }
-  }
-});
-
 
 /***/ }),
 

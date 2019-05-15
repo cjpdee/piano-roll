@@ -11,14 +11,15 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import { store } from "./store/store";
-import Oscillator from "./store/Oscillator";
-import { getKeysArray } from "./store/helper";
+import Oscillator from "./Objects/Oscillator";
+import { getKeysArray } from "./util/helper";
 
 // Sidebar components
 import TheSidebar from "./Components/Sidebar/TheSidebar.vue";
 import TheControls from "./Components/Sidebar/TheControls.vue";
 import TheRack from "./Components/Sidebar/TheRack.vue";
 import OscillatorUI from "./Components/Sidebar/OscillatorUI.vue";
+import Filter from "./Components/Sidebar/Includes/Filter.vue";
 
 import ThePianoKeys from "./Components/ThePianoKeys.vue";
 
@@ -28,9 +29,10 @@ import PitchRow from "./Components/Main/PitchRow.vue";
 import Note from "./Components/Main/Note.vue";
 
 Vue.component("Note", Note);
+Vue.component("FilterUI", Filter);
 
 Vue.use(Vuex);
-var lastOscillator;
+// var lastOscillator;
 export default {
 	components: {
 		TheSidebar,

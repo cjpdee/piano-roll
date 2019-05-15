@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Oscillator from "../store/Oscillator";
+import Oscillator from "../Objects/Oscillator";
 
 export default {
 	props: {
