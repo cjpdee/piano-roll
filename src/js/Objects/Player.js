@@ -9,7 +9,7 @@ import {
 	secondsPerBeat,
 	loopTimeFrame,
 	durationFromPercentage
-} from "../util/helper";
+} from "../util/time";
 export default {
 
 	/**

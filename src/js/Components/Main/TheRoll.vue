@@ -20,13 +20,12 @@
 
 <script>
 import PitchRow from "./PitchRow";
+import { getKeysArray, getNote } from "../../util/helper";
 import {
-	getKeysArray,
 	durationFromPercentage,
 	percentageFromPixels,
-	getNote,
 	pixelsFromPercentage
-} from "../../util/helper";
+} from "../../util/time";
 
 // Dragging / resizing variables
 var isDragging = false;

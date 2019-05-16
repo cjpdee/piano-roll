@@ -14,7 +14,7 @@
 	@mouseup.stop="dragEnd"
  */
 
-import { durationFromPercentage } from "../../util/helper";
+import { durationFromPercentage } from "../../util/time";
 var isDragging = false;
 var isResizing = false;
 let currentX;
@@ -35,11 +35,6 @@ export default {
 				"%"
 			);
 		}
-	},
-	mounted() {
-		let activeOscillator = this.$store.state.oscillators.find(item => {
-			return item.id === this.$store.state.activeOscillator.id;
-		});
 	},
 	methods: {
 		removeNote(e) {

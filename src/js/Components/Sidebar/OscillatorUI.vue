@@ -72,25 +72,14 @@ export default {
 	},
 	computed: {
 		isOscillatorActive() {
-			// TODO: refactor into a modular function
-			let index = this.$store.state.oscillators.findIndex(
-				oscillator => oscillator.id == this.id
-			);
-			return (
-				this.$store.state.oscillators[index] ==
-				this.$store.state.activeOscillator
-			);
+			return getOscillator(this.id) == this.$store.state.activeOscillator;
 		},
-
 		/*
-			Waveform
+			Osc Mutations
 		*/
 		waveform: {
 			get() {
-				let index = this.$store.state.oscillators.findIndex(
-					oscillator => oscillator.id == this.id
-				);
-				return this.$store.state.oscillators[index].waveform;
+				return getOscillator(this.id).waveform;
 			},
 			set(value) {
 				this.$store.commit("setOscillatorWaveform", {
@@ -114,7 +103,6 @@ export default {
 
 		filters: {
 			get() {
-				console.log(getOscillator(this.id).filters);
 				return getOscillator(this.id).filters;
 			},
 			set(value) {
@@ -125,18 +113,10 @@ export default {
 			}
 		},
 
-		/*
-			Volume
-		*/
-
 		// TODO: this is long. instead, just update the volume_env object in the store.
-
 		volume_amplitude: {
 			get() {
-				let index = this.$store.state.oscillators.findIndex(
-					oscillator => oscillator.id == this.id
-				);
-				return this.$store.state.oscillators[index].env.amplitude;
+				return getOscillator(this.id).env.amplitude;
 			},
 			set(value) {
 				this.$store.commit("volume", {
@@ -149,10 +129,7 @@ export default {
 		},
 		volume_attack: {
 			get() {
-				let index = this.$store.state.oscillators.findIndex(
-					oscillator => oscillator.id == this.id
-				);
-				return this.$store.state.oscillators[index].env.attack;
+				return getOscillator(this.id).env.attack;
 			},
 			set(value) {
 				this.$store.commit("volume", {
@@ -164,10 +141,7 @@ export default {
 		},
 		volume_decay: {
 			get() {
-				let index = this.$store.state.oscillators.findIndex(
-					oscillator => oscillator.id == this.id
-				);
-				return this.$store.state.oscillators[index].env.decay;
+				return getOscillator(this.id).env.decay;
 			},
 			set(value) {
 				this.$store.commit("volume", {
@@ -177,71 +151,6 @@ export default {
 				});
 			}
 		}
-
-		/*
-			Lowpass
-		*/
-		// filter_type: {
-		// 	get() {
-		// 		let index = this.$store.state.oscillators.findIndex(
-		// 			oscillator => oscillator.id == this.id
-		// 		);
-		// 		return this.$store.state.oscillators[index].filter.type;
-		// 	},
-		// 	set(value) {
-		// 		this.$store.commit("biquadFilter", {
-		// 			oscillator_id: this.id,
-		// 			property: "type",
-		// 			value: value
-		// 		});
-		// 	}
-		// },
-
-		// filter_cutoff: {
-		// 	get() {
-		// 		let index = this.$store.state.oscillators.findIndex(
-		// 			oscillator => oscillator.id == this.id
-		// 		);
-		// 		return this.$store.state.oscillators[index].filter.cutoff;
-		// 	},
-		// 	set(value) {
-		// 		this.$store.commit("biquadFilter", {
-		// 			property: "cutoff",
-		// 			value: parseInt(value),
-		// 			oscillator_id: this.id
-		// 		});
-		// 	}
-		// },
-		// filter_attack: {
-		// 	get() {
-		// 		let index = this.$store.state.oscillators.findIndex(
-		// 			oscillator => oscillator.id == this.id
-		// 		);
-		// 		return this.$store.state.oscillators[index].filter.attack;
-		// 	},
-		// 	set(value) {
-		// 		this.$store.commit("biquadFilter", {
-		// 			property: "attack",
-		// 			value: parseInt(value),
-		// 			oscillator_id: this.id
-		// 		});
-		// 	}
-		// },
-		// filter_decay: {
-		// 	get() {
-		// 		let index = this.$store.state.oscillators.findIndex(
-		// 			oscillator => oscillator.id == this.id
-		// 		);
-		// 		return this.$store.state.oscillators[index].filter.decay;
-		// 	},
-		// 	set(value) {
-		// 		this.$store.commit("biquadFilter", {
-		// 			property: "decay",
-		// 			value: parseInt(value),
-		// 			oscillator_id: this.id
-		// 		});
-		// 	}
-		// }
 	},
 	methods: {
 		setCurrentOscillator() {

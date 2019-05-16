@@ -2,7 +2,6 @@ import {
 	store
 } from "../store/store";
 import {
-	durationFromPercentage,
 	animatePositionMarker,
 } from "../util/helper";
 import {
@@ -38,10 +37,11 @@ export default class Oscillator {
 		// Setup filter
 		const filters = oscillator.filters;
 
+		// Reset the filter connections so they don't get routed weirdly
 		filters.forEach(filter => {
 			filter.filterNode.disconnect()
 		})
-		console.log('here');
+
 		if (!filters.length) {
 			console.log('no filters')
 			OscNode.connect(GainNode);
@@ -52,17 +52,13 @@ export default class Oscillator {
 				filter.filterNode.type = filter.type;
 				filter.filterNode.Q.value = filter.quality;
 				filter.filterNode.gain.value = 1;
-				// console.log('fil', index, filter.filterNode);
 
 				if (index === 0) {
-					console.log(`connecting OscNode to ${filter.filterNode.type}`)
 					OscNode.connect(filter.filterNode);
 				} else if (index > 0) {
-					console.log(`connecting ${filters[index-1].filterNode.type} to ${filter.filterNode.type}`)
 					filters[index - 1].filterNode.connect(filter.filterNode);
 				}
 			})
-			console.log(`connecting ${filters[filters.length - 1].filterNode.type} to GainNode`)
 			filters[filters.length - 1].filterNode.connect(GainNode);
 			GainNode.connect(store.state.masterGain)
 		}

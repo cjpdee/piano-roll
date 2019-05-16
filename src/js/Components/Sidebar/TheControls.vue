@@ -111,7 +111,7 @@ input[type="number"] {
 
 <script>
 import Player from "../../Objects/Player";
-import { durationFromPercentage } from "../../util/helper";
+import { durationFromPercentage } from "../../util/time";
 
 export default {
 	name: "TheControls",

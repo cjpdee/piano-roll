@@ -257,7 +257,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _util_helper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../util/helper */ "./src/js/util/helper.js");
+/* harmony import */ var _util_time__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../util/time */ "./src/js/util/time.js");
 //
 //
 //
@@ -288,13 +288,6 @@ var xOffset = 0;
     style: function style() {
       return "left: " + this.data.position + "%; width: " + this.data.lengthAsPercentage + "%";
     }
-  },
-  mounted: function mounted() {
-    var _this = this;
-
-    var activeOscillator = this.$store.state.oscillators.find(function (item) {
-      return item.id === _this.$store.state.activeOscillator.id;
-    });
   },
   methods: {
     removeNote: function removeNote(e) {
@@ -384,6 +377,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PitchRow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PitchRow */ "./src/js/Components/Main/PitchRow.vue");
 /* harmony import */ var _util_helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../util/helper */ "./src/js/util/helper.js");
+/* harmony import */ var _util_time__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../util/time */ "./src/js/util/time.js");
 //
 //
 //
@@ -404,6 +398,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
  // Dragging / resizing variables
 
@@ -479,7 +474,7 @@ var xOffset = 0;
     dragEnd: function dragEnd(e) {
       isDragging = false;
       this.$store.commit("updateNotePos", {
-        pos: Object(_util_helper__WEBPACK_IMPORTED_MODULE_1__["percentageFromPixels"])(newDragElPos),
+        pos: Object(_util_time__WEBPACK_IMPORTED_MODULE_2__["percentageFromPixels"])(newDragElPos),
         note_id: dragElement.getAttribute("id")
       });
     },
@@ -489,7 +484,7 @@ var xOffset = 0;
         var rollPosInPage = this.$el.getBoundingClientRect().left;
         var mousePosInPage = e.clientX;
         var mousePosInRoll = mousePosInPage - rollPosInPage;
-        var noteLength = Object(_util_helper__WEBPACK_IMPORTED_MODULE_1__["pixelsFromPercentage"])(Object(_util_helper__WEBPACK_IMPORTED_MODULE_1__["getNote"])(dragElement.getAttribute("id")).lengthAsPercentage);
+        var noteLength = Object(_util_time__WEBPACK_IMPORTED_MODULE_2__["pixelsFromPercentage"])(Object(_util_helper__WEBPACK_IMPORTED_MODULE_1__["getNote"])(dragElement.getAttribute("id")).lengthAsPercentage);
         newDragElPos = mousePosInRoll - dragElMousePos;
         if (newDragElPos < 0) newDragElPos = 0;
         if (newDragElPos > rollWidth - noteLength) newDragElPos = rollWidth - noteLength;
@@ -500,7 +495,7 @@ var xOffset = 0;
     mouseExit: function mouseExit(e) {},
     setDraggingStyle: function setDraggingStyle(xPos, el) {
       var style = el.getAttribute("style");
-      var xPosPercentage = Object(_util_helper__WEBPACK_IMPORTED_MODULE_1__["percentageFromPixels"])(xPos);
+      var xPosPercentage = Object(_util_time__WEBPACK_IMPORTED_MODULE_2__["percentageFromPixels"])(xPos);
       var attributes = style.split(";").filter(function (el) {
         // get rid of the position attribute
         if (el.includes("left")) {
@@ -810,26 +805,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     isOscillatorActive: function isOscillatorActive() {
-      var _this = this;
-
-      // TODO: refactor into a modular function
-      var index = this.$store.state.oscillators.findIndex(function (oscillator) {
-        return oscillator.id == _this.id;
-      });
-      return this.$store.state.oscillators[index] == this.$store.state.activeOscillator;
+      return Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(this.id) == this.$store.state.activeOscillator;
     },
 
     /*
-    	Waveform
+    	Osc Mutations
     */
     waveform: {
       get: function get() {
-        var _this2 = this;
-
-        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
-          return oscillator.id == _this2.id;
-        });
-        return this.$store.state.oscillators[index].waveform;
+        return Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(this.id).waveform;
       },
       set: function set(value) {
         this.$store.commit("setOscillatorWaveform", {
@@ -851,7 +835,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     filters: {
       get: function get() {
-        console.log(Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(this.id).filters);
         return Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(this.id).filters;
       },
       set: function set(value) {
@@ -861,19 +844,10 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
-
-    /*
-    	Volume
-    */
     // TODO: this is long. instead, just update the volume_env object in the store.
     volume_amplitude: {
       get: function get() {
-        var _this3 = this;
-
-        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
-          return oscillator.id == _this3.id;
-        });
-        return this.$store.state.oscillators[index].env.amplitude;
+        return Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(this.id).env.amplitude;
       },
       set: function set(value) {
         this.$store.commit("volume", {
@@ -886,12 +860,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     volume_attack: {
       get: function get() {
-        var _this4 = this;
-
-        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
-          return oscillator.id == _this4.id;
-        });
-        return this.$store.state.oscillators[index].env.attack;
+        return Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(this.id).env.attack;
       },
       set: function set(value) {
         this.$store.commit("volume", {
@@ -903,12 +872,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     volume_decay: {
       get: function get() {
-        var _this5 = this;
-
-        var index = this.$store.state.oscillators.findIndex(function (oscillator) {
-          return oscillator.id == _this5.id;
-        });
-        return this.$store.state.oscillators[index].env.decay;
+        return Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(this.id).env.decay;
       },
       set: function set(value) {
         this.$store.commit("volume", {
@@ -918,70 +882,6 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     }
-    /*
-    	Lowpass
-    */
-    // filter_type: {
-    // 	get() {
-    // 		let index = this.$store.state.oscillators.findIndex(
-    // 			oscillator => oscillator.id == this.id
-    // 		);
-    // 		return this.$store.state.oscillators[index].filter.type;
-    // 	},
-    // 	set(value) {
-    // 		this.$store.commit("biquadFilter", {
-    // 			oscillator_id: this.id,
-    // 			property: "type",
-    // 			value: value
-    // 		});
-    // 	}
-    // },
-    // filter_cutoff: {
-    // 	get() {
-    // 		let index = this.$store.state.oscillators.findIndex(
-    // 			oscillator => oscillator.id == this.id
-    // 		);
-    // 		return this.$store.state.oscillators[index].filter.cutoff;
-    // 	},
-    // 	set(value) {
-    // 		this.$store.commit("biquadFilter", {
-    // 			property: "cutoff",
-    // 			value: parseInt(value),
-    // 			oscillator_id: this.id
-    // 		});
-    // 	}
-    // },
-    // filter_attack: {
-    // 	get() {
-    // 		let index = this.$store.state.oscillators.findIndex(
-    // 			oscillator => oscillator.id == this.id
-    // 		);
-    // 		return this.$store.state.oscillators[index].filter.attack;
-    // 	},
-    // 	set(value) {
-    // 		this.$store.commit("biquadFilter", {
-    // 			property: "attack",
-    // 			value: parseInt(value),
-    // 			oscillator_id: this.id
-    // 		});
-    // 	}
-    // },
-    // filter_decay: {
-    // 	get() {
-    // 		let index = this.$store.state.oscillators.findIndex(
-    // 			oscillator => oscillator.id == this.id
-    // 		);
-    // 		return this.$store.state.oscillators[index].filter.decay;
-    // 	},
-    // 	set(value) {
-    // 		this.$store.commit("biquadFilter", {
-    // 			property: "decay",
-    // 			value: parseInt(value),
-    // 			oscillator_id: this.id
-    // 		});
-    // 	}
-    // }
-
   },
   methods: {
     setCurrentOscillator: function setCurrentOscillator() {
@@ -1009,7 +909,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Objects_Player__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../Objects/Player */ "./src/js/Objects/Player.js");
-/* harmony import */ var _util_helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../util/helper */ "./src/js/util/helper.js");
+/* harmony import */ var _util_time__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../util/time */ "./src/js/util/time.js");
 //
 //
 //
@@ -16636,11 +16536,11 @@ function () {
       var GainNode = oscillator.gainNode;
       OscNode.type = oscillator.waveform; // Setup filter
 
-      var filters = oscillator.filters;
+      var filters = oscillator.filters; // Reset the filter connections so they don't get routed weirdly
+
       filters.forEach(function (filter) {
         filter.filterNode.disconnect();
       });
-      console.log('here');
 
       if (!filters.length) {
         console.log('no filters');
@@ -16651,17 +16551,14 @@ function () {
           filter.filterNode.frequency.value = filter.cutoff;
           filter.filterNode.type = filter.type;
           filter.filterNode.Q.value = filter.quality;
-          filter.filterNode.gain.value = 1; // console.log('fil', index, filter.filterNode);
+          filter.filterNode.gain.value = 1;
 
           if (index === 0) {
-            console.log("connecting OscNode to ".concat(filter.filterNode.type));
             OscNode.connect(filter.filterNode);
           } else if (index > 0) {
-            console.log("connecting ".concat(filters[index - 1].filterNode.type, " to ").concat(filter.filterNode.type));
             filters[index - 1].filterNode.connect(filter.filterNode);
           }
         });
-        console.log("connecting ".concat(filters[filters.length - 1].filterNode.type, " to GainNode"));
         filters[filters.length - 1].filterNode.connect(GainNode);
         GainNode.connect(_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain);
       }
@@ -16674,18 +16571,7 @@ function () {
     key: "playNote",
     value: function playNote(oscillator, note, startTime) {
       // TODO: obsolete, ensure this isn't used
-      var frequency = Oscillator.noteFrequency(note); // // create & setup oscillatorNode to play the note
-      // oscillator.oscillatorNode = store.state.audioContext.createOscillator();
-      // oscillator.oscillatorNode.type = oscillator.waveform;
-      // // Setup filter
-      // oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
-      // oscillator.oscillatorNode.connect(oscillator.filter.filterNode);
-      // // Connect filter to audio output
-      // oscillator.filter.filterNode.connect(store.state.masterGain);
-      // store.state.masterGain.connect(store.state.audioContext.destination);
-      // // Start the oscillator
-      // oscillator.oscillatorNode.frequency.setValueAtTime(frequency, store.state.audioContext.currentTime);
-
+      var frequency = Oscillator.noteFrequency(note);
       this.initPlaybackChain(oscillator, frequency);
       oscillator.oscillatorNode.start(startTime);
     } // Used for notes playback
@@ -16694,8 +16580,7 @@ function () {
     key: "playForDuration",
     value: function playForDuration(oscillator, note, startTime, duration) {
       var frequency = Oscillator.noteFrequency(note);
-      this.initPlaybackChain(oscillator, frequency); // doThing(oscillator, frequency);
-
+      this.initPlaybackChain(oscillator, frequency);
       oscillator.oscillatorNode.start(startTime); // TODO: change how the position marker works
       // resetPositionMarker() needs to exist also
 
@@ -16720,17 +16605,8 @@ function () {
       decay: 0,
       release: 0
     };
-    this.waveform = "sine"; // this.filter = {
-    // 	type: "lowpass",
-    // 	cutoff: 2000,
-    // 	attack: 0,
-    // 	decay: 0,
-    // 	resonance: 0,
-    // 	filterNode: store.state.audioContext.createBiquadFilter()
-    // };
-
-    this.notes = []; // this.filter.filterNode.type = this.filter.type;
-
+    this.waveform = "sine";
+    this.notes = [];
     this.filters = [];
     this.gainNode = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createGain();
   }
@@ -16762,6 +16638,7 @@ var Filter = function Filter() {
  * 
  * biquad filter
  * convolver (reverb)
+ * delay
  * dynamicsCompressor
  * WaveShaper
  * 
@@ -16780,7 +16657,7 @@ var Filter = function Filter() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Oscillator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Oscillator */ "./src/js/Objects/Oscillator.js");
 /* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../store/store */ "./src/js/store/store.js");
-/* harmony import */ var _util_helper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/helper */ "./src/js/util/helper.js");
+/* harmony import */ var _util_time__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/time */ "./src/js/util/time.js");
 // a class with all the play + timing methods inside.
 // neccessary? I'm not sure
 
@@ -16828,9 +16705,9 @@ __webpack_require__.r(__webpack_exports__);
     var notes = this.createQueue();
     var scheduleAheadTime = 0.1;
     var currentNote = 0;
-    var nextNoteStartTime = _store_store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + Object(_util_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote].position);
+    var nextNoteStartTime = _store_store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + Object(_util_time__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote].position);
     var startTime = _store_store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime;
-    var finishTime = _store_store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + Object(_util_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(100);
+    var finishTime = _store_store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + Object(_util_time__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(100);
 
     var _this = this;
 
@@ -16853,7 +16730,7 @@ __webpack_require__.r(__webpack_exports__);
         var oscillator = _store_store__WEBPACK_IMPORTED_MODULE_1__["store"].state.oscillators.find(function (item) {
           return item.id === note.oscId;
         });
-        _Oscillator__WEBPACK_IMPORTED_MODULE_0__["default"].playForDuration(oscillator, note.pitch, nextNoteStartTime, Object(_util_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(note.lengthAsPercentage));
+        _Oscillator__WEBPACK_IMPORTED_MODULE_0__["default"].playForDuration(oscillator, note.pitch, nextNoteStartTime, Object(_util_time__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(note.lengthAsPercentage));
       } else {
         // TODO: this isn't getting used anymore
         _this.playing = false;
@@ -16863,7 +16740,7 @@ __webpack_require__.r(__webpack_exports__);
 
     function nextNote() {
       if (notes[currentNote]) {
-        notes[currentNote + 1] ? nextNoteStartTime = startTime + Object(_util_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote + 1].position) : function () {
+        notes[currentNote + 1] ? nextNoteStartTime = startTime + Object(_util_time__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote + 1].position) : function () {
           nextNoteStartTime = 0;
           currentNote = 0;
         }; // add the distance between the (next note - start time)
@@ -16873,7 +16750,7 @@ __webpack_require__.r(__webpack_exports__);
     }
 
     scheduler();
-    var time = Object(_util_helper__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(100);
+    var time = Object(_util_time__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(100);
     var posMarker = document.querySelector("[data-js=position-marker]");
     posMarker.setAttribute("style", "");
     posMarker.setAttribute("style", "transition: left linear ".concat(time, "s; left: 99.9%;"));
@@ -17220,23 +17097,20 @@ function generateNoteId() {
 /*!*******************************!*\
   !*** ./src/js/util/helper.js ***!
   \*******************************/
-/*! exports provided: getKeysArray, secondsPerBeat, loopTimeframe, durationFromPercentage, percentageFromPixels, pixelsFromPercentage, animatePositionMarker, resetPositionMarker, getOscillator, getNote, getFilter */
+/*! exports provided: getKeysArray, animatePositionMarker, resetPositionMarker, getOscillator, getNote, getFilter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getKeysArray", function() { return getKeysArray; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "secondsPerBeat", function() { return secondsPerBeat; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loopTimeframe", function() { return loopTimeframe; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "durationFromPercentage", function() { return durationFromPercentage; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "percentageFromPixels", function() { return percentageFromPixels; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pixelsFromPercentage", function() { return pixelsFromPercentage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "animatePositionMarker", function() { return animatePositionMarker; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resetPositionMarker", function() { return resetPositionMarker; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getOscillator", function() { return getOscillator; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNote", function() { return getNote; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFilter", function() { return getFilter; });
 /* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store/store */ "./src/js/store/store.js");
+/* harmony import */ var _time__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./time */ "./src/js/util/time.js");
+
 
 /**
  * TODO: this should be split into several parts
@@ -17321,45 +17195,8 @@ function getKeysArray() {
 
   return notesInRoll.reverse();
 }
-/**
- * TIMING FUNCTIONS
- */
-// These two aren't 
-
-function getSecondsPerBeat() {
-  var bpm = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.bpm;
-  return 60 / bpm;
-}
-
-function getLoopTimeframe() {
-  var numBars = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.numBars;
-  var secondsPerBeat = getSecondsPerBeat();
-  var oneBar = secondsPerBeat * 4; // 4 can be changed if we want to support 3/4 or other time signatures
-
-  return oneBar * numBars;
-}
-
-function secondsPerBeat() {
-  getSecondsPerBeat();
-}
-function loopTimeframe() {
-  getLoopTimeframe();
-} // get duration from a percentage of the loop
-
-function durationFromPercentage(lengthAsPercentage) {
-  var loopTime = getLoopTimeframe();
-  return loopTime / 100 * lengthAsPercentage;
-}
-function percentageFromPixels(pixels) {
-  var rollWidth = document.querySelector("[data-js=piano-roll]").getBoundingClientRect().width;
-  return pixels / rollWidth * 100;
-}
-function pixelsFromPercentage(percentage) {
-  var rollWidth = document.querySelector("[data-js=piano-roll]").getBoundingClientRect().width;
-  return percentage / 100 * rollWidth;
-}
 function animatePositionMarker() {
-  var time = durationFromPercentage(100);
+  var time = Object(_time__WEBPACK_IMPORTED_MODULE_1__["durationFromPercentage"])(100);
   var posMarker = document.querySelector("[data-js=position-marker]");
   posMarker.setAttribute("style", "");
   posMarker.setAttribute("style", "transition: left linear ".concat(time, "s; left: calc(100% - (5/18*1em));"));
@@ -17388,6 +17225,63 @@ function getFilter(id) {
     });
   });
   return output || null;
+}
+
+/***/ }),
+
+/***/ "./src/js/util/time.js":
+/*!*****************************!*\
+  !*** ./src/js/util/time.js ***!
+  \*****************************/
+/*! exports provided: secondsPerBeat, loopTimeframe, durationFromPercentage, percentageFromPixels, pixelsFromPercentage */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "secondsPerBeat", function() { return secondsPerBeat; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loopTimeframe", function() { return loopTimeframe; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "durationFromPercentage", function() { return durationFromPercentage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "percentageFromPixels", function() { return percentageFromPixels; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pixelsFromPercentage", function() { return pixelsFromPercentage; });
+/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store/store */ "./src/js/store/store.js");
+
+/**
+ * TIMING FUNCTIONS
+ */
+// These two aren't 
+
+function getSecondsPerBeat() {
+  var bpm = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.bpm;
+  return 60 / bpm;
+}
+
+function getLoopTimeframe() {
+  var numBars = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.project.numBars;
+  var secondsPerBeat = getSecondsPerBeat();
+  var oneBar = secondsPerBeat * 4; // 4 can be changed if we want to support 3/4 or other time signatures
+
+  return oneBar * numBars;
+}
+
+function secondsPerBeat() {
+  getSecondsPerBeat();
+} // TODO: currently the exported function is unused
+
+function loopTimeframe() {
+  getLoopTimeframe();
+} // get duration from a percentage of the loop
+
+function durationFromPercentage(lengthAsPercentage) {
+  var loopTime = getLoopTimeframe();
+  return loopTime / 100 * lengthAsPercentage;
+}
+function percentageFromPixels(pixels) {
+  var rollWidth = document.querySelector("[data-js=piano-roll]").getBoundingClientRect().width;
+  return pixels / rollWidth * 100;
+}
+function pixelsFromPercentage(percentage) {
+  var rollWidth = document.querySelector("[data-js=piano-roll]").getBoundingClientRect().width;
+  return percentage / 100 * rollWidth;
 }
 
 /***/ }),
