@@ -206,7 +206,6 @@ export default {
 	methods: {
 		play() {
 			Player.play();
-			this.animatePositionMarker();
 		},
 
 		stop() {
