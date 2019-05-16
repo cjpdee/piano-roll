@@ -75,22 +75,6 @@ export default class Oscillator {
 
 	static playNote(oscillator, note, startTime) { // TODO: obsolete, ensure this isn't used
 		const frequency = Oscillator.noteFrequency(note);
-
-		// // create & setup oscillatorNode to play the note
-		// oscillator.oscillatorNode = store.state.audioContext.createOscillator();
-		// oscillator.oscillatorNode.type = oscillator.waveform;
-
-		// // Setup filter
-		// oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
-		// oscillator.oscillatorNode.connect(oscillator.filter.filterNode);
-
-		// // Connect filter to audio output
-		// oscillator.filter.filterNode.connect(store.state.masterGain);
-
-		// store.state.masterGain.connect(store.state.audioContext.destination);
-
-		// // Start the oscillator
-		// oscillator.oscillatorNode.frequency.setValueAtTime(frequency, store.state.audioContext.currentTime);
 		this.initPlaybackChain(oscillator, frequency);
 		oscillator.oscillatorNode.start(startTime);
 	}
@@ -98,10 +82,7 @@ export default class Oscillator {
 	// Used for notes playback
 	static playForDuration(oscillator, note, startTime, duration) {
 		const frequency = Oscillator.noteFrequency(note);
-
 		this.initPlaybackChain(oscillator, frequency);
-		// doThing(oscillator, frequency);
-
 		oscillator.oscillatorNode.start(startTime);
 
 		// TODO: change how the position marker works
@@ -125,16 +106,7 @@ export default class Oscillator {
 			release: 0
 		};
 		this.waveform = "sine";
-		// this.filter = {
-		// 	type: "lowpass",
-		// 	cutoff: 2000,
-		// 	attack: 0,
-		// 	decay: 0,
-		// 	resonance: 0,
-		// 	filterNode: store.state.audioContext.createBiquadFilter()
-		// };
 		this.notes = [];
-		// this.filter.filterNode.type = this.filter.type;
 		this.filters = [];
 		this.gainNode = store.state.audioContext.createGain();
 	}
@@ -163,6 +135,7 @@ export class Filter {
  * 
  * biquad filter
  * convolver (reverb)
+ * delay
  * dynamicsCompressor
  * WaveShaper
  * 
