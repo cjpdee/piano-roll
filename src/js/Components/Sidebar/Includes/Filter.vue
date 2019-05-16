@@ -2,7 +2,7 @@
 	<div>
 		<button @click="deleteThisFilter()">X</button>
 		<div class="oscillator__filter-wrap">
-			Filters &amp; Shapers
+			Filter
 			<br>
 			<label>
 				<select v-model="filterType">
@@ -21,15 +21,6 @@
 		</div>
 		<!-- Envelope settings -->
 		<div class="oscillator__property-wrap" v-if="modulationType=='env'">
-			<label class="oscillator__property-label" for="filter_amplitude">Amt</label>
-			<input
-				v-model="filterAmplitude"
-				class="oscillator__property"
-				type="range"
-				id="filter_amplitude"
-				min="0"
-				max="4000"
-			>
 			<label class="oscillator__property-label" for="filter_cutoff">Cut</label>
 			<input
 				v-model="filterCutoff"
@@ -39,19 +30,15 @@
 				min="0"
 				max="4000"
 			>
-
-			<!-- <input
-				type="checkbox"
-				class="oscillator__property__dropdown-toggle"
-				name="volume_properties"
-				id="volume_properties_toggle"
+			<label class="oscillator__property-label" for="filter_quality">Qul</label>
+			<input
+				v-model="filterQuality"
+				class="oscillator__property"
+				type="range"
+				id="filter_quality"
+				min="0"
+				max="4000"
 			>
-			<div class="oscillator__property__dropdown">
-				<label class="oscillator__property-label" for="filter_attack">Att</label>
-				<input class="oscillator__property" type="range" id="filter_attack">
-				<label class="oscillator__property-label" for="filter_decay">Dec</label>
-				<input class="oscillator__property" type="range" id="filter_decay">
-			</div>-->
 		</div>
 		<!-- LFO settings -->
 		<div class="oscillator__property-wrap" v-else>
@@ -114,17 +101,6 @@ export default {
 				});
 			}
 		},
-		filterAmplitude: {
-			get() {
-				return this.getThisFilter().env.amplitude;
-			},
-			set(value) {
-				this.$store.commit("setFilterAmplitude", {
-					filterId: this.filterId,
-					amount: value
-				});
-			}
-		},
 		filterCutoff: {
 			get() {
 				return this.getThisFilter().cutoff;
@@ -132,7 +108,18 @@ export default {
 			set(value) {
 				this.$store.commit("setFilterCutoff", {
 					filterId: this.filterId,
-					cutoff: value
+					cutoff: parseFloat(value)
+				});
+			}
+		},
+		filterQuality: {
+			get() {
+				return this.getThisFilter().quality;
+			},
+			set(value) {
+				this.$store.commit("setFilterQuality", {
+					filterId: this.filterId,
+					quality: parseFloat(value)
 				});
 			}
 		}

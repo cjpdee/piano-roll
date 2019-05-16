@@ -33,22 +33,8 @@ const store = new Vuex.Store({
 
 		data: {
 			notes: ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"],
-			keys: { // TODO: unnecessary
-				C: 81,
-				Csh: 50,
-				D: 87,
-				Dsh: 51,
-				E: 69,
-				F: 82,
-				Fsh: 53,
-				G: 84,
-				Gsh: 54,
-				A: 89,
-				Ash: 55,
-				B: 85
-			},
 			waveforms: ["sine", "square", "sawtooth", "triangle"],
-			filters: ["lowpass", "highpass", "bandpass"]
+			filters: ["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass"]
 		},
 		audioContext: null,
 		masterGain: null
@@ -166,6 +152,13 @@ const store = new Vuex.Store({
 
 		setFilterModType(state, payload) {
 			getFilter(payload.filterId).modulationType = payload.modType
+		},
+
+		setFilterCutoff(state, payload) {
+			getFilter(payload.filterId).cutoff = payload.cutoff
+		},
+		setFilterQuality(state, payload) {
+			getFilter(payload.filterId).quality = payload.quality
 		},
 
 		// TODO: should have a function for applying any kind of envelope

@@ -139,6 +139,8 @@ export function animatePositionMarker() {
 		`transition: left linear ${time}s; left: calc(100% - (5/18*1em));`
 	);
 }
+// TODO: implement this function
+export function resetPositionMarker() {}
 
 export function getOscillator(id) {
 	const oscIndex = store.state.oscillators.findIndex(oscillator => oscillator.id == id);

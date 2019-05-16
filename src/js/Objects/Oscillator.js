@@ -27,51 +27,81 @@ export default class Oscillator {
 		// So maybe this 440 is controlled from the store
 	}
 
-	static playNote(oscillator, note, startTime) { // TODO: obsolete, ensure this isn't used
-		const frequency = Oscillator.noteFrequency(note);
-
-		// create & setup oscillatorNode to play the note
+	static initPlaybackChain(oscillator, frequency) {
 		oscillator.oscillatorNode = store.state.audioContext.createOscillator();
-		oscillator.oscillatorNode.type = oscillator.waveform;
+		// Create & setup oscillatorNode to play the note
+		const OscNode = oscillator.oscillatorNode;
+		const GainNode = oscillator.gainNode;
+		OscNode.type = oscillator.waveform;
+
 
 		// Setup filter
-		oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
-		oscillator.oscillatorNode.connect(oscillator.filter.filterNode);
+		const filters = oscillator.filters;
 
-		// Connect filter to audio output
-		oscillator.filter.filterNode.connect(store.state.masterGain);
+		filters.forEach(filter => {
+			filter.filterNode.disconnect()
+		})
+		console.log('here');
+		if (!filters.length) {
+			console.log('no filters')
+			OscNode.connect(GainNode);
+			GainNode.connect(store.state.masterGain);
+		} else {
+			filters.forEach((filter, index) => {
+				filter.filterNode.frequency.value = filter.cutoff;
+				filter.filterNode.type = filter.type;
+				filter.filterNode.Q.value = filter.quality;
+				filter.filterNode.gain.value = 1;
+				// console.log('fil', index, filter.filterNode);
+
+				if (index === 0) {
+					console.log(`connecting OscNode to ${filter.filterNode.type}`)
+					OscNode.connect(filter.filterNode);
+				} else if (index > 0) {
+					console.log(`connecting ${filters[index-1].filterNode.type} to ${filter.filterNode.type}`)
+					filters[index - 1].filterNode.connect(filter.filterNode);
+				}
+			})
+			console.log(`connecting ${filters[filters.length - 1].filterNode.type} to GainNode`)
+			filters[filters.length - 1].filterNode.connect(GainNode);
+			GainNode.connect(store.state.masterGain)
+		}
 
 		store.state.masterGain.connect(store.state.audioContext.destination);
 
 		// Start the oscillator
 		oscillator.oscillatorNode.frequency.setValueAtTime(frequency, store.state.audioContext.currentTime);
+	}
+
+	static playNote(oscillator, note, startTime) { // TODO: obsolete, ensure this isn't used
+		const frequency = Oscillator.noteFrequency(note);
+
+		// // create & setup oscillatorNode to play the note
+		// oscillator.oscillatorNode = store.state.audioContext.createOscillator();
+		// oscillator.oscillatorNode.type = oscillator.waveform;
+
+		// // Setup filter
+		// oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
+		// oscillator.oscillatorNode.connect(oscillator.filter.filterNode);
+
+		// // Connect filter to audio output
+		// oscillator.filter.filterNode.connect(store.state.masterGain);
+
+		// store.state.masterGain.connect(store.state.audioContext.destination);
+
+		// // Start the oscillator
+		// oscillator.oscillatorNode.frequency.setValueAtTime(frequency, store.state.audioContext.currentTime);
+		this.initPlaybackChain(oscillator, frequency);
 		oscillator.oscillatorNode.start(startTime);
 	}
 
 	// Used for notes playback
 	static playForDuration(oscillator, note, startTime, duration) {
-		let frequency = Oscillator.noteFrequency(note);
+		const frequency = Oscillator.noteFrequency(note);
 
-		// Create & setup oscillatorNode to play the note
-		oscillator.oscillatorNode = store.state.audioContext.createOscillator();
-		oscillator.oscillatorNode.type = oscillator.waveform;
+		this.initPlaybackChain(oscillator, frequency);
+		// doThing(oscillator, frequency);
 
-		// Setup filter
-		oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
-
-		// Chain it all together
-		oscillator.oscillatorNode.connect(oscillator.gainNode);
-		oscillator.gainNode.connect(oscillator.filter.filterNode);
-
-		// Connect filter to audio output
-		// TODO: function which loops through set filters goes here
-		// Make it reusable
-		oscillator.filter.filterNode.connect(store.state.masterGain);
-
-		store.state.masterGain.connect(store.state.audioContext.destination);
-
-		// Start the oscillator
-		oscillator.oscillatorNode.frequency.setValueAtTime(frequency, store.state.audioContext.currentTime);
 		oscillator.oscillatorNode.start(startTime);
 
 		// TODO: change how the position marker works
@@ -95,16 +125,16 @@ export default class Oscillator {
 			release: 0
 		};
 		this.waveform = "sine";
-		this.filter = {
-			type: "lowpass",
-			cutoff: 2000,
-			attack: 0,
-			decay: 0,
-			resonance: 0,
-			filterNode: store.state.audioContext.createBiquadFilter()
-		};
+		// this.filter = {
+		// 	type: "lowpass",
+		// 	cutoff: 2000,
+		// 	attack: 0,
+		// 	decay: 0,
+		// 	resonance: 0,
+		// 	filterNode: store.state.audioContext.createBiquadFilter()
+		// };
 		this.notes = [];
-		this.filter.filterNode.type = this.filter.type;
+		// this.filter.filterNode.type = this.filter.type;
 		this.filters = [];
 		this.gainNode = store.state.audioContext.createGain();
 	}
@@ -123,6 +153,7 @@ export class Filter {
 		};
 		this.type = 'lowpass';
 		this.cutoff = 2000;
+		this.quality = 0;
 		this.filterNode = store.state.audioContext.createBiquadFilter();
 	}
 }

@@ -647,19 +647,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -698,17 +685,6 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
-    filterAmplitude: {
-      get: function get() {
-        return this.getThisFilter().env.amplitude;
-      },
-      set: function set(value) {
-        this.$store.commit("setFilterAmplitude", {
-          filterId: this.filterId,
-          amount: value
-        });
-      }
-    },
     filterCutoff: {
       get: function get() {
         return this.getThisFilter().cutoff;
@@ -716,7 +692,18 @@ __webpack_require__.r(__webpack_exports__);
       set: function set(value) {
         this.$store.commit("setFilterCutoff", {
           filterId: this.filterId,
-          cutoff: value
+          cutoff: parseFloat(value)
+        });
+      }
+    },
+    filterQuality: {
+      get: function get() {
+        return this.getThisFilter().quality;
+      },
+      set: function set(value) {
+        this.$store.commit("setFilterQuality", {
+          filterId: this.filterId,
+          quality: parseFloat(value)
         });
       }
     }
@@ -1229,7 +1216,6 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     play: function play() {
       _Objects_Player__WEBPACK_IMPORTED_MODULE_0__["default"].play();
-      this.animatePositionMarker();
     },
     stop: function stop() {
       _Objects_Player__WEBPACK_IMPORTED_MODULE_0__["default"].stop();
@@ -2728,7 +2714,7 @@ var render = function() {
     ),
     _vm._v(" "),
     _c("div", { staticClass: "oscillator__filter-wrap" }, [
-      _vm._v("\n\t\tFilters & Shapers\n\t\t"),
+      _vm._v("\n\t\tFilter\n\t\t"),
       _c("br"),
       _vm._v(" "),
       _c("label", [
@@ -2809,39 +2795,6 @@ var render = function() {
             "label",
             {
               staticClass: "oscillator__property-label",
-              attrs: { for: "filter_amplitude" }
-            },
-            [_vm._v("Amt")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.filterAmplitude,
-                expression: "filterAmplitude"
-              }
-            ],
-            staticClass: "oscillator__property",
-            attrs: {
-              type: "range",
-              id: "filter_amplitude",
-              min: "0",
-              max: "4000"
-            },
-            domProps: { value: _vm.filterAmplitude },
-            on: {
-              __r: function($event) {
-                _vm.filterAmplitude = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "oscillator__property-label",
               attrs: { for: "filter_cutoff" }
             },
             [_vm._v("Cut")]
@@ -2867,6 +2820,39 @@ var render = function() {
             on: {
               __r: function($event) {
                 _vm.filterCutoff = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "label",
+            {
+              staticClass: "oscillator__property-label",
+              attrs: { for: "filter_quality" }
+            },
+            [_vm._v("Qul")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.filterQuality,
+                expression: "filterQuality"
+              }
+            ],
+            staticClass: "oscillator__property",
+            attrs: {
+              type: "range",
+              id: "filter_quality",
+              min: "0",
+              max: "4000"
+            },
+            domProps: { value: _vm.filterQuality },
+            on: {
+              __r: function($event) {
+                _vm.filterQuality = $event.target.value
               }
             }
           })
@@ -16642,43 +16628,74 @@ function () {
       // So maybe this 440 is controlled from the store
     }
   }, {
-    key: "playNote",
-    value: function playNote(oscillator, note, startTime) {
-      // TODO: obsolete, ensure this isn't used
-      var frequency = Oscillator.noteFrequency(note); // create & setup oscillatorNode to play the note
+    key: "initPlaybackChain",
+    value: function initPlaybackChain(oscillator, frequency) {
+      oscillator.oscillatorNode = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createOscillator(); // Create & setup oscillatorNode to play the note
 
-      oscillator.oscillatorNode = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createOscillator();
-      oscillator.oscillatorNode.type = oscillator.waveform; // Setup filter
+      var OscNode = oscillator.oscillatorNode;
+      var GainNode = oscillator.gainNode;
+      OscNode.type = oscillator.waveform; // Setup filter
 
-      oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
-      oscillator.oscillatorNode.connect(oscillator.filter.filterNode); // Connect filter to audio output
+      var filters = oscillator.filters;
+      filters.forEach(function (filter) {
+        filter.filterNode.disconnect();
+      });
+      console.log('here');
 
-      oscillator.filter.filterNode.connect(_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain);
+      if (!filters.length) {
+        console.log('no filters');
+        OscNode.connect(GainNode);
+        GainNode.connect(_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain);
+      } else {
+        filters.forEach(function (filter, index) {
+          filter.filterNode.frequency.value = filter.cutoff;
+          filter.filterNode.type = filter.type;
+          filter.filterNode.Q.value = filter.quality;
+          filter.filterNode.gain.value = 1; // console.log('fil', index, filter.filterNode);
+
+          if (index === 0) {
+            console.log("connecting OscNode to ".concat(filter.filterNode.type));
+            OscNode.connect(filter.filterNode);
+          } else if (index > 0) {
+            console.log("connecting ".concat(filters[index - 1].filterNode.type, " to ").concat(filter.filterNode.type));
+            filters[index - 1].filterNode.connect(filter.filterNode);
+          }
+        });
+        console.log("connecting ".concat(filters[filters.length - 1].filterNode.type, " to GainNode"));
+        filters[filters.length - 1].filterNode.connect(GainNode);
+        GainNode.connect(_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain);
+      }
+
       _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain.connect(_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.destination); // Start the oscillator
 
       oscillator.oscillatorNode.frequency.setValueAtTime(frequency, _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
+    }
+  }, {
+    key: "playNote",
+    value: function playNote(oscillator, note, startTime) {
+      // TODO: obsolete, ensure this isn't used
+      var frequency = Oscillator.noteFrequency(note); // // create & setup oscillatorNode to play the note
+      // oscillator.oscillatorNode = store.state.audioContext.createOscillator();
+      // oscillator.oscillatorNode.type = oscillator.waveform;
+      // // Setup filter
+      // oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff;
+      // oscillator.oscillatorNode.connect(oscillator.filter.filterNode);
+      // // Connect filter to audio output
+      // oscillator.filter.filterNode.connect(store.state.masterGain);
+      // store.state.masterGain.connect(store.state.audioContext.destination);
+      // // Start the oscillator
+      // oscillator.oscillatorNode.frequency.setValueAtTime(frequency, store.state.audioContext.currentTime);
+
+      this.initPlaybackChain(oscillator, frequency);
       oscillator.oscillatorNode.start(startTime);
     } // Used for notes playback
 
   }, {
     key: "playForDuration",
     value: function playForDuration(oscillator, note, startTime, duration) {
-      var frequency = Oscillator.noteFrequency(note); // Create & setup oscillatorNode to play the note
+      var frequency = Oscillator.noteFrequency(note);
+      this.initPlaybackChain(oscillator, frequency); // doThing(oscillator, frequency);
 
-      oscillator.oscillatorNode = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createOscillator();
-      oscillator.oscillatorNode.type = oscillator.waveform; // Setup filter
-
-      oscillator.filter.filterNode.frequency.value = oscillator.filter.cutoff; // Chain it all together
-
-      oscillator.oscillatorNode.connect(oscillator.gainNode);
-      oscillator.gainNode.connect(oscillator.filter.filterNode); // Connect filter to audio output
-      // TODO: function which loops through set filters goes here
-      // Make it reusable
-
-      oscillator.filter.filterNode.connect(_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain);
-      _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.masterGain.connect(_store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.destination); // Start the oscillator
-
-      oscillator.oscillatorNode.frequency.setValueAtTime(frequency, _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.currentTime);
       oscillator.oscillatorNode.start(startTime); // TODO: change how the position marker works
       // resetPositionMarker() needs to exist also
 
@@ -16703,17 +16720,17 @@ function () {
       decay: 0,
       release: 0
     };
-    this.waveform = "sine";
-    this.filter = {
-      type: "lowpass",
-      cutoff: 2000,
-      attack: 0,
-      decay: 0,
-      resonance: 0,
-      filterNode: _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createBiquadFilter()
-    };
-    this.notes = [];
-    this.filter.filterNode.type = this.filter.type;
+    this.waveform = "sine"; // this.filter = {
+    // 	type: "lowpass",
+    // 	cutoff: 2000,
+    // 	attack: 0,
+    // 	decay: 0,
+    // 	resonance: 0,
+    // 	filterNode: store.state.audioContext.createBiquadFilter()
+    // };
+
+    this.notes = []; // this.filter.filterNode.type = this.filter.type;
+
     this.filters = [];
     this.gainNode = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createGain();
   }
@@ -16737,6 +16754,7 @@ var Filter = function Filter() {
   };
   this.type = 'lowpass';
   this.cutoff = 2000;
+  this.quality = 0;
   this.filterNode = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createBiquadFilter();
 };
 /**
@@ -16940,23 +16958,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     keypressActive: false,
     data: {
       notes: ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"],
-      keys: {
-        // TODO: unnecessary
-        C: 81,
-        Csh: 50,
-        D: 87,
-        Dsh: 51,
-        E: 69,
-        F: 82,
-        Fsh: 53,
-        G: 84,
-        Gsh: 54,
-        A: 89,
-        Ash: 55,
-        B: 85
-      },
       waveforms: ["sine", "square", "sawtooth", "triangle"],
-      filters: ["lowpass", "highpass", "bandpass"]
+      filters: ["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass"]
     },
     audioContext: null,
     masterGain: null
@@ -17059,6 +17062,12 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     },
     setFilterModType: function setFilterModType(state, payload) {
       Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getFilter"])(payload.filterId).modulationType = payload.modType;
+    },
+    setFilterCutoff: function setFilterCutoff(state, payload) {
+      Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getFilter"])(payload.filterId).cutoff = payload.cutoff;
+    },
+    setFilterQuality: function setFilterQuality(state, payload) {
+      Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getFilter"])(payload.filterId).quality = payload.quality;
     },
     // TODO: should have a function for applying any kind of envelope
     volume: function volume(state, payload) {
@@ -17211,7 +17220,7 @@ function generateNoteId() {
 /*!*******************************!*\
   !*** ./src/js/util/helper.js ***!
   \*******************************/
-/*! exports provided: getKeysArray, secondsPerBeat, loopTimeframe, durationFromPercentage, percentageFromPixels, pixelsFromPercentage, animatePositionMarker, getOscillator, getNote, getFilter */
+/*! exports provided: getKeysArray, secondsPerBeat, loopTimeframe, durationFromPercentage, percentageFromPixels, pixelsFromPercentage, animatePositionMarker, resetPositionMarker, getOscillator, getNote, getFilter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17223,6 +17232,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "percentageFromPixels", function() { return percentageFromPixels; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pixelsFromPercentage", function() { return pixelsFromPercentage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "animatePositionMarker", function() { return animatePositionMarker; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resetPositionMarker", function() { return resetPositionMarker; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getOscillator", function() { return getOscillator; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNote", function() { return getNote; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFilter", function() { return getFilter; });
@@ -17353,7 +17363,9 @@ function animatePositionMarker() {
   var posMarker = document.querySelector("[data-js=position-marker]");
   posMarker.setAttribute("style", "");
   posMarker.setAttribute("style", "transition: left linear ".concat(time, "s; left: calc(100% - (5/18*1em));"));
-}
+} // TODO: implement this function
+
+function resetPositionMarker() {}
 function getOscillator(id) {
   var oscIndex = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.oscillators.findIndex(function (oscillator) {
     return oscillator.id == id;
