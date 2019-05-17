@@ -5,14 +5,14 @@ const projectMutations = {
 			General / Misc
 		*/
 
-		createAudioContext(state) {
+		createAudioContext(state, mut) {
 			let audioCtx;
 			audioCtx = window.AudioContext || window.webkitAudioContext;
-			state.audioContext = new audioCtx;
+			this.state.audioContext = new audioCtx;
 
 			// Create the master volume control
-			state.masterGain = state.audioContext.createGain();
-			state.masterGain.gain.value = 0.6;
+			this.state.masterGain = this.state.audioContext.createGain();
+			this.state.masterGain.gain.value = 0.6;
 		},
 
 		setMouseActiveState(state, payload) {
@@ -23,7 +23,7 @@ const projectMutations = {
 			Project Mutations - needs organising
 		*/
 
-		setName(name) {
+		setName(name) { // TODO: not used yet
 			this.state.project.name = name;
 		},
 		setBPM(state, payload) {

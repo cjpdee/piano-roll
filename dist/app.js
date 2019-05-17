@@ -16700,13 +16700,16 @@ __webpack_require__.r(__webpack_exports__);
   timeout: null,
   playing: false,
   play: function play() {
-    this.playing = true;
     var notes = this.createQueue();
+
+    if (!notes.length > 0) {
+      return;
+    } else this.playing = true;
+
     var scheduleAheadTime = 0.1;
     var currentNote = 0;
     var nextNoteStartTime = _store_store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + Object(_util_time__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote].position);
     var startTime = _store_store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime;
-    var finishTime = _store_store__WEBPACK_IMPORTED_MODULE_1__["store"].state.audioContext.currentTime + Object(_util_time__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(100);
 
     var _this = this;
 
@@ -16719,10 +16722,8 @@ __webpack_require__.r(__webpack_exports__);
       _this.playing === true && function () {
         _this.timeout = window.setTimeout(scheduler, 50.0);
       }();
-    } // Scheduling basically
+    } // Scheduling
 
-
-    var notesInQueue = [];
 
     function scheduleNote(note, nextNoteStartTime) {
       if (note) {
@@ -16739,11 +16740,11 @@ __webpack_require__.r(__webpack_exports__);
 
     function nextNote() {
       if (notes[currentNote]) {
+        // add the distance between the (next note - start time)
         notes[currentNote + 1] ? nextNoteStartTime = startTime + Object(_util_time__WEBPACK_IMPORTED_MODULE_2__["durationFromPercentage"])(notes[currentNote + 1].position) : function () {
           nextNoteStartTime = 0;
           currentNote = 0;
-        }; // add the distance between the (next note - start time)
-
+        };
         currentNote++;
       }
     }
@@ -16898,13 +16899,13 @@ var projectMutations = {
     /*
     	General / Misc
     */
-    createAudioContext: function createAudioContext(state) {
+    createAudioContext: function createAudioContext(state, mut) {
       var audioCtx;
       audioCtx = window.AudioContext || window.webkitAudioContext;
-      state.audioContext = new audioCtx(); // Create the master volume control
+      this.state.audioContext = new audioCtx(); // Create the master volume control
 
-      state.masterGain = state.audioContext.createGain();
-      state.masterGain.gain.value = 0.6;
+      this.state.masterGain = this.state.audioContext.createGain();
+      this.state.masterGain.gain.value = 0.6;
     },
     setMouseActiveState: function setMouseActiveState(state, payload) {
       this.state.mouseActive = payload;
@@ -16914,6 +16915,7 @@ var projectMutations = {
     	Project Mutations - needs organising
     */
     setName: function setName(name) {
+      // TODO: not used yet
       this.state.project.name = name;
     },
     setBPM: function setBPM(state, payload) {
@@ -16967,14 +16969,14 @@ var rollMutations = {
   mutations: {
     addNote: function addNote(state, note) {
       // add note object to notes array
-      if (state.activeOscillator.notes.length < 32) {
-        state.activeOscillator.notes.push(note);
+      if (this.state.activeOscillator.notes.length < 32) {
+        this.state.activeOscillator.notes.push(note);
       }
     },
     removeNote: function removeNote(state, id) {
       // splice the Note object out of the notes array
-      if (state.activeOscillator.notes.length > -1) {
-        state.activeOscillator.notes.splice(state.activeOscillator.notes.findIndex(function (note) {
+      if (this.state.activeOscillator.notes.length > -1) {
+        this.state.activeOscillator.notes.splice(this.state.activeOscillator.notes.findIndex(function (note) {
           return note.id === id;
         }), 1);
       }
@@ -17013,9 +17015,9 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   modules: {
-    project: _projectMutations__WEBPACK_IMPORTED_MODULE_2__["default"],
-    roll: _rollMutations__WEBPACK_IMPORTED_MODULE_4__["default"],
-    osc: _oscillatorMutations__WEBPACK_IMPORTED_MODULE_3__["default"]
+    projectMutations: _projectMutations__WEBPACK_IMPORTED_MODULE_2__["default"],
+    rollMutations: _rollMutations__WEBPACK_IMPORTED_MODULE_4__["default"],
+    oscillatorMutations: _oscillatorMutations__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   state: {
     project: {

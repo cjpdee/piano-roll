@@ -11,9 +11,9 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
 
 	modules: {
-		project: projectMutations,
-		roll: rollMutations,
-		osc: oscillatorMutations
+		projectMutations,
+		rollMutations,
+		oscillatorMutations
 	},
 
 	state: {

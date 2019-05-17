@@ -6,16 +6,16 @@ const rollMutations = {
 	mutations: {
 		addNote(state, note) {
 			// add note object to notes array
-			if (state.activeOscillator.notes.length < 32) {
-				state.activeOscillator.notes.push(note);
+			if (this.state.activeOscillator.notes.length < 32) {
+				this.state.activeOscillator.notes.push(note);
 			}
 		},
 
 		removeNote(state, id) {
 			// splice the Note object out of the notes array
-			if (state.activeOscillator.notes.length > -1) {
-				state.activeOscillator.notes.splice(
-					state.activeOscillator.notes.findIndex(note => note.id === id),
+			if (this.state.activeOscillator.notes.length > -1) {
+				this.state.activeOscillator.notes.splice(
+					this.state.activeOscillator.notes.findIndex(note => note.id === id),
 					1
 				);
 			}

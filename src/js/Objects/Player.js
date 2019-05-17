@@ -6,12 +6,9 @@ import {
 	store
 } from '../store/store';
 import {
-	secondsPerBeat,
-	loopTimeFrame,
 	durationFromPercentage
 } from "../util/time";
 export default {
-
 	/**
 	 * Get all the notes from each oscillator
 	 * and order it by time
@@ -54,16 +51,17 @@ export default {
 	playing: false,
 
 	play() {
-		this.playing = true;
 
 		let notes = this.createQueue();
 
-		let scheduleAheadTime = 0.1;
+		if (!notes.length > 0) {
+			return
+		} else this.playing = true;
 
+		let scheduleAheadTime = 0.1;
 		let currentNote = 0;
 		let nextNoteStartTime = store.state.audioContext.currentTime + durationFromPercentage(notes[currentNote].position);
 		let startTime = store.state.audioContext.currentTime;
-		let finishTime = store.state.audioContext.currentTime + durationFromPercentage(100);
 		let _this = this;
 
 		function scheduler() {
@@ -76,9 +74,7 @@ export default {
 			})();
 		}
 
-		// Scheduling basically
-
-		var notesInQueue = [];
+		// Scheduling
 
 		function scheduleNote(note, nextNoteStartTime) {
 			if (note) {
@@ -95,12 +91,11 @@ export default {
 
 		function nextNote() {
 			if (notes[currentNote]) {
-
+				// add the distance between the (next note - start time)
 				notes[currentNote + 1] ? nextNoteStartTime = startTime + (durationFromPercentage(notes[currentNote + 1].position)) : () => {
 					nextNoteStartTime = 0;
 					currentNote = 0;
-				}; // add the distance between the (next note - start time)
-
+				};
 				currentNote++;
 			}
 		}
