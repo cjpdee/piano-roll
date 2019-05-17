@@ -844,7 +844,6 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
-    // TODO: this is long. instead, just update the volume_env object in the store.
     volume_amplitude: {
       get: function get() {
         return Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(this.id).env.amplitude;
@@ -16791,56 +16790,110 @@ new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
-/***/ "./src/js/store/store.js":
-/*!*******************************!*\
-  !*** ./src/js/store/store.js ***!
-  \*******************************/
-/*! exports provided: Oscillator, store */
+/***/ "./src/js/store/oscillatorMutations.js":
+/*!*********************************************!*\
+  !*** ./src/js/store/oscillatorMutations.js ***!
+  \*********************************************/
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "store", function() { return store; });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Objects/Oscillator */ "./src/js/Objects/Oscillator.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Oscillator", function() { return _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_2__["default"]; });
-
-/* harmony import */ var _util_helper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../util/helper */ "./src/js/util/helper.js");
+/* harmony import */ var _util_helper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/helper */ "./src/js/util/helper.js");
+/* harmony import */ var _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Objects/Oscillator */ "./src/js/Objects/Oscillator.js");
 
 
 
-
-
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]); // TODO: break store into multiple files
-
-var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
-  state: {
-    project: {
-      name: "myProject",
-      bpm: 120,
-      timeSignature: 4,
-      noteSize: 4,
-      numBars: 4,
-      baseOctave: 2,
-      numOctaves: 2,
-      rootNote: "C",
-      noteLength: 1
+var oscillatorMutations = {
+  mutations: {
+    /*
+    	Adding / removing oscillators
+    */
+    addOscillator: function addOscillator() {
+      var osc = new _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_1__["default"]();
+      this.state.oscillators.push(osc);
+      this.state.activeOscillator = osc;
     },
-    oscillators: [],
-    activeOscillator: null,
-    // saves reference only
-    mouseActive: false,
-    keypressActive: false,
-    data: {
-      notes: ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"],
-      waveforms: ["sine", "square", "sawtooth", "triangle"],
-      filters: ["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass"]
+    removeOscillator: function removeOscillator(oscillator_id) {
+      var index = this.state.oscillators.indexOf(oscillator_id);
+      index > -1 && this.state.oscillators.splice(index, 1);
     },
-    audioContext: null,
-    masterGain: null
-  },
+    setCurrentOscillator: function setCurrentOscillator(state, payload) {
+      var osc = Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(payload.oscillator_id);
+      this.state.activeOscillator = osc;
+    },
+
+    /*
+    	Oscillator Mutations
+    */
+    setOscillatorWaveform: function setOscillatorWaveform(state, payload) {
+      var osc = Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(payload.oscillator_id);
+      osc.waveform = payload.waveform;
+    },
+    setOscillatorGain: function setOscillatorGain(state, payload) {
+      Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(payload.oscillator_id).gain = payload.gain;
+    },
+
+    /*
+    	Filters
+     */
+    createFilter: function createFilter(state, payload) {
+      Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(payload.oscillator_id).filters.push(new _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_1__["Filter"]());
+    },
+    deleteFilter: function deleteFilter(state, payload) {
+      var index = Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(payload.oscillatorId).filters.findIndex(function (filter) {
+        return filter.id == payload.filterId;
+      });
+      Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(payload.oscillatorId).filters.splice(index, 1);
+    },
+    setFilterType: function setFilterType(state, payload) {
+      Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getFilter"])(payload.filterId).type = payload.type;
+    },
+    setFilterModType: function setFilterModType(state, payload) {
+      Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getFilter"])(payload.filterId).modulationType = payload.modType;
+    },
+    setFilterCutoff: function setFilterCutoff(state, payload) {
+      Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getFilter"])(payload.filterId).cutoff = payload.cutoff;
+    },
+    setFilterQuality: function setFilterQuality(state, payload) {
+      Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getFilter"])(payload.filterId).quality = payload.quality;
+    },
+    // TODO: should have a function for applying any kind of envelope
+    // TODO: also there are 2 mutations for gain. This one is used currently
+    volume: function volume(state, payload) {
+      var osc = Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getOscillator"])(payload.oscillator_id);
+      var property = osc.env;
+
+      switch (payload.property) {
+        case "amplitude":
+          property.amplitude = payload.value;
+          break;
+
+        case "attack":
+          property.attack = payload.value;
+          break;
+
+        case "decay":
+          property.decay = payload.value;
+          break;
+      }
+    }
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (oscillatorMutations);
+
+/***/ }),
+
+/***/ "./src/js/store/projectMutations.js":
+/*!******************************************!*\
+  !*** ./src/js/store/projectMutations.js ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var projectMutations = {
   mutations: {
     /*
     	General / Misc
@@ -16892,129 +16945,26 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       if (this.state.masterGain) {
         this.state.masterGain.gain.value = payload.masterGain;
       }
-    },
+    }
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (projectMutations);
 
-    /*
-    	Adding / removing oscillators
-    */
-    addOscillator: function addOscillator() {
-      var osc = new _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_2__["default"]();
-      this.state.oscillators.push(osc);
-      this.state.activeOscillator = osc;
-    },
-    removeOscillator: function removeOscillator(oscillator_id) {
-      var index = this.state.oscillators.indexOf(oscillator_id);
-      index > -1 && this.state.oscillators.splice(index, 1);
-    },
-    setCurrentOscillator: function setCurrentOscillator(state, payload) {
-      var osc = Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
-      this.state.activeOscillator = osc;
-    },
+/***/ }),
 
-    /*
-    	Oscillator Mutations
-    */
-    setOscillatorWaveform: function setOscillatorWaveform(state, payload) {
-      var osc = Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
-      osc.waveform = payload.waveform;
-    },
-    setOscillatorGain: function setOscillatorGain(state, payload) {
-      Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id).gain = payload.gain;
-    },
+/***/ "./src/js/store/rollMutations.js":
+/*!***************************************!*\
+  !*** ./src/js/store/rollMutations.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-    /*
-    	Filters
-     */
-    createFilter: function createFilter(state, payload) {
-      Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id).filters.push(new _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_2__["Filter"]());
-    },
-    deleteFilter: function deleteFilter(state, payload) {
-      var index = Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillatorId).filters.findIndex(function (filter) {
-        return filter.id == payload.filterId;
-      });
-      Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillatorId).filters.splice(index, 1);
-    },
-    setFilterType: function setFilterType(state, payload) {
-      Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getFilter"])(payload.filterId).type = payload.type;
-    },
-    setFilterModType: function setFilterModType(state, payload) {
-      Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getFilter"])(payload.filterId).modulationType = payload.modType;
-    },
-    setFilterCutoff: function setFilterCutoff(state, payload) {
-      Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getFilter"])(payload.filterId).cutoff = payload.cutoff;
-    },
-    setFilterQuality: function setFilterQuality(state, payload) {
-      Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getFilter"])(payload.filterId).quality = payload.quality;
-    },
-    // TODO: should have a function for applying any kind of envelope
-    volume: function volume(state, payload) {
-      var osc = Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
-      var property = osc.env;
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _util_helper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/helper */ "./src/js/util/helper.js");
 
-      switch (payload.property) {
-        case "amplitude":
-          property.amplitude = payload.value;
-          break;
-
-        case "attack":
-          property.attack = payload.value;
-          break;
-
-        case "decay":
-          property.decay = payload.value;
-          break;
-      }
-    },
-    biquadFilter: function biquadFilter(state, payload) {
-      var osc = Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
-      var property = osc.filter;
-
-      switch (payload.property) {
-        case "type":
-          property.type = payload.value;
-          break;
-
-        case "cutoff":
-          property.cutoff = payload.value;
-          break;
-
-        case "attack":
-          property.attack = payload.value;
-          break;
-
-        case "decay":
-          property.decay = payload.value;
-          break;
-      }
-    },
-    lpHpFilter: function lpHpFilter(state, payload) {
-      var osc = Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getOscillator"])(payload.oscillator_id);
-      var property;
-
-      if (payload.filter) {
-        property = osc.lowpass;
-      } else {
-        property = osc.highpass;
-      }
-
-      switch (payload.property) {
-        case "cutoff":
-          property.cutoff = payload.value;
-          break;
-
-        case "attack":
-          property.attack = payload.value;
-          break;
-
-        case "decay":
-          property.decay = payload.value;
-          break;
-
-        case "resonance":
-          property.resonance = payload.value;
-          break;
-      }
-    },
+var rollMutations = {
+  mutations: {
     addNote: function addNote(state, note) {
       // add note object to notes array
       if (state.activeOscillator.notes.length < 32) {
@@ -17030,8 +16980,68 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
       }
     },
     updateNotePos: function updateNotePos(state, payload) {
-      Object(_util_helper__WEBPACK_IMPORTED_MODULE_3__["getNote"])(payload.note_id).position = payload.pos;
+      Object(_util_helper__WEBPACK_IMPORTED_MODULE_0__["getNote"])(payload.note_id).position = payload.pos;
     }
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (rollMutations);
+
+/***/ }),
+
+/***/ "./src/js/store/store.js":
+/*!*******************************!*\
+  !*** ./src/js/store/store.js ***!
+  \*******************************/
+/*! exports provided: store */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "store", function() { return store; });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _projectMutations__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./projectMutations */ "./src/js/store/projectMutations.js");
+/* harmony import */ var _oscillatorMutations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./oscillatorMutations */ "./src/js/store/oscillatorMutations.js");
+/* harmony import */ var _rollMutations__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./rollMutations */ "./src/js/store/rollMutations.js");
+
+ // Mutations separated by concern
+
+
+
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
+  modules: {
+    project: _projectMutations__WEBPACK_IMPORTED_MODULE_2__["default"],
+    roll: _rollMutations__WEBPACK_IMPORTED_MODULE_4__["default"],
+    osc: _oscillatorMutations__WEBPACK_IMPORTED_MODULE_3__["default"]
+  },
+  state: {
+    project: {
+      // TODO: rename some of these for clarity
+      name: "myProject",
+      bpm: 120,
+      timeSignature: 4,
+      noteSize: 4,
+      numBars: 4,
+      baseOctave: 2,
+      numOctaves: 2,
+      rootNote: "C",
+      noteLength: 1
+    },
+    oscillators: [],
+    activeOscillator: null,
+    // saves reference only
+    mouseActive: false,
+    keypressActive: false,
+    data: {
+      notes: ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"],
+      waveforms: ["sine", "square", "sawtooth", "triangle"],
+      filters: ["lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "peaking", "notch", "allpass"]
+    },
+    audioContext: null,
+    masterGain: null
   }
 });
 

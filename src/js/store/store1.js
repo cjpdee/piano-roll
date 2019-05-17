@@ -15,7 +15,7 @@ Vue.use(Vuex);
 // TODO: break store into multiple files
 const store = new Vuex.Store({
 	state: {
-		project: { // TODO: rename some of these for clarity
+		project: {
 			name: "myProject",
 			bpm: 120,
 			timeSignature: 4,
@@ -162,6 +162,7 @@ const store = new Vuex.Store({
 		},
 
 		// TODO: should have a function for applying any kind of envelope
+		// TODO: also there are 2 mutations for gain. This one is used currently
 		volume(state, payload) {
 			let osc = getOscillator(payload.oscillator_id);
 			let property = osc.env;
@@ -174,51 +175,6 @@ const store = new Vuex.Store({
 					break;
 				case "decay":
 					property.decay = payload.value;
-					break;
-			}
-		},
-
-		biquadFilter(state, payload) {
-			let osc = getOscillator(payload.oscillator_id);
-			let property = osc.filter;
-			switch (payload.property) {
-				case "type":
-					property.type = payload.value;
-					break;
-				case "cutoff":
-					property.cutoff = payload.value;
-					break;
-				case "attack":
-					property.attack = payload.value;
-					break;
-				case "decay":
-					property.decay = payload.value;
-					break;
-			}
-		},
-
-		lpHpFilter(state, payload) {
-			let osc = getOscillator(payload.oscillator_id);
-			let property;
-
-			if (payload.filter) {
-				property = osc.lowpass;
-			} else {
-				property = osc.highpass;
-			}
-
-			switch (payload.property) {
-				case "cutoff":
-					property.cutoff = payload.value;
-					break;
-				case "attack":
-					property.attack = payload.value;
-					break;
-				case "decay":
-					property.decay = payload.value;
-					break;
-				case "resonance":
-					property.resonance = payload.value;
 					break;
 			}
 		},

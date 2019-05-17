@@ -113,7 +113,6 @@ export default {
 			}
 		},
 
-		// TODO: this is long. instead, just update the volume_env object in the store.
 		volume_amplitude: {
 			get() {
 				return getOscillator(this.id).env.amplitude;
