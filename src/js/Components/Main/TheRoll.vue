@@ -59,6 +59,7 @@ export default {
 			return this.$store.state.project.timeSignature;
 		},
 		theNotes() {
+			// TODO: doesn't do anything
 			let notes = this.$store.state.data.notes;
 			let rootNote = this.$store.state.project.rootNote;
 		}
@@ -74,6 +75,19 @@ export default {
 						e
 					);
 				} else if (e.target.classList.contains("note")) {
+					const newNoteSize =
+						(100 /
+							getNote(e.target.getAttribute("id"))
+								.lengthAsPercentage /
+							16 /
+							this.$store.state.project.numBars) *
+						16;
+
+					this.$store.commit("setNoteSize", {
+						noteSize: newNoteSize
+					});
+
+					console.log(newNoteSize);
 					// Drag Notes
 					this.dragStart(e);
 				} else if (e.target.classList.contains("handle")) {

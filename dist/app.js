@@ -432,6 +432,7 @@ var xOffset = 0;
       return this.$store.state.project.timeSignature;
     },
     theNotes: function theNotes() {
+      // TODO: doesn't do anything
       var notes = this.$store.state.data.notes;
       var rootNote = this.$store.state.project.rootNote;
     }
@@ -445,7 +446,12 @@ var xOffset = 0;
           // Add Note
           this.$refs[e.target.getAttribute("data-note")][0].addNote(e);
         } else if (e.target.classList.contains("note")) {
-          // Drag Notes
+          var newNoteSize = 100 / Object(_util_helper__WEBPACK_IMPORTED_MODULE_1__["getNote"])(e.target.getAttribute("id")).lengthAsPercentage / 16 / this.$store.state.project.numBars * 16;
+          this.$store.commit("setNoteSize", {
+            noteSize: newNoteSize
+          });
+          console.log(newNoteSize); // Drag Notes
+
           this.dragStart(e);
         } else if (e.target.classList.contains("handle")) {
           this.resize(e);
@@ -16969,7 +16975,7 @@ var rollMutations = {
   mutations: {
     addNote: function addNote(state, note) {
       // add note object to notes array
-      if (this.state.activeOscillator.notes.length < 32) {
+      if (this.state.activeOscillator.notes.length < 128) {
         this.state.activeOscillator.notes.push(note);
       }
     },

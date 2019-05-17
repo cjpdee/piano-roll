@@ -6,7 +6,7 @@ const rollMutations = {
 	mutations: {
 		addNote(state, note) {
 			// add note object to notes array
-			if (this.state.activeOscillator.notes.length < 32) {
+			if (this.state.activeOscillator.notes.length < 128) {
 				this.state.activeOscillator.notes.push(note);
 			}
 		},
