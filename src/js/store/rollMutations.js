@@ -13,11 +13,12 @@ const rollMutations = {
 
 		removeNote(state, id) {
 			// splice the Note object out of the notes array
-			if (this.state.activeOscillator.notes.length > -1) {
-				this.state.activeOscillator.notes.splice(
-					this.state.activeOscillator.notes.findIndex(note => note.id === id),
-					1
-				);
+			if (
+				(this.state.activeOscillator.notes.length > -1) &&
+				(this.state.activeOscillator.notes.findIndex(note => note.id === id) > -1)
+			) {
+				const index = this.state.activeOscillator.notes.findIndex(note => note.id === id);
+				this.state.activeOscillator.notes.splice(index, 1);
 			}
 		},
 

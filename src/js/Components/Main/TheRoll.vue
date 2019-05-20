@@ -36,6 +36,7 @@ var isResizing = false;
 let currentX;
 let initialX;
 let xOffset = 0;
+var rightMouseDown = false;
 
 export default {
 	components: {
@@ -57,57 +58,49 @@ export default {
 		},
 		divisionsPerBar() {
 			return this.$store.state.project.timeSignature;
-		},
-		theNotes() {
-			// TODO: doesn't do anything
-			let notes = this.$store.state.data.notes;
-			let rootNote = this.$store.state.project.rootNote;
 		}
 	},
 	methods: {
 		// Handlers
 		mousedownHandler(e) {
-			if (e.button === 0) {
-				// TODO: use data attrs instead of class
-				if (e.target.classList.contains("row")) {
-					// Add Note
-					this.$refs[e.target.getAttribute("data-note")][0].addNote(
-						e
-					);
-				} else if (e.target.classList.contains("note")) {
-					const newNoteSize =
-						(100 /
-							getNote(e.target.getAttribute("id"))
-								.lengthAsPercentage /
-							16 /
-							this.$store.state.project.numBars) *
-						16;
+			// TODO: use data attrs instead of class
+			if (e.button === 0 && e.target.classList.contains("row")) {
+				// Add Note
+				this.$refs[e.target.getAttribute("data-note")][0].addNote(e);
+			} else if (e.button === 0 && e.target.classList.contains("note")) {
+				// set the note size
+				const newNoteSize = (100 / getNote(e.target.getAttribute("id")).lengthAsPercentage / 16 / this.$store.state.project.numBars) * 16;
 
-					this.$store.commit("setNoteSize", {
-						noteSize: newNoteSize
-					});
+				this.$store.commit("setNoteSize", {
+					noteSize: newNoteSize
+				});
 
-					console.log(newNoteSize);
-					// Drag Notes
-					this.dragStart(e);
-				} else if (e.target.classList.contains("handle")) {
-					this.resize(e);
-				}
+				// Drag Notes
+				this.dragStart(e);
+			} else if (e.button === 0 && e.target.classList.contains("handle")) {
+				this.resize(e);
 			} else if (e.button === 2) {
-				// Delete notes hovered hover
+				rightMouseDown = true;
 			}
 		},
 		mouseupHandler(e) {
 			if (isDragging) {
 				this.dragEnd();
 			}
+			if (rightMouseDown === true) rightMouseDown = false;
 		},
 		mousemoveHandler(e) {
 			if (isDragging) {
 				this.drag(e);
 			}
+			if (rightMouseDown === true) {
+				if (e.target.classList.contains("note")) this.$store.commit("removeNote", e.target.id);
+			}
 		},
-		contextmenuHandler(e) {},
+		contextmenuHandler(e) {
+			// console.log('context menu triggered', e.target)
+			// if (e.target.classList.contains("note")) this.$store.commit("removeNote", e.target.id);
+		},
 
 		// Dragging methods
 		dragStart(e) {

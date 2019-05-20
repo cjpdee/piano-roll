@@ -155,93 +155,11 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
   },
   mounted: function mounted() {
     _store_store__WEBPACK_IMPORTED_MODULE_2__["store"].commit("createAudioContext");
-    window.addEventListener("keydown", this.keydownHandler);
-    window.addEventListener("keyup", this.keyupHandler);
     _store_store__WEBPACK_IMPORTED_MODULE_2__["store"].commit("addOscillator");
   },
   computed: {
     pianoKeys: function pianoKeys() {
       return Object(_util_helper__WEBPACK_IMPORTED_MODULE_4__["getKeysArray"])();
-    }
-  },
-  methods: {
-    keydownHandler: function keydownHandler(e) {
-      console.log("triggered");
-
-      if (_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator && e.keyCode != this.previousKeyCode) {
-        this.previousKeyCode = e.keyCode;
-        this.lastOscillator = _store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator;
-        this.$store.state.keypressActive = true;
-        this.$store.state.activeOscillator.oscillatorNode && _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].stopNote(this.$store.state.activeOscillator);
-        /**
-         * TODO: This whole section can be done with vue directives
-         * on the pianoKeys component
-         */
-
-        switch (e.keyCode) {
-          case 81:
-            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "C" + this.$store.state.project.baseOctave);
-            this.currentNote = "C" + this.$store.state.project.baseOctave;
-            break;
-
-          case 50:
-            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "C#" + this.$store.state.project.baseOctave);
-            this.currentNote = "C#" + this.$store.state.project.baseOctave;
-            break;
-
-          case 87:
-            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "D" + this.$store.state.project.baseOctave);
-            this.currentNote = "D" + this.$store.state.project.baseOctave;
-            break;
-
-          case 51:
-            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "D#" + this.$store.state.project.baseOctave);
-            this.currentNote = "D#" + this.$store.state.project.baseOctave;
-            break;
-
-          case 69:
-            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "E" + this.$store.state.project.baseOctave);
-            break;
-
-          case 82:
-            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "F" + this.$store.state.project.baseOctave);
-            break;
-
-          case 53:
-            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "F#" + this.$store.state.project.baseOctave);
-            break;
-
-          case 84:
-            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "G" + this.$store.state.project.baseOctave);
-            break;
-
-          case 54:
-            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "G#" + this.$store.state.project.baseOctave);
-            break;
-
-          case 89:
-            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "A" + this.$store.state.project.baseOctave);
-            break;
-
-          case 55:
-            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "A#" + this.$store.state.project.baseOctave);
-            break;
-
-          case 85:
-            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playNote(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "B" + this.$store.state.project.baseOctave);
-            break;
-
-          case 32:
-            //TODO: remove
-            _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].playForDuration(_store_store__WEBPACK_IMPORTED_MODULE_2__["store"].state.activeOscillator, "B" + this.$store.state.project.baseOctave, 1);
-        }
-      }
-    },
-    keyupHandler: function keyupHandler(e) {
-      if (this.$store.state.activeOscillator && e.keyCode == this.previousKeyCode) {
-        _Objects_Oscillator__WEBPACK_IMPORTED_MODULE_3__["default"].stopNote(this.$store.state.activeOscillator);
-        this.$store.state.keypressActive = false;
-      }
     }
   }
 });
@@ -290,8 +208,7 @@ var xOffset = 0;
     }
   },
   methods: {
-    removeNote: function removeNote(e) {
-      this.$store.commit("removeNote", e.currentTarget.id);
+    removeNote: function removeNote(e) {// this.$store.commit("removeNote", e.currentTarget.id);
     }
   }
 });
@@ -410,6 +327,7 @@ var isResizing = false;
 var currentX;
 var initialX;
 var xOffset = 0;
+var rightMouseDown = false;
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     PitchRow: _PitchRow__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -430,46 +348,48 @@ var xOffset = 0;
     },
     divisionsPerBar: function divisionsPerBar() {
       return this.$store.state.project.timeSignature;
-    },
-    theNotes: function theNotes() {
-      // TODO: doesn't do anything
-      var notes = this.$store.state.data.notes;
-      var rootNote = this.$store.state.project.rootNote;
     }
   },
   methods: {
     // Handlers
     mousedownHandler: function mousedownHandler(e) {
-      if (e.button === 0) {
-        // TODO: use data attrs instead of class
-        if (e.target.classList.contains("row")) {
-          // Add Note
-          this.$refs[e.target.getAttribute("data-note")][0].addNote(e);
-        } else if (e.target.classList.contains("note")) {
-          var newNoteSize = 100 / Object(_util_helper__WEBPACK_IMPORTED_MODULE_1__["getNote"])(e.target.getAttribute("id")).lengthAsPercentage / 16 / this.$store.state.project.numBars * 16;
-          this.$store.commit("setNoteSize", {
-            noteSize: newNoteSize
-          });
-          console.log(newNoteSize); // Drag Notes
+      // TODO: use data attrs instead of class
+      if (e.button === 0 && e.target.classList.contains("row")) {
+        // Add Note
+        this.$refs[e.target.getAttribute("data-note")][0].addNote(e);
+      } else if (e.button === 0 && e.target.classList.contains("note")) {
+        // set the note size
+        var newNoteSize = 100 / Object(_util_helper__WEBPACK_IMPORTED_MODULE_1__["getNote"])(e.target.getAttribute("id")).lengthAsPercentage / 16 / this.$store.state.project.numBars * 16;
+        this.$store.commit("setNoteSize", {
+          noteSize: newNoteSize
+        }); // Drag Notes
 
-          this.dragStart(e);
-        } else if (e.target.classList.contains("handle")) {
-          this.resize(e);
-        }
-      } else if (e.button === 2) {// Delete notes hovered hover
+        this.dragStart(e);
+      } else if (e.button === 0 && e.target.classList.contains("handle")) {
+        this.resize(e);
+      } else if (e.button === 2) {
+        rightMouseDown = true;
       }
     },
     mouseupHandler: function mouseupHandler(e) {
       if (isDragging) {
         this.dragEnd();
       }
+
+      if (rightMouseDown === true) rightMouseDown = false;
     },
     mousemoveHandler: function mousemoveHandler(e) {
       if (isDragging) {
         this.drag(e);
       }
+
+      if (rightMouseDown === true) {
+        if (e.target.classList.contains("note")) this.$store.commit("removeNote", e.target.id);
+      }
     },
-    contextmenuHandler: function contextmenuHandler(e) {},
+    contextmenuHandler: function contextmenuHandler(e) {// console.log('context menu triggered', e.target)
+      // if (e.target.classList.contains("note")) this.$store.commit("removeNote", e.target.id);
+    },
     // Dragging methods
     dragStart: function dragStart(e) {
       dragElement = e.target;
@@ -1275,12 +1195,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 });
-/*
-For the future:
-
-Create a keypress handler that maps 2 octaves to the keyboard
-
-*/
 
 /***/ }),
 
@@ -16981,10 +16895,13 @@ var rollMutations = {
     },
     removeNote: function removeNote(state, id) {
       // splice the Note object out of the notes array
-      if (this.state.activeOscillator.notes.length > -1) {
-        this.state.activeOscillator.notes.splice(this.state.activeOscillator.notes.findIndex(function (note) {
+      if (this.state.activeOscillator.notes.length > -1 && this.state.activeOscillator.notes.findIndex(function (note) {
+        return note.id === id;
+      }) > -1) {
+        var index = this.state.activeOscillator.notes.findIndex(function (note) {
           return note.id === id;
-        }), 1);
+        });
+        this.state.activeOscillator.notes.splice(index, 1);
       }
     },
     updateNotePos: function updateNotePos(state, payload) {

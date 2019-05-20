@@ -57,11 +57,4 @@ export default {
 		}
 	}
 };
-
-/*
-For the future:
-
-Create a keypress handler that maps 2 octaves to the keyboard
-
-*/
 </script>

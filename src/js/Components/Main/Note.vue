@@ -38,7 +38,7 @@ export default {
 	},
 	methods: {
 		removeNote(e) {
-			this.$store.commit("removeNote", e.currentTarget.id);
+			// this.$store.commit("removeNote", e.currentTarget.id);
 		}
 	}
 };
