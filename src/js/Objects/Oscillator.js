@@ -112,17 +112,23 @@ export class Filter {
 	constructor() {
 		this.id = generateFilterId();
 		this.modulationType = "env";
-		this.env = {
-			amplitude: 50,
-			attack: 0,
-			hold: 0,
-			decay: 0,
-			release: 0
-		};
+		this.modulation = null;
 		this.type = 'lowpass';
 		this.cutoff = 2000;
 		this.quality = 0;
 		this.filterNode = store.state.audioContext.createBiquadFilter();
+	}
+}
+
+export class Envelope {
+	constructor() {
+		this.amount = 100; // percentage
+		this.attack = 0;
+		// this.attackCurve = 0;
+		this.sustain = 0;
+		this.decay = 0;
+		// this.decayCurve = 0;
+		this.release = 0;
 	}
 }
 

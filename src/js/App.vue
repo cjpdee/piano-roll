@@ -32,7 +32,6 @@ Vue.component("Note", Note);
 Vue.component("FilterUI", Filter);
 
 Vue.use(Vuex);
-// var lastOscillator;
 export default {
 	components: {
 		TheSidebar,

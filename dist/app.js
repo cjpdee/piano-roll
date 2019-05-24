@@ -136,8 +136,7 @@ __webpack_require__.r(__webpack_exports__);
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("Note", _Components_Main_Note_vue__WEBPACK_IMPORTED_MODULE_13__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component("FilterUI", _Components_Sidebar_Includes_Filter_vue__WEBPACK_IMPORTED_MODULE_9__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]); // var lastOscillator;
-
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     TheSidebar: _Components_Sidebar_TheSidebar_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
@@ -16409,13 +16408,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!**************************************!*\
   !*** ./src/js/Objects/Oscillator.js ***!
   \**************************************/
-/*! exports provided: default, Filter */
+/*! exports provided: default, Filter, Envelope */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Oscillator; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Filter", function() { return Filter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Envelope", function() { return Envelope; });
 /* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store/store */ "./src/js/store/store.js");
 /* harmony import */ var _util_helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/helper */ "./src/js/util/helper.js");
 /* harmony import */ var _util_generateId__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/generateId */ "./src/js/util/generateId.js");
@@ -16540,17 +16540,23 @@ var Filter = function Filter() {
 
   this.id = Object(_util_generateId__WEBPACK_IMPORTED_MODULE_2__["generateFilterId"])();
   this.modulationType = "env";
-  this.env = {
-    amplitude: 50,
-    attack: 0,
-    hold: 0,
-    decay: 0,
-    release: 0
-  };
+  this.modulation = null;
   this.type = 'lowpass';
   this.cutoff = 2000;
   this.quality = 0;
   this.filterNode = _store_store__WEBPACK_IMPORTED_MODULE_0__["store"].state.audioContext.createBiquadFilter();
+};
+var Envelope = function Envelope() {
+  _classCallCheck(this, Envelope);
+
+  this.amount = 100; // percentage
+
+  this.attack = 0; // this.attackCurve = 0;
+
+  this.sustain = 0;
+  this.decay = 0; // this.decayCurve = 0;
+
+  this.release = 0;
 };
 /**
  * types
