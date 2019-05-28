@@ -1,0 +1,15 @@
+$module: 'topbar';
+
+.#{$module} {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+
+    @extend %component;
+
+    &__item {
+        flex: 0 0 0;
+
+        @extend %component;
+    }
+}

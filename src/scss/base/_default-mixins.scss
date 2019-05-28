@@ -1,0 +1,3 @@
+@function em($pxval, $base: $fzBase) {
+	@return ($pxval / $base) * 1em;
+}

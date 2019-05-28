@@ -1,3 +1,9 @@
-@import './layout/general';
-@import './layout/main';
-@import './layout/side';
+@import './base/reset';
+@import './base/variables';
+@import './base/default-mixins';
+@import './base/placeholder-temp';
+
+
+@import './layout/topbar';
+
+
