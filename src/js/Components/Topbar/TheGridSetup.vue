@@ -28,6 +28,11 @@
         </label>
 
         <label>
+            <!-- 
+                Note:
+                When changing this, all the notes in the store must also change
+                Their position and length must be divided or multiplied by 
+             -->
             # of bars
             <select v-model="numBars">
                 <option :value="1">1</option>
