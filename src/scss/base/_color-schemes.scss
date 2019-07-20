@@ -1,7 +1,12 @@
 /**
+ * Switches the global color scheme based on a class at the app root.
+ * Requires all colors to be set using custom placeholders e.g. %background-dark
+ * 
  * Next: write a function which derives all tones from a single base color
  */
 
+ // name the schemes whatever you like
+ // in future I might add ability to name tones whatever you want and have unlimited tones
 $schemes: (
     "scheme1": (
         lighter: pink,
