@@ -1,0 +1,7 @@
+.sidebar {
+    @extend %component;
+    $z: em(100);
+    height: calc(100vh - #{$z});
+    width: em(400);
+
+}

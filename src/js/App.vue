@@ -1,10 +1,15 @@
 <template>
-	<div id="app">
-		<TheTopBar></TheTopBar>
-		<TheSidebar></TheSidebar>
-		<ThePianoKeys :notes="pianoKeys"></ThePianoKeys>
-		<TheRoll :notes="pianoKeys"></TheRoll>
-	</div>
+  <!-- TODO: finish scheme switching mechanic -->
+  <div id="app" class="scheme1">
+    <TheTopBar></TheTopBar>
+    <div class="bottom">
+      <TheSidebar></TheSidebar>
+      <div class="piano__section">
+        <ThePianoKeys :notes="pianoKeys"></ThePianoKeys>
+        <TheRoll :notes="pianoKeys"></TheRoll>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -39,31 +44,31 @@ Vue.component("FilterUI", Filter);
 
 Vue.use(Vuex);
 export default {
-	components: {
-		TheTopBar,
-		TheSidebar,
-		ThePianoKeys,
-		TheRoll
-	},
-	store,
-	data() {
-		return {
-			state: store.state,
-			lastOscillator: null,
-			currentNote: null,
-			previousKeyCode: null
-		};
-	},
+  components: {
+    TheTopBar,
+    TheSidebar,
+    ThePianoKeys,
+    TheRoll
+  },
+  store,
+  data() {
+    return {
+      state: store.state,
+      lastOscillator: null,
+      currentNote: null,
+      previousKeyCode: null
+    };
+  },
 
-	mounted() {
-		store.commit("createAudioContext");
-		store.commit("addOscillator");
-	},
+  mounted() {
+    store.commit("createAudioContext");
+    store.commit("addOscillator");
+  },
 
-	computed: {
-		pianoKeys() {
-			return getKeysArray();
-		}
-	}
+  computed: {
+    pianoKeys() {
+      return getKeysArray();
+    }
+  }
 };
 </script>

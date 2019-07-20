@@ -2,8 +2,13 @@
 @import './base/variables';
 @import './base/default-mixins';
 @import './base/placeholder-temp';
+@import './base/color-schemes';
 
+@import './components/piano';
 
 @import './layout/topbar';
+@import './layout/piano-roll';
+@import './layout/sidebar';
+@import './layout/bottom';
 
 

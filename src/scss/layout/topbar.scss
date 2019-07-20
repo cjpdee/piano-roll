@@ -4,11 +4,13 @@ $module: 'topbar';
     display: flex;
     flex-wrap: nowrap;
     width: 100%;
+    max-height: em(100);
 
     @extend %component;
 
     &__item {
         flex: 0 0 0;
+        display: flex;
 
         @extend %component;
     }

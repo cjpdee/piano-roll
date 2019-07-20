@@ -1,0 +1,99 @@
+.piano-roll {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: #999999;
+}
+
+.row {
+	position: absolute;
+	top: 0;
+	height: calc(100vh / 24);
+	width: 100%;
+	background-color: rgb(100, 159, 177);
+	border-bottom: em(1) solid grey;
+
+	&:last-child {
+		border-bottom: none;
+	}
+
+	&[data-note*="#"] {
+		background-color: rgb(90, 145, 161);
+	}
+}
+
+@for $i from 0 to 26 {
+	.row:nth-child(#{$i}) {
+		// because 100% caused gaps
+		top: ((99.9999% / 24) * ($i - 2));
+	}
+}
+
+.note {
+	position: absolute;
+	z-index: 100;
+	display: inline-block;
+	height: 100%;
+
+	border-radius: em(4);
+	background-color: darkslateblue;
+
+	cursor: grab;
+
+	&:hover {
+		background-color: rgba(darkslateblue, 0.95);
+	}
+
+	&__handle {
+		position: absolute;
+		right: 0;
+		width: em(20);
+		height: 100%;
+		border-radius: em(4);
+		background-color: green;
+		cursor: ew-resize;
+
+		&:hover {
+			background-color: rgba(green, 0.5);
+		}
+	}
+}
+
+/* Markers */
+
+.flex-wrap {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	width: 100%;
+	pointer-events: none;
+}
+
+.bar-marker {
+	border: em(0.5) solid rgba(darkblue, 0.3);
+	flex: 1 0 auto;
+	z-index: 99;
+
+	display: flex;
+
+}
+
+.beat-marker {
+	border: em(0.5) solid rgba(slategrey, 0.4);
+	flex: 1 0 auto;
+}
+
+.position-marker {
+	position: absolute;
+	z-index: 1000;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: em(5);
+	height: 100%;
+	background-color: crimson;
+	will-change: left; // TODO: change to a transform
+}

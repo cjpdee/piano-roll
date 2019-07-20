@@ -1,0 +1,59 @@
+/**
+ * Next: write a function which derives all tones from a single base color
+ */
+
+$schemes: (
+    "scheme1": (
+        lighter: pink,
+        light: 'x',
+        base: green,
+        dark: 'x',
+        darker: crimson
+    ),
+    "scheme2": (
+        lighter: blue,
+        light: 'x',
+        base: 'x',
+        dark: 'x',
+        darker: darkblue
+    ),
+);
+
+// write a single property to specific tone for all schemes
+@mixin write-scheme-property($property,$tone) {
+    @each $schemeName,$schemeMap in $schemes {
+        .#{$schemeName} & {
+            #{$property}: map-get($schemeMap,$tone);
+        }
+    }
+}
+
+// write all properties for a certain tone
+@mixin write-tone($tone) {
+    @each $prop in color, background, border-color {
+        %#{$prop}-#{$tone} {
+            @include write-scheme-property($prop,$tone);
+        }
+    }
+}
+
+@mixin write-all-schemes() {
+    @each $tone in lighter, light, base, dark, darker {
+        @include write-tone($tone);
+    }
+}
+
+@include write-all-schemes;
+
+
+// usage examples
+
+.topbar {
+    @extend %color-lighter;
+    @extend %background-darker;
+    @extend %border-color-base;
+}
+
+.piano-row {
+    @extend %background-darker;
+}

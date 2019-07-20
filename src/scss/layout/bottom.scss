@@ -1,0 +1,6 @@
+.bottom {
+    display: flex;
+    flex-direction: row;
+    $z: em(100);
+    height: calc(100vh - #{$z});
+}
