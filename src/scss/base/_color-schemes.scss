@@ -14,7 +14,8 @@ $schemes: (
         light: #5077CC,
         base: #677595,
         dark: #324A80,
-        darker: #1E2D4D
+        darker: #1E2D4D,
+        neutral: darkslategrey
     ),
     "scheme2": (
         text: white,
@@ -22,7 +23,8 @@ $schemes: (
         light: #3FCC9F,
         base: #5B9582,
         dark: #288064,
-        darker: #184D3C
+        darker: #184D3C,
+        neutral: darkslategrey
     ),
 );
 
@@ -47,7 +49,7 @@ $properties: (color,background,border-color);
 }
 
 @mixin write-all-schemes() {
-    @each $tone in text, lighter, light, base, dark, darker {
+    @each $tone in text, lighter, light, base, dark, darker, neutral {
         @include write-tone($tone);
     }
 }

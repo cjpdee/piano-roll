@@ -1,47 +1,56 @@
 <template>
   <div class="topbar__item">
-    <h4>Grid Settings</h4>
     <div class="topbar__segment">
-      <label>Grid Time Signature</label>
-      <select v-model="timeSignature">
-        <option :value="1">1</option>
-        <option :value="2">1/2</option>
-        <option :value="3">1/3</option>
-        <option :value="4">1/4</option>
-        <option :value="6">1/6</option>
-        <option :value="8">1/8</option>
-        <option :value="16">1/16</option>
-      </select>
+      <div>
+        <label>
+          <i class="fas fa-magnet"></i>
+          <span class="tooltip">Grid Divisions</span>
+        </label>
+        <select v-model="timeSignature">
+          <option :value="1">1</option>
+          <option :value="2">1/2</option>
+          <option :value="3">1/3</option>
+          <option :value="4">1/4</option>
+          <option :value="6">1/6</option>
+          <option :value="8">1/8</option>
+          <option :value="16">1/16</option>
+        </select>
+      </div>
+      <div>
+        <label>
+          <i class="fas fa-arrows-alt-h"></i>
+          <span class="tooltip">Note Length</span>
+        </label>
+        <select v-model="noteSize">
+          <option :value="1">1</option>
+          <option :value="2">1/2</option>
+          <option :value="3">1/3</option>
+          <option :value="4">1/4</option>
+          <option :value="6">1/6</option>
+          <option :value="8">1/8</option>
+          <option :value="16">1/16</option>
+        </select>
+      </div>
     </div>
 
     <div class="topbar__segment">
-      <label>Note Length</label>
-      <select v-model="noteSize">
-        <option :value="1">1</option>
-        <option :value="2">1/2</option>
-        <option :value="3">1/3</option>
-        <option :value="4">1/4</option>
-        <option :value="6">1/6</option>
-        <option :value="8">1/8</option>
-        <option :value="16">1/16</option>
-      </select>
-    </div>
-
-    <div class="topbar__segment">
-      <label>
-        <!-- 
-                    Note:
-                    When changing this, all the notes in the store must also change
-                    Their position and length must be divided or multiplied by 
-        -->
-        # of bars
-      </label>
-      <select v-model="numBars">
-        <option :value="1">1</option>
-        <option :value="2">2</option>
-        <option :value="4">4</option>
-        <option :value="8">8</option>
-      </select>
+      <div>
+        <label>
+          <!-- 
+                      Note:
+                      When changing this, all the notes in the store must also change
+                      Their position and length must be divided or multiplied by 
+          -->
+          #
+          <span class="tooltip">Loop length in bars</span>
+        </label>
+        <select v-model="numBars">
+          <option :value="1">1</option>
+          <option :value="2">2</option>
+          <option :value="4">4</option>
+          <option :value="8">8</option>
+        </select>
+      </div>
     </div>
   </div>
 </template>

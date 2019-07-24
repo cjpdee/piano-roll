@@ -1,5 +1,21 @@
 $module: 'topbar';
 
+// temporary location
+
+.tooltip {
+    display: none;
+    position: absolute;
+    top: 100%;
+    z-index: 1000;
+    @extend %background-neutral;
+    padding: em(10);
+    min-width: em(200);
+
+    label:hover & {
+        display: block;
+    }
+}
+
 .#{$module} {
     display: flex;
     flex-wrap: nowrap;
@@ -30,6 +46,21 @@ $module: 'topbar';
 
         & > * {
             flex: 0 0 50%;
+            display: flex;
+            flex-direction: row;
+            padding: 0 em(5);
+        }
+        & label {
+            position: relative;
+            padding-right: em(20);
+            flex: 0 0 30%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        & input, & select {
+            flex: 0 0 70%;
         }
     }
 }

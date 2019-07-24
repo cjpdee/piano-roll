@@ -4,49 +4,51 @@
       <label for="bpm">BPM</label>
       <input data-js-project="bpm" type="number" v-model="bpm" name="bpm" step="5" id="bpm" />
     </div>
-    <h4>Piano Roll Setup</h4>
-    <div class="topbar__segment">
-      <label>Base Octave</label>
-      <select v-model="baseOctave" name="octave" id="octave">
-        <option value="4">A4</option>
-        <option value="3">A3</option>
-        <option value="2">A2</option>
-        <option value="1">A1</option>
-        <option value="0">A0</option>
-      </select>
-    </div>
+
+    <!-- <div class="topbar__segment">
+      <div>
+        <label>Base Octave</label>
+        <select v-model="baseOctave" name="octave" id="octave">
+          <option value="4">A4</option>
+          <option value="3">A3</option>
+          <option value="2">A2</option>
+          <option value="1">A1</option>
+          <option value="0">A0</option>
+        </select>
+      </div>
+      <div>
+        <label># of Octaves</label>
+        <select v-model="numOctaves" name="octave" id="octave">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+    </div>-->
 
     <div class="topbar__segment">
-      <label># of Octaves</label>
-      <select v-model="numOctaves" name="octave" id="octave">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select>
-    </div>
-
-    <div class="topbar__segment">
-      <label>Root note</label>
-      <select v-model="rootNote" name="rootNote" id="rootNote">
-        <option value="B">B</option>
-        <option value="A#">A#</option>
-        <option value="A">A</option>
-        <option value="G#">G#</option>
-        <option value="G">G</option>
-        <option value="F#">F#</option>
-        <option value="F">F</option>
-        <option value="E">E</option>
-        <option value="D#">D#</option>
-        <option value="D">D</option>
-        <option value="C#">C#</option>
-        <option value="C">C</option>
-      </select>
-    </div>
-
-    <div class="topbar__segment">
-      <label>Master Volume</label>
-      <input type="range" v-model="masterGain" min="0" max="1" step="0.1" />
+      <div>
+        <label>Root</label>
+        <select v-model="rootNote" name="rootNote" id="rootNote">
+          <option value="B">B</option>
+          <option value="A#">A#</option>
+          <option value="A">A</option>
+          <option value="G#">G#</option>
+          <option value="G">G</option>
+          <option value="F#">F#</option>
+          <option value="F">F</option>
+          <option value="E">E</option>
+          <option value="D#">D#</option>
+          <option value="D">D</option>
+          <option value="C#">C#</option>
+          <option value="C">C</option>
+        </select>
+      </div>
+      <div>
+        <label>Master</label>
+        <input type="range" v-model="masterGain" min="0" max="1" step="0.1" />
+      </div>
     </div>
   </div>
 </template>
