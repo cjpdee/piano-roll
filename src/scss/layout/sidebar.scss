@@ -1,7 +1,27 @@
 .sidebar {
     @extend %component;
-    $z: em(100);
-    height: calc(100vh - #{$z});
+    padding: em(10);
     width: em(400);
+    @extend %background-dark;
+    overflow-y: auto;
+}
 
+.rack {
+
+    &__heading {
+        margin: em(10) 0;
+        font-size: em(24);
+    }
+
+    &__controls {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+
+        margin-bottom: em(20);
+    }
+
+    &__button {
+        flex: 1 0 0;
+    }
 }

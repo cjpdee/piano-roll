@@ -1,0 +1,73 @@
+.oscillator {
+    display: block;
+    padding: em(10);
+    margin-bottom: em(10);
+    @extend %background-light;
+
+    &__topbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: em(10);
+    }
+
+    &__heading {
+        flex: 1 0 auto;
+    }
+
+    &__radio-wrap {
+        flex: 0 0 em(20);
+
+        & input[type=radio] {
+            position: absolute;
+            opacity: 0;
+        }
+    }
+
+    &__radio {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        position: relative;
+        width: em(20);
+        height: em(20);
+        background-color: grey;
+        border-radius: em(5);
+        padding: em(2);
+
+        &:after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: em(5)
+        }
+        input[type=radio]:checked + &:after {
+            background-color: green;
+        }
+
+    }
+
+    &__properties {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: em(10) 0;
+    }
+
+    &__property-wrap {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+
+    }
+
+    &__property {
+        flex: 0 0 em(30);
+        height: em(60);
+        width: em(10);
+        -webkit-appearance: slider-vertical;
+    }
+}

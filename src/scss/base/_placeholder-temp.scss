@@ -1,5 +1,9 @@
 %component {
+    padding: em(5);
+}
+
+%component-row {
     border: em(2) solid;
     padding: em(5);
-    margin: em(-1)
+    margin: 0 em(-1);
 }

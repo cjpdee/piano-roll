@@ -15,7 +15,6 @@
 	height: 100%;
 
 	&__section {
-		@extend %component;
 		padding: 0;
 		display: flex;
 		width: 100%;
@@ -26,7 +25,11 @@
 		background-color: white;
 
 		&:hover {
-			background-color: rgb(159, 217, 219);
+			@extend %background-dark;
+		}
+
+		&[data-key*="#"]:hover {
+			background-color: white;
 		}
 
 		&:focus {
@@ -53,7 +56,8 @@
 		}
 
 		&:hover:after {
-			background-color: rgb(54, 117, 119);
+			// background-color: rgb(54, 117, 119);
+			@extend %background-dark;
 		}
 
 		&:focus {

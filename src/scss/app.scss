@@ -3,12 +3,12 @@
 @import './base/default-mixins';
 @import './base/placeholder-temp';
 @import './base/color-schemes';
+@import './base/global';
 
 @import './components/piano';
+@import './components/oscillator';
 
 @import './layout/topbar';
 @import './layout/piano-roll';
 @import './layout/sidebar';
 @import './layout/bottom';
-
-

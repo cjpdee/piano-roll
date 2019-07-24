@@ -4,14 +4,44 @@ $module: 'topbar';
     display: flex;
     flex-wrap: nowrap;
     width: 100%;
-    max-height: em(100);
+    height: em(100);
 
     @extend %component;
+    @extend %background-darker;
 
     &__item {
         flex: 0 0 0;
         display: flex;
 
-        @extend %component;
+        @extend %color-text;
+
+        @extend %component-row;
+        @extend %border-color-dark;
+    }
+
+    &__segment {
+        display: flex;
+        flex-direction: column;
+
+        padding: 0 em(10);
+
+        &:first-child {padding: 0 em(10) 0 0}
+        &:last-child {padding: 0 0 0 em(10)}
+
+        & > * {
+            flex: 0 0 50%;
+        }
+    }
+}
+
+.project-setup {
+    &__controls {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    &__control {
+        flex: 0 1 50%;
     }
 }

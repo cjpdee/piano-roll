@@ -9,20 +9,24 @@
  // in future I might add ability to name tones whatever you want and have unlimited tones
 $schemes: (
     "scheme1": (
-        lighter: pink,
-        light: 'x',
-        base: green,
-        dark: 'x',
-        darker: crimson
+        text: white,
+        lighter: skyblue,
+        light: #5077CC,
+        base: #677595,
+        dark: #324A80,
+        darker: #1E2D4D
     ),
     "scheme2": (
-        lighter: blue,
-        light: 'x',
-        base: 'x',
-        dark: 'x',
-        darker: darkblue
+        text: white,
+        lighter: #7CCCB3,
+        light: #3FCC9F,
+        base: #5B9582,
+        dark: #288064,
+        darker: #184D3C
     ),
 );
+
+$properties: (color,background,border-color);
 
 // write a single property to specific tone for all schemes
 @mixin write-scheme-property($property,$tone) {
@@ -35,7 +39,7 @@ $schemes: (
 
 // write all properties for a certain tone
 @mixin write-tone($tone) {
-    @each $prop in color, background, border-color {
+    @each $prop in $properties {
         %#{$prop}-#{$tone} {
             @include write-scheme-property($prop,$tone);
         }
@@ -43,22 +47,9 @@ $schemes: (
 }
 
 @mixin write-all-schemes() {
-    @each $tone in lighter, light, base, dark, darker {
+    @each $tone in text, lighter, light, base, dark, darker {
         @include write-tone($tone);
     }
 }
 
 @include write-all-schemes;
-
-
-// usage examples
-
-.topbar {
-    @extend %color-lighter;
-    @extend %background-darker;
-    @extend %border-color-base;
-}
-
-.piano-row {
-    @extend %background-darker;
-}
