@@ -24,7 +24,7 @@ const store = new Vuex.Store({
 			noteSize: 4,
 			numBars: 4,
 			baseOctave: 2,
-			numOctaves: 2,
+			numOctaves: 4,
 			rootNote: "C",
 			noteLength: 1
 		},

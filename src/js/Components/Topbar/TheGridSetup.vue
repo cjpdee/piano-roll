@@ -35,13 +35,13 @@
                     Their position and length must be divided or multiplied by 
         -->
         # of bars
-        <select v-model="numBars">
-          <option :value="1">1</option>
-          <option :value="2">2</option>
-          <option :value="4">4</option>
-          <option :value="8">8</option>
-        </select>
       </label>
+      <select v-model="numBars">
+        <option :value="1">1</option>
+        <option :value="2">2</option>
+        <option :value="4">4</option>
+        <option :value="8">8</option>
+      </select>
     </div>
   </div>
 </template>
