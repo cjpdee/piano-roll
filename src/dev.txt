@@ -1,22 +1,11 @@
 Development Notes:
 
 Todo:
-- adapt resizing function to vue
 - pressing alt should snap notes to grid when moving
-- route oscillators to effects
-- or create effects rack but that sounds unneccessary for the purpose of this project
-- it's slightly more intuitive to quickly give oscillators
-- it is the right way though
-
-- designs
-
 - get resizing working + commits to store
-
 - Need to define the end of playback and then do stuff (loop or stop, but always reset the position marker)
 
-- make it possible to either lock or unlock the roll:
-	lock would fix 24 or 12 notes & the length of the loop to the screen
-	unlocked would be free movement, choose either x or y unlock or both
+- lock / unlock piano roll
 
 - make it easier to work with beats/timing - renaming variables for clarity, figure out something that makes more sense.
 	there should be functions to get timings, like an array of times when a sound should play based on a pattern, or if we want a metronome or sound to play every 1 beats or half beats etc.

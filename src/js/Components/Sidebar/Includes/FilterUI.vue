@@ -30,7 +30,7 @@
           orient="vertical"
           id="filter_cutoff"
           min="0"
-          max="4000"
+          max="100"
         />
       </div>
       <div class="oscillator__property-wrap">
@@ -48,12 +48,12 @@
       <!-- attack -->
       <div class="oscillator__property-wrap">
         <label class="oscillator__property-label" for="filter_attack">Att</label>
-        <input v-model="filterDecay" class="oscillator__property" type="range" id="filter_attack" />
+        <input v-model="filterAttack" class="oscillator__property" type="range" id="filter_attack" />
       </div>
       <!-- hold -->
       <div class="oscillator__property-wrap">
         <label class="oscillator__property-label" for="filter_hold">Hold</label>
-        <input v-model="filterDecay" class="oscillator__property" type="range" id="filter_hold" />
+        <input v-model="filterHold" class="oscillator__property" type="range" id="filter_hold" />
       </div>
       <!-- decay -->
       <div class="oscillator__property-wrap">
@@ -97,7 +97,9 @@ export default {
   },
 
   data() {
-    return {};
+    return {
+      // TODO: put the filter object here
+    };
   },
 
   computed: {
@@ -143,6 +145,41 @@ export default {
         this.$store.commit("setFilterQuality", {
           filterId: this.filterId,
           quality: parseFloat(value)
+        });
+      }
+    },
+
+    ////
+    filterAttack: {
+      get() {
+        return this.getThisFilter().modulation.attack;
+      },
+      set(value) {
+        this.$store.commit("setFilterAttack", {
+          filterId: this.filterId,
+          attack: parseFloat(value)
+        });
+      }
+    },
+    filterHold: {
+      get() {
+        return this.getThisFilter().modulation.hold;
+      },
+      set(value) {
+        this.$store.commit("setFilterHold", {
+          filterId: this.filterId,
+          hold: parseFloat(value)
+        });
+      }
+    },
+    filterDecay: {
+      get() {
+        return this.getThisFilter().modulation.decay;
+      },
+      set(value) {
+        this.$store.commit("setFilterDecay", {
+          filterId: this.filterId,
+          decay: parseFloat(value)
         });
       }
     }

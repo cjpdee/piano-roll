@@ -7,9 +7,7 @@ import {
 	getNote,
 	getFilter
 } from "../util/helper";
-import {
-	Filter
-} from "../Objects/Oscillator";
+import "../Objects/Filter";
 
 Vue.use(Vuex);
 // TODO: break store into multiple files

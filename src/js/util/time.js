@@ -1,6 +1,4 @@
-import {
-	store
-} from '../store/store';
+import store from '../store/store';
 
 /**
  * TIMING FUNCTIONS
@@ -29,6 +27,10 @@ export function secondsPerBeat() {
 // TODO: currently the exported function is unused
 export function loopTimeframe() {
 	getLoopTimeframe();
+}
+
+export function getBarsTime(numBars) {
+	return numBars * getSecondsPerBeat() * 16 * numBars;
 }
 
 // get duration from a percentage of the loop

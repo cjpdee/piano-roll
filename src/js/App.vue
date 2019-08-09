@@ -16,7 +16,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import { store } from "./store/store";
+import store from "./store/store";
 import Oscillator from "./Objects/Oscillator";
 import { getKeysArray } from "./util/helper";
 
@@ -28,7 +28,7 @@ import TheControls from "./Components/Topbar/TheControls.vue";
 import TheSidebar from "./Components/Sidebar/TheSidebar.vue";
 import TheRack from "./Components/Sidebar/TheRack.vue";
 import OscillatorUI from "./Components/Sidebar/OscillatorUI.vue";
-import Filter from "./Components/Sidebar/Includes/Filter.vue";
+import Filter from "./Components/Sidebar/Includes/FilterUI.vue";
 
 // Piano keyboard
 import ThePianoKeys from "./Components/ThePianoKeys.vue";

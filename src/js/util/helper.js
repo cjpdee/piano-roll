@@ -1,6 +1,4 @@
-import {
-	store
-} from '../store/store';
+import store from '../store/store';
 import {
 	durationFromPercentage
 } from "./time";
@@ -10,7 +8,7 @@ import {
  */
 
 // rounding function to snap notes to nearest bar
-Number.prototype.floorTo = function(num) {
+Number.prototype.floorTo = function (num) {
 	var resto = this % num;
 	return this - resto;
 };
@@ -30,7 +28,7 @@ export function getKeysArray() {
 	const rootNote = store.state.project.rootNote;
 	const notes = store.state.data.notes;
 
-	let octaveNotes = (function() {
+	let octaveNotes = (function () {
 		let array = [];
 		for (let j = 0; j < notes.length; j++) {
 			let pointer = (j + notes.indexOf('A')) % notes.length;
@@ -98,7 +96,7 @@ export function animatePositionMarker() {
 	);
 }
 // TODO: implement this function
-export function resetPositionMarker() {}
+export function resetPositionMarker() { }
 
 export function getOscillator(id) {
 	const oscIndex = store.state.oscillators.findIndex(oscillator => oscillator.id == id);

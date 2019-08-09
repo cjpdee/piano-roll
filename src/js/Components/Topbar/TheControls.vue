@@ -1,20 +1,19 @@
 <template>
-	<div class="topbar__item">
-		<span class="project-setup__controls">
-			<button @click="play()" class="project-setup__control green">Play</button>
-			<button @click="stop()" class="project-setup__control red">Stop</button>
-		</span>
-	</div>
+  <div class="topbar__item">
+    <button @click="play()" class="project-setup__control green">Play</button>
+
+    <button @click="stop()" class="project-setup__control red">Stop</button>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 // TODO: move
 label {
-	display: block;
+  display: block;
 }
 input[type="number"] {
-	width: 50%;
-	display: inline-block;
+  width: 50%;
+  display: inline-block;
 }
 </style>
 
@@ -23,19 +22,18 @@ input[type="number"] {
 import Player from "../../Objects/Player";
 
 export default {
-	name: "TheControls",
-	methods: {
-		play() {
-			Player.play();
-		},
+  name: "TheControls",
+  methods: {
+    play() {
+      Player.play();
+    },
 
-		stop() {
-			Player.stop();
+    stop() {
+      Player.stop();
 
-			let posMarker = document.querySelector("[data-js=position-marker]");
-			posMarker.setAttribute("style", "");
-		},
-		
-	}
+      let posMarker = document.querySelector("[data-js=position-marker]");
+      posMarker.setAttribute("style", "");
+    }
+  }
 };
 </script>

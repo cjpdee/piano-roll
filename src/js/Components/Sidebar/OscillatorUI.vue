@@ -75,7 +75,7 @@
 // Custom wavetables : OscillatorNode.setPeriodicWave()
 // Make filter values relative to the base octave
 import { getOscillator, getFilter } from "../../util/helper";
-import FilterUI from "./Includes/Filter";
+import FilterUI from "./Includes/FilterUI";
 
 export default {
   name: "Oscillator",

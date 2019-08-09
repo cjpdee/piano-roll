@@ -21,12 +21,12 @@ const store = new Vuex.Store({
 			name: "myProject",
 			bpm: 120,
 			timeSignature: 4,
-			noteSize: 4,
+			noteSize: 1 / 2,
 			numBars: 4,
 			baseOctave: 2,
 			numOctaves: 4,
 			rootNote: "C",
-			noteLength: 1
+			noteLength: 8
 		},
 		oscillators: [],
 		activeOscillator: null, // saves reference only
@@ -43,6 +43,4 @@ const store = new Vuex.Store({
 	},
 });
 
-export {
-	store
-};
+export default store;

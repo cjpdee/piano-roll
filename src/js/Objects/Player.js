@@ -2,9 +2,7 @@
 // neccessary? I'm not sure
 
 import Oscillator from './Oscillator';
-import {
-	store
-} from '../store/store';
+import store from '../store/store';
 import {
 	durationFromPercentage
 } from "../util/time";

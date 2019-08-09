@@ -3,9 +3,8 @@ import {
 	getFilter
 } from "../util/helper";
 
-import {
-	Filter
-} from "../Objects/Oscillator";
+// Classes
+import Filter from "../Objects/Filter";
 import Oscillator from "../Objects/Oscillator";
 
 const oscillatorMutations = {
@@ -70,9 +69,18 @@ const oscillatorMutations = {
 		setFilterQuality(state, payload) {
 			getFilter(payload.filterId).quality = payload.quality
 		},
+		setFilterAttack(state, payload) {
+			getFilter(payload.filterId).modulation.attack = payload.attack
+		},
+		setFilterHold(state, payload) {
+			getFilter(payload.filterId).modulation.hold = payload.hold
+		},
+		setFilterDecay(state, payload) {
+			getFilter(payload.filterId).modulation.decay = payload.decay
+		},
 
-		// TODO: should have a function for applying any kind of envelope
-		// TODO: also there are 2 mutations for gain. This one is used currently
+		// TODO: should have a function for applying any cutoff
+		// TODO: also there are 2 mutations for gain.
 		volume(state, payload) {
 			let osc = getOscillator(payload.oscillator_id);
 			let property = osc.env;
