@@ -49,6 +49,7 @@ export default class Oscillator {
 
 	static connectFilters(filters, OscillatorNode, GainNode, frequency) {
 		filters.forEach((filter, index) => {
+
 			this.getFilterCutoffRange(filter, frequency);
 			console.log(filter);
 			console.log(filter.modulation.getEnvPercentages());

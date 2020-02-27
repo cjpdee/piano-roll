@@ -1,5 +1,7 @@
 Development Notes:
 
+- Be able to copy blocks of notes, patterns etc into new places
+
 Todo:
 - pressing alt should snap notes to grid when moving
 - get resizing working + commits to store

@@ -3,7 +3,7 @@ import store from "../store/store";
 
 export default class Envelope {
     constructor() {
-        this.amount = 100; // percentage
+        this.amount = 100;
         this.attack = 0;
         // this.attackCurve = 0;
         this.hold = 0;
@@ -40,14 +40,12 @@ export default class Envelope {
         function getEnvelopeTime(attack, hold, release) {
 
         }
-        console.log(filter);
+
         var fil = filter.filterNode;
 
-        console.log(fil);
-
         // now = context.currentTime;
-        fil.frequency.cancelScheduledValues(now);
         fil.frequency.setValueAtTime(0, now);
+        fil.frequency.cancelScheduledValues(now);
         fil.frequency.linearRampToValueAtTime((this.cutoff || 1) * 1000, now + this.getTime(this.attack / 100));
         fil.frequency.linearRampToValueAtTime(0.01, now + this.getTime(this.attack / 100) + this.getTime(this.decay / 100));
     };
